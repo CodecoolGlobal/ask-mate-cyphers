@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}{{ question_id }}. Questions{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Question</h1>
+        {% for question in questions %}
+            {% if question["id"] == question_id %}
+                <p>{{ question["title"] }}</p>
+                <p>{{ question["message"] }}</p>
+            {% endif %}
+            {% endfor %}
+    <h2>Answer</h2>
+        {% for answer in answers %}
+            {% if answer["question_id"] == question_id %}
+                <p>{{ answer["message"] }}</p>
+            {% endif %}
+            {% endfor %}
+{% endblock %}

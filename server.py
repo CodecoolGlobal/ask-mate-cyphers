@@ -14,7 +14,10 @@ def route_list():
 
 @app.route("/question/<question_id>", methods=["GET", "POST"])
 def route_question(question_id):
-    return render_template("question.html")
+    if request.method == "GET":
+        questions = data_manager.get_all_questions()
+        answers = data_manager.get_all_answers()
+        return render_template("question.html", question_id=question_id, questions=questions, answers=answers)
 
 
 # @app.route("/question/add-question")

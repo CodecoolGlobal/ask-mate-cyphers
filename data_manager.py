@@ -21,3 +21,8 @@ def get_headers():
 def get_all_questions():
     questions = connection.get_all_csv_data(DATA_FILE_PATH_QUESTIONS)
     return questions
+
+
+def get_all_answers():
+    answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
+    return answers
