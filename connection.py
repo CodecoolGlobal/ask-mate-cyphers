@@ -21,7 +21,7 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp.writerow(dict_of_new_row)
 
 
-def edit_question(filename, id_num, title, message, fieldnames):
+def edit_question(filename, id_num, fieldnames, title=None, message=None):
     file = get_all_csv_data(filename)
     if title is not None:
         file[id_num - 1]["title"] = title
@@ -42,4 +42,4 @@ def delete_question():
 
 
 HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-edit_question('sample_data/question_test.csv', 1, "asd3", "asd2", HEADER_DATA)
+edit_question('sample_data/question_test.csv', 1, HEADER_DATA, "asd4")
