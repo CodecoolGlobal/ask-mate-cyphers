@@ -21,9 +21,25 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp.writerow(dict_of_new_row)
 
 
-def edit_question():
-    pass
+def edit_question(filename, id_num, title, message, fieldnames):
+    file = get_all_csv_data(filename)
+    if title is not None:
+        file[id_num - 1]["title"] = title
+    if message is not None:
+        file[id_num - 1]["message"] = message
+    with open(filename, "w") as newfile:
+        newfile = csv.DictWriter(newfile, fieldnames=fieldnames)
+        headers = {}
+        for i in fieldnames:
+            headers[i] = i
+        newfile.writerow(headers)
+        for i in file:
+            newfile.writerow(i)
 
 
 def delete_question():
     pass
+
+
+HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
+edit_question('sample_data/question_test.csv', 1, "asd3", "asd2", HEADER_DATA)
