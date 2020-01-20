@@ -8,13 +8,17 @@
   <table>
       <tr>
           {% for header in headers %}
-              <th>{{header}}</th>
+              <th>{{ header }}</th>
           {% endfor %}
       </tr>
   {%  for question in questions %}
        <tr>
            {% for header in question %}
+               {% if header == 'title' %}
+               <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
+               {% else %}
               <td>{{ question[header] }}</td>
+               {% endif %}
            {%  endfor %}
        </tr>
   {% endfor %}

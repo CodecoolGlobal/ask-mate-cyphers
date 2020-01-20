@@ -12,11 +12,11 @@ def route_list():
     return render_template('list.html', questions=questions, headers=headers)
 
 
-# @app.route("/question/<question_id>")
-# def route_question(question_id):
-#     return "Hello World!"
-#
-#
+@app.route("/question/<question_id>", methods=["GET", "POST"])
+def route_question(question_id):
+    return render_template("question.html")
+
+
 # @app.route("/question/add-question")
 # def route_add_question():
 #     return "Hello World!"
