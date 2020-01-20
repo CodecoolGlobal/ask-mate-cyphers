@@ -3,7 +3,7 @@ import csv
 
 # CRUD: create, read, update, delete
 # filename: 'sample_data/question.csv', 'sample_data/answer.csv'
-def read_question(filename):  # read
+def get_all_csv_data(filename):  # read
     with open(filename, 'r') as cs_file:
         csv_read = csv.DictReader(cs_file)
         table = []
