@@ -10,7 +10,7 @@ def route_list():
 
 
 @app.route("/question/<question_id>")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
@@ -20,32 +20,32 @@ def route_question():
 
 
 @app.route("/question/<question_id>/new-answer")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
 @app.route("/question/<question_id>/delete")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
 @app.route("/question/<question_id>/edit")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
 @app.route("/answer/<answer_id>delete")
-def route_question():
+def route_question(answer_id):
     return "Hello World!"
 
 
 @app.route("/question/<question_id>/vote_up")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
 @app.route("/question/<question_id>/vote_down")
-def route_question():
+def route_question(question_id):
     return "Hello World!"
 
 
