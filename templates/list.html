@@ -1,8 +1,22 @@
 {% extends "layout.html" %}
-{% block title %}Welcome{% endblock %}
+{% block title %}Questions{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
 {% block content %}
-
+  <h1>Questions</h1>
+  <table>
+      <tr>
+          {% for header in headers %}
+              <th>{{header}}</th>
+          {% endfor %}
+      </tr>
+  {%  for question in questions %}
+       <tr>
+           {% for header in question %}
+              <td>{{ question[header] }}</td>
+           {%  endfor %}
+       </tr>
+  {% endfor %}
+  </table>
 {% endblock %}
