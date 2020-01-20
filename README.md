@@ -150,7 +150,7 @@ These look like the following (you can ignore data in the not implemented fields
 > In the meantime, we are working on an own solution to replace GitHub Classroom. We plan to have it in the first quarter of 2020.
 
 Click here to clone your own Git repository:
-https://classroom.github.com/a/UyYdR-aN
+https://classroom.github.com/g/PD6sfLga
 
 ## Background materials
 
