@@ -27,9 +27,3 @@ def edit_question():
 
 def delete_question():
     pass
-
-
-HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-file = 'sample_data/question.csv'
-lista = [1, 2, 3, 4, "asd", "asd2"]
-create_question(file, HEADER_DATA, lista)
