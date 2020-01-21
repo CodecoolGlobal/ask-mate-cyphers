@@ -71,12 +71,12 @@ def get_view_num(id_num):
 
 
 def add_question(file):
-    connection.create_question(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
+    connection.create_row(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
 
 
 def edit_question(file, id_num):
     title, message = file
-    connection.edit_question(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
+    connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
 
 
 def get_time(table):
