@@ -32,8 +32,10 @@ def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_D
             except ValueError:
                 pass
     order_dict = {}
+    counter = 1
     for question in questions:
-        order_dict[question.get(order_by)] = question
+        order_dict[question.get(order_by)+str(counter)] = question
+        counter += 1
     sorted_dict = sorted(order_dict.items(), reverse=order_direction)
     questions = []
     for item in sorted_dict:
