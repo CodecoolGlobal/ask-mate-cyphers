@@ -17,16 +17,23 @@ def route_list(order_by='id', order_direction='desc'):
     return render_template('list.html', questions=questions, headers=headers, raw_headers=raw_headers, new_order_dir=new_order_dir)
 
 
-@app.route("/question/<question_id>", methods=["GET", "POST"])
+
+@app.route("/question/<question_id>")
 def route_question(question_id):
-    return render_template("question.html")
+    questions = data_manager.get_all_questions()
+    answers = data_manager.get_all_answers()
+    return render_template("question.html", question_id=question_id, questions=questions, answers=answers)
 
 
-# @app.route("/question/add-question")
-# def route_add_question():
-#     return "Hello World!"
-#
-#
+@app.route("/add-question", methods=["GET", "POST"])
+def route_add_question():
+    if request.method == "POST":
+        file = [request.form[item] for item in request.form]
+        data_manager.add_question(file)
+        return redirect("/")
+    return render_template("ask_question.html")
+
+
 # @app.route("/question/<question_id>/new-answer")
 # def route_new_answer():
 #     return "Hello World!"

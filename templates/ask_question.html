@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Ask question{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Ask a question:</h1>
+    <form action="/add-question" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        <label for="message">Question:</label><br>
+        <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
+        <button>Add</button>
+    </form>
+{% endblock %}

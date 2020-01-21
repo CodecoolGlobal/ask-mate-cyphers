@@ -17,19 +17,37 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp = csv.DictWriter(file, fieldnames=fieldnames)
         dict_of_new_row = {}
         for i in range(len(list_of_new_row)):
-            dict_of_new_row[fieldnames[i]] = list_of_new_row[i]
+            dict_of_new_row.update({fieldnames[i]: list_of_new_row[i]})
         temp.writerow(dict_of_new_row)
 
 
-def edit_question():
-    pass
+def edit_question(filename, id_num, fieldnames, title=None, message=None):
+    file = get_all_csv_data(filename)
+    if title is not None:
+        file[id_num - 1]["title"] = title
+    if message is not None:
+        file[id_num - 1]["message"] = message
+    write_file(fieldnames, file, filename)
 
 
-def delete_question():
-    pass
+def delete_question(filename, id_num, fieldnames):
+    file = get_all_csv_data(filename)
+    del_index = 0
+    for i in range(len(file)):
+        if file[i]["id"] == str(id_num):
+            del_index = i
+    del file[del_index]
+    for i in range(del_index, len(file)):
+        file[i]["id"] = int(file[i]["id"]) - 1
+    write_file(fieldnames, file, filename)
 
 
-HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-file = 'sample_data/question.csv'
-lista = [1, 2, 3, 4, "asd", "asd2"]
-create_question(file, HEADER_DATA, lista)
+def write_file(fieldnames, file, filename):
+    with open(filename, "w") as newfile:
+        newfile = csv.DictWriter(newfile, fieldnames=fieldnames)
+        headers = {}
+        for i in fieldnames:
+            headers[i] = i
+        newfile.writerow(headers)
+        for i in file:
+            newfile.writerow(i)
