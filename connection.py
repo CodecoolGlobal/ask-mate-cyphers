@@ -60,7 +60,13 @@ def write_file(fieldnames, save_file, filename):
             newfile.writerow(i)
 
 
-def view_number_up(filename, id_num, fieldnames):
+def numbers_up(filename, id_num, fieldnames, column):
     file = get_all_csv_data(filename)
-    file[id_num - 1]["view_number"] = int(file[id_num - 1]["view_number"]) + 1
+    file[id_num - 1][column] = int(file[id_num - 1][column]) + 1
     write_file(fieldnames, file, filename)
+
+
+def get_data_for_id(id_num, file):
+    for row in file:
+        if row['id'] == id_num:
+            return row
