@@ -41,11 +41,12 @@ def route_add_question():
 #     return "Hello World!"
 #
 #
-# @app.route("/question/<question_id>/delete")
-# def route_question_delete():
-#     return "Hello World!"
-#
-#
+@app.route("/question/<question_id>/delete")
+def route_question_delete(question_id):
+    data_manager.delete_question(question_id)
+    return redirect("/")
+
+
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def route_question_edit(question_id):
     if request.method == "GET":
@@ -56,31 +57,24 @@ def route_question_edit(question_id):
         file = [request.form[item] for item in request.form]
         data_manager.edit_question(file, int(question_id))
         return redirect("/list")
-#
-#
-# @app.route("/answer/<answer_id>delete")
-# def route_question_delete():
-#     return "Hello World!"
-#
-#
-# @app.route("/question/<question_id>/vote_up")
-# def route_question_vote_up():
-#     return "Hello World!"
-#
-#
-# @app.route("/question/<question_id>/vote_down")
-# def route_question_vote_up():
-#     return "Hello World!"
-#
-#
-# @app.route("/question/<answer_id>/vote_up")
-# def route_answer_vote_up():
-#     return "Hello World!"
-#
-#
-# @app.route("/question/<answer_id>/vote_down")
-# def route_answer_vote_up():
-#     return "Hello World!"
+
+
+@app.route("/question/<question_id>/vote_up")
+def route_question_vote_up(question_id):
+    data_manager.vote_up(int(question_id))
+    return redirect("/list")
+
+
+@app.route("/question/<question_id>/vote_down")
+def route_question_vote_down(question_id):
+    data_manager.vote_down(int(question_id))
+    return redirect("/list")
+
+
+@app.route("/answer/<answer_id>/delete")
+def route_question_delete(answer_id):
+    data_manager.delete_answer(answer_id)
+    return redirect("/")
 
 
 if __name__ == '__main__':

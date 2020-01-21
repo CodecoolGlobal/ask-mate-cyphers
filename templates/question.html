@@ -11,7 +11,10 @@
                 <p>{{ question["message"] }}</p>
             {% endif %}
         {% endfor %}
+    <button><a href="/question/{{ question_id }}/vote_up">Upvote</a></button>
+    <button><a href="/question/{{ question_id }}/vote_down">Downvote</a></button><br>
     <button><a href="/question/{{ question_id }}/edit">Edit question</a></button>
+    <button><a href="/question/{{ question_id }}/delete"></a></button>
     <em><h1>Answer:</h1></em>
         {% for answer in answers %}
             {% if answer["question_id"] == question_id %}

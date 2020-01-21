@@ -67,7 +67,7 @@ def get_row_for_id(id_num, file):
 
 
 def get_view_num(id_num):
-    connection.numbers_up(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number")
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number", 1)
 
 
 def add_question(file):
@@ -83,3 +83,20 @@ def get_time(table):
     for item in table:
         item['submission_time'] = time.ctime(item.get('submission_time'))
     return table
+
+
+def vote_up(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", 1)
+
+
+def vote_down(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", -1)
+
+
+def delete_question(id_num):
+    connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
+    connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, question_id=id_num)
+
+
+def delete_answer(id_num):
+    connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
