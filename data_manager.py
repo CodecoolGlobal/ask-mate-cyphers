@@ -46,3 +46,8 @@ def get_new_order_dir(order_direction):
         return 'desc'
     elif order_direction == 'desc':
         return 'asc'
+
+
+def get_all_answers():
+    answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
+    return answers
