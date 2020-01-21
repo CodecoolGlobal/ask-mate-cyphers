@@ -4,7 +4,8 @@ import connection
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
 HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-
+DEFAULT_ORDER_BY = 'id'
+DEFAULT_ORDER_DIR = 'desc'
 
 def get_headers():
     headers = []
@@ -18,7 +19,7 @@ def get_headers():
     return headers
 
 
-def get_all_questions(order_by, order_direction):
+def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_DIR):
     if order_direction == 'desc':
         order_direction = True
     elif order_direction == 'asc':
