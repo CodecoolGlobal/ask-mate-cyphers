@@ -17,8 +17,9 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp = csv.DictWriter(file, fieldnames=fieldnames)
         dict_of_new_row = {}
         for i in range(len(list_of_new_row)):
-            dict_of_new_row[fieldnames[i]] = list_of_new_row[i]
+            dict_of_new_row.update({fieldnames[i]: list_of_new_row[i]})
         temp.writerow(dict_of_new_row)
+
 
 
 def edit_question():
