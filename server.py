@@ -17,7 +17,6 @@ def route_list(order_by='id', order_direction='desc'):
     return render_template('list.html', questions=questions, headers=headers, raw_headers=raw_headers, new_order_dir=new_order_dir)
 
 
-
 @app.route("/question/<question_id>")
 def route_question(question_id):
     questions = data_manager.get_all_questions()
