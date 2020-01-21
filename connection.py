@@ -13,12 +13,14 @@ def get_all_csv_data(filename):  # read
     return table
 
 
-def create_question(filename, fieldnames, list_of_new_row):
+def create_row(filename, fieldnames, list_of_new_row, q_id_num=None):
     file = get_all_csv_data(filename)
-    add_list = [0, 0, int(time.time()), int(file[-1]["id"]) + 1]
+    if q_id_num is None:
+        add_list = [0, 0, int(time.time()), int(file[-1]["id"]) + 1]
+    else:
+        add_list = [q_id_num, 0, int(time.time()), int(file[-1]["id"]) + 1]
     for i in add_list:
         list_of_new_row.insert(0, i)
-    print(list_of_new_row)
     with open(filename, 'a') as newfile:
         temp = csv.DictWriter(newfile, fieldnames=fieldnames)
         dict_of_new_row = {}
@@ -27,7 +29,7 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp.writerow(dict_of_new_row)
 
 
-def edit_question(filename, id_num, fieldnames, title=None, message=None):
+def edit_row(filename, id_num, fieldnames, title=None, message=None):
     file = get_all_csv_data(filename)
     if title is not None:
         file[id_num - 1]["title"] = title
@@ -37,7 +39,7 @@ def edit_question(filename, id_num, fieldnames, title=None, message=None):
     write_file(fieldnames, file, filename)
 
 
-def delete_question(filename, id_num, fieldnames):
+def delete_row_in_file(filename, id_num, fieldnames):
     file = get_all_csv_data(filename)
     del_index = 0
     for i in range(len(file)):
@@ -60,7 +62,10 @@ def write_file(fieldnames, save_file, filename):
             newfile.writerow(i)
 
 
-def view_number_up(filename, id_num, fieldnames):
+def numbers_up(filename, id_num, fieldnames, column):
     file = get_all_csv_data(filename)
-    file[id_num - 1]["view_number"] = int(file[id_num - 1]["view_number"]) + 1
+    file[id_num - 1][column] = int(file[id_num - 1][column]) + 1
     write_file(fieldnames, file, filename)
+
+
+def create_new_answer(filename)
