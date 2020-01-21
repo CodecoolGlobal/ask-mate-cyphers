@@ -68,4 +68,7 @@ def numbers_up(filename, id_num, fieldnames, column):
     write_file(fieldnames, file, filename)
 
 
-def create_new_answer(filename)
+def get_data_for_id(id_num, file):
+    for row in file:
+        if row['id'] == id_num:
+            return row

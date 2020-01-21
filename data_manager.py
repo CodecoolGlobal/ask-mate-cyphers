@@ -1,5 +1,6 @@
 import os
 import connection
+import time
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
@@ -34,14 +35,14 @@ def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_D
             except ValueError:
                 pass
     order_dict = {}
-    counter = 1
+    counter = 0.01
     for question in questions:
         if isinstance(question.get(order_by), int):
             order_dict[question.get(order_by) + counter] = question
-            counter += 1
+            counter += 0.01
         else:
             order_dict[question.get(order_by) + str(counter)] = question
-            counter += 1
+            counter += 0.01
     sorted_dict = sorted(order_dict.items(), reverse=order_direction)
     questions = []
     for item in sorted_dict:
@@ -59,3 +60,26 @@ def get_new_order_dir(order_direction):
 def get_all_answers():
     answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
     return answers
+
+
+def get_row_for_id(id_num, file):
+    return connection.get_data_for_id(id_num, file)
+
+
+def get_view_num(id_num):
+    connection.numbers_up(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number")
+
+
+def add_question(file):
+    connection.create_question(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
+
+
+def edit_question(file, id_num):
+    title, message = file
+    connection.edit_question(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
+
+
+def get_time(table):
+    for item in table:
+        item['submission_time'] = time.ctime(item.get('submission_time'))
+    return table
