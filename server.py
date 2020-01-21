@@ -6,10 +6,15 @@ app = Flask(__name__)
 
 @app.route("/")
 @app.route("/list")
-def route_list():
-    questions = data_manager.get_all_questions()
+def route_list(order_by='id', order_direction='desc'):
+    if request.args.get(order_by) is not None:
+        order_by = request.args.get(order_by)
+    if request.args.get(order_direction) is not None:
+        order_direction = request.args.get(order_direction)
+    questions = data_manager.get_all_questions(order_by, order_direction)
     headers = data_manager.get_headers()
-    return render_template('list.html', questions=questions, headers=headers)
+    raw_headers = data_manager.HEADER_DATA
+    return render_template('list.html', questions=questions, headers=headers, raw_headers=raw_headers)
 
 
 @app.route("/question/<question_id>", methods=["GET", "POST"])
