@@ -58,3 +58,9 @@ def write_file(fieldnames, save_file, filename):
         newfile.writerow(headers)
         for i in save_file:
             newfile.writerow(i)
+
+
+def view_number_up(filename, id_num, fieldnames):
+    file = get_all_csv_data(filename)
+    file[id_num - 1]["view_number"] = int(file[id_num - 1]["view_number"]) + 1
+    write_file(fieldnames, file, filename)

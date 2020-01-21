@@ -7,6 +7,7 @@ HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	
 DEFAULT_ORDER_BY = 'id'
 DEFAULT_ORDER_DIR = 'desc'
 
+
 def get_headers():
     headers = []
     for header in HEADER_DATA:
