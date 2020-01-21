@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
-def route_list(order_by='id', order_direction='desc'):
-    if request.method == 'GET' and request.args.get('order_by') is not None:
+def route_list(order_by=data_manager.DEFAULT_ORDER_BY, order_direction=data_manager.DEFAULT_ORDER_DIR):
+    if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
     questions = data_manager.get_all_questions(order_by, order_direction)
