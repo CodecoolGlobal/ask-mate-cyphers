@@ -21,10 +21,33 @@ def create_question(filename, fieldnames, list_of_new_row):
         temp.writerow(dict_of_new_row)
 
 
+def edit_question(filename, id_num, fieldnames, title=None, message=None):
+    file = get_all_csv_data(filename)
+    if title is not None:
+        file[id_num - 1]["title"] = title
+    if message is not None:
+        file[id_num - 1]["message"] = message
+    write_file(fieldnames, file, filename)
 
-def edit_question():
-    pass
+
+def delete_question(filename, id_num, fieldnames):
+    file = get_all_csv_data(filename)
+    del_index = 0
+    for i in range(len(file)):
+        if file[i]["id"] == str(id_num):
+            del_index = i
+    del file[del_index]
+    for i in range(del_index, len(file)):
+        file[i]["id"] = int(file[i]["id"]) - 1
+    write_file(fieldnames, file, filename)
 
 
-def delete_question():
-    pass
+def write_file(fieldnames, file, filename):
+    with open(filename, "w") as newfile:
+        newfile = csv.DictWriter(newfile, fieldnames=fieldnames)
+        headers = {}
+        for i in fieldnames:
+            headers[i] = i
+        newfile.writerow(headers)
+        for i in file:
+            newfile.writerow(i)
