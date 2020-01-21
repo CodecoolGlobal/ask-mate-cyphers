@@ -38,3 +38,10 @@ def get_all_questions(order_by, order_direction):
     for item in sorted_dict:
         questions.append(item[1])
     return questions
+
+
+def get_new_order_dir(order_direction):
+    if order_direction == 'asc':
+        return 'desc'
+    elif order_direction == 'desc':
+        return 'asc'

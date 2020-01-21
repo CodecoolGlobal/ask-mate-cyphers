@@ -8,7 +8,7 @@
   <table>
       <tr>
           {% for header in headers %}
-              <th><a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction=desc">{{ header }}</a></th>
+              <th><a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a></th>
           {% endfor %}
       </tr>
   {%  for question in questions %}
