@@ -4,19 +4,16 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+    <button><a href="/">Back to the forum</a></button>
     <em><h1>Question:</h1></em>
-        {% for question in questions %}
-            {% if question["id"] == question_id|int %}
-                <h2>{{ question["title"] }}</h2>
-                <p>{{ question["message"] }}</p>
-            {% endif %}
-        {% endfor %}
+        <h2>{{ question["title"] }}</h2>
+        <p>{{ question["message"] }}</p>
     <button><a href="/question/{{ question_id }}/edit">Edit question</a></button>
     <em><h1>Answer:</h1></em>
-        {% for answer in answers %}
+    {% for answer in answers %}
             {% if answer["question_id"] == question_id %}
                 <p>{{ answer["message"] }}</p>
             {% endif %}
         {% endfor %}
-    <button><a href="/">Back to the forum</a></button>
+    <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>
 {% endblock %}

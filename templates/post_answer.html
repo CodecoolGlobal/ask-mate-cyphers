@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}Post answer{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>{{ question["title"] }}</h1>
+    <form action="/question/{{ question_id }}/new-answer" method="POST">
+        <label for="message">Answer:</label><br>
+        <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
+        <button>Add</button>
+    </form>
+{% endblock %}

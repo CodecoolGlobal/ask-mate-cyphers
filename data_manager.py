@@ -74,6 +74,10 @@ def add_question(file):
     connection.create_row(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
 
 
+def add_ansewer(file, id_num):
+    connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
+
+
 def edit_question(file, id_num):
     title, message = file
     connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
