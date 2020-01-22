@@ -79,20 +79,23 @@ def route_question_vote_down(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
     data_manager.delete_answer(answer_id)
-    return redirect("/")
+    return redirect(f"/question/{answer['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
     data_manager.answer_vote_up(int(answer_id))
-    return redirect("/")
+    return redirect(f"/question/{answer['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
     data_manager.answer_vote_down(int(answer_id))
-    return redirect("/")
+    return redirect(f"/question/{answer['question_id']}")
 
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])

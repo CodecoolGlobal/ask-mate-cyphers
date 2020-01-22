@@ -122,5 +122,5 @@ def answer_vote_down(id_num):
 
 
 def edit_answer(file, id_num):
-    message = file[0]
-    connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message)
+    message, image = file
+    connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message, image=image)

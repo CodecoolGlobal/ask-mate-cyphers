@@ -4,10 +4,12 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-    <h1>Edit an answer:</h1>
+    <h1>Edit an answer:</h1><br>
     <form action="/answer/{{ answer_id }}/edit" method="POST">
-        <label for="message">Answer:</label><br>
+        <strong><label for="message">Answer:</label><br></strong>
         <textarea rows="10" cols="60" id="message" name="message">{{ answer["message"] }}</textarea><br><br>
+        <strong><label for="image">Add image link:</label><br></strong>
+        <input type="text" id="image" name="image" value="{{ answer["image"] }}"><br><br>
         <button>Edit</button>
     </form>
 {% endblock %}
