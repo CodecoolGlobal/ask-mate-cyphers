@@ -9,18 +9,22 @@
   <table>
       <tr>
           {% for header in headers %}
-              <th><a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a></th>
+              {% if header != headers[0] %}
+                  <th><a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a></th>
+              {% endif %}
           {% endfor %}
       </tr>
   {%  for question in questions %}
        <tr>
            {% for header in question %}
-               {% if header == 'title' %}
-                   <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
-               {% elif header == 'image' and question["image"] != "" %}
-                   <td><img src={{question["image"]}} alt="image"></td>
-               {% else %}
-                   <td>{{ question[header] }}</td>
+               {% if header != "id" %}
+                   {% if header == 'title' %}
+                       <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
+                   {% elif header == 'image' and question["image"] != "" %}
+                       <td><img src={{question["image"]}} alt="image"></td>
+                   {% else %}
+                       <td>{{ question[header] }}</td>
+                   {% endif %}
                {% endif %}
            {%  endfor %}
        </tr>
