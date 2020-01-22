@@ -79,7 +79,7 @@ def route_question_vote_down(question_id):
 
 
 @app.route("/answer/<answer_id>/delete")
-def route_question_delete(answer_id):
+def route_answer_delete(answer_id):
     data_manager.delete_answer(answer_id)
     return redirect("/")
 
