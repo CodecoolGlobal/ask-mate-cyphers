@@ -10,10 +10,10 @@
         {% if question["image"] != "" %}
             <img src={{ question["image"] }} alt="image" width="200"><br>
         {% endif %}
-    <br><button><a href="/question/{{ question_id }}/vote_up"><img
+    <br><button><a href="/question/{{ question_id }}/question/vote_up"><img
             src="https://cdn0.iconfinder.com/data/icons/business-glyphs-vol-3-1/52/like__thumbs__up__vote__accept__agree__voteup-512.png", width="15"></a></button>
     <b>{{ question["vote_number"] }}</b>
-    <button><a href="/question/{{ question_id }}/vote_down"><img
+    <button><a href="/question/{{ question_id }}/question/vote_down"><img
             src="https://cdn3.iconfinder.com/data/icons/inficons-set-2/512/648981-star-ratings-512.png", width="15"></a></button><br><br>
     <button><a href="/question/{{ question_id }}/edit">Edit question</a></button>
     <button><a href="/question/{{ question_id }}/delete">Delete question</a></button><br><br>
