@@ -15,9 +15,11 @@
        <tr>
            {% for header in question %}
                {% if header == 'title' %}
-               <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
+                   <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
+               {% elif header == 'image' and question["image"] != "" %}
+                   <td><img src={{question["image"]}} alt="image" width="100"></td>
                {% else %}
-              <td>{{ question[header] }}</td>
+                   <td>{{ question[header] }}</td>
                {% endif %}
            {%  endfor %}
        </tr>
