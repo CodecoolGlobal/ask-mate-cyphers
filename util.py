@@ -1,6 +1,6 @@
 def find_row_index_by_id(table, id_num):
     for index in range(len(table)):
-        if table[index]["id"] == id_num:
+        if int(table[index]["id"]) == id_num:
             return index
 
 
