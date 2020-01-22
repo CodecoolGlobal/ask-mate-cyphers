@@ -1,5 +1,6 @@
 import csv
 import time
+import util
 
 
 # CRUD: create, read, update, delete
@@ -31,11 +32,12 @@ def create_row(filename, fieldnames, list_of_new_row, q_id_num=None):
 
 def edit_row(filename, id_num, fieldnames, title=None, message=None):
     file = get_all_csv_data(filename)
+    index = util.find_row_index_by_id(file, id_num)
     if title is not None:
-        file[id_num - 1]["title"] = title
+        file[index]["title"] = title
     if message is not None:
-        file[id_num - 1]["message"] = message
-    file[id_num - 1]["submission_time"] = int(time.time())
+        file[index]["message"] = message
+    file[index]["submission_time"] = int(time.time())
     write_file(fieldnames, file, filename)
 
 
@@ -46,8 +48,6 @@ def delete_row_by_id(filename, id_num, fieldnames):
         if file[i]["id"] == str(id_num):
             del_index = i
     del file[del_index]
-    for i in range(del_index, len(file)):
-        file[i]["id"] = int(file[i]["id"]) - 1
     write_file(fieldnames, file, filename)
 
 
@@ -64,14 +64,9 @@ def write_file(fieldnames, save_file, filename):
 
 def numbers_modify(filename, id_num, fieldnames, column, value):
     file = get_all_csv_data(filename)
-    file[id_num - 1][column] = int(file[id_num - 1][column]) + value
+    index = util.find_row_index_by_id(file, id_num)
+    file[index][column] = int(file[index][column]) + value
     write_file(fieldnames, file, filename)
-
-
-def get_data_for_id(id_num, file):
-    for row in file:
-        if row['id'] == id_num:
-            return row
 
 
 def delete_answers(filename, fieldnames, id_num=None, question_id=None):

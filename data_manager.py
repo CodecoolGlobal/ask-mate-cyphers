@@ -1,6 +1,7 @@
 import os
 import connection
 import time
+import util
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
@@ -63,7 +64,7 @@ def get_all_answers():
 
 
 def get_row_for_id(id_num, file):
-    return connection.get_data_for_id(id_num, file)
+    return util.get_data_for_id(id_num, file)
 
 
 def get_view_num(id_num):
