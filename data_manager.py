@@ -107,5 +107,9 @@ def delete_answer(id_num):
     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
 
 
-def answer_vote_up():
-    pass
+def answer_vote_up(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_ANSWERS, "vote_number", 1)
+
+
+def answer_vote_down(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_ANSWERS, "vote_number", -1)

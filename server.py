@@ -84,14 +84,16 @@ def route_answer_delete(answer_id):
     return redirect("/")
 
 
-@app.route("/ansswer/<answer_id>/vote_up")
+@app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    pass
+    data_manager.answer_vote_up(answer_id)
+    return redirect("/")
 
 
-@app.route("//ansswer/<answer_id>/vote_down")
+@app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    pass
+    data_manager.answer_vote_down(answer_id)
+    return redirect("/")
 
 
 if __name__ == '__main__':
