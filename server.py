@@ -39,7 +39,6 @@ def route_add_question():
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def route_new_answer(question_id):
     if request.method == "POST":
-        print(question_id)
         file = [request.form[item] for item in request.form]
         data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}")
@@ -69,29 +68,46 @@ def route_question_edit(question_id):
 @app.route("/question/<question_id>/vote_up")
 def route_question_vote_up(question_id):
     data_manager.vote_up(int(question_id))
-    return redirect("/list")
+    return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/vote_down")
 def route_question_vote_down(question_id):
     data_manager.vote_down(int(question_id))
-    return redirect("/list")
+    return redirect(f"/question/{question_id}")
 
 
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
     data_manager.delete_answer(answer_id)
-    return redirect("/")
+    return redirect(f"/question/{answer['question_id']}")
 
 
-@app.route("/ansswer/<answer_id>/vote_up")
+@app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    pass
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
+    data_manager.answer_vote_up(int(answer_id))
+    return redirect(f"/question/{answer['question_id']}")
 
 
-@app.route("//ansswer/<answer_id>/vote_down")
+@app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    pass
+    answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
+    data_manager.answer_vote_down(int(answer_id))
+    return redirect(f"/question/{answer['question_id']}")
+
+
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def route_answer_edit(answer_id):
+    if request.method == "GET":
+        answers = data_manager.get_all_answers()
+        answer = data_manager.get_row_for_id(answer_id, answers)
+        return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
+    if request.method == "POST":
+        file = [request.form[item] for item in request.form]
+        data_manager.edit_answer(file, int(answer_id))
+        return redirect("/list")
 
 
 if __name__ == '__main__':
