@@ -41,7 +41,7 @@ def route_new_answer(question_id):
     if request.method == "POST":
         print(question_id)
         file = [request.form[item] for item in request.form]
-        data_manager.add_ansewer(file, int(question_id))
+        data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}")
     questions = data_manager.get_all_questions()
     question = data_manager.get_row_for_id(int(question_id), questions)

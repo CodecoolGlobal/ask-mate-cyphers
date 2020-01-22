@@ -74,7 +74,7 @@ def add_question(file):
     connection.create_row(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
 
 
-def add_ansewer(file, id_num):
+def add_answer(file, id_num):
     connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
 
 
