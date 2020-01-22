@@ -1,4 +1,5 @@
 import data_manager
+import os
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -33,6 +34,10 @@ def route_question(question_id):
 def route_add_question():
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
         data_manager.add_question(file)
         return redirect("/")
     return render_template("ask_question.html")
@@ -42,6 +47,10 @@ def route_add_question():
 def route_new_answer(question_id):
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
         data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}")
     questions = data_manager.get_all_questions()
@@ -63,6 +72,10 @@ def route_question_edit(question_id):
         return render_template("edit_question.html", question=question, question_id=question_id)
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
         data_manager.edit_question(file, int(question_id))
         return redirect(f"/question/{question_id}")
 
@@ -108,6 +121,10 @@ def route_answer_edit(answer_id):
         return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
         data_manager.edit_answer(file, int(answer_id))
         answers = data_manager.get_all_answers()
         answer = data_manager.get_row_for_id(answer_id, answers)

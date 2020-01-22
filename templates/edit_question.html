@@ -5,13 +5,13 @@
 {% endblock %}
 {% block content %}
     <h1>Edit a question:</h1><br>
-    <form action="/question/{{ question_id }}/edit" method="POST">
+    <form action="/question/{{ question_id }}/edit" method="POST" enctype="multipart/form-data">
         <strong><label for="title">Title:</label><br></strong>
         <input type="text" id="title" name="title" value="{{ question["title"] }}"><br><br>
         <strong><label for="message">Question:</label><br></strong>
         <textarea rows="10" cols="60" id="message" name="message">{{ question["message"] }}</textarea><br><br>
-        <strong><label for="image">Add image link:</label><br></strong>
-        <input type="text" id="image" name="image" value="{{ question["image"] }}"><br><br>
+        <label for="image">Add image:</label><br><br>
+        <input type="file" id="image" name="image"><br><br>
         <button>Edit</button>
     </form>
 {% endblock %}
