@@ -64,7 +64,7 @@ def route_question_edit(question_id):
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
         data_manager.edit_question(file, int(question_id))
-        return redirect("/list")
+        return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/<route>/vote_up")
@@ -109,7 +109,9 @@ def route_answer_edit(answer_id):
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
         data_manager.edit_answer(file, int(answer_id))
-        return redirect("/list")
+        answers = data_manager.get_all_answers()
+        answer = data_manager.get_row_for_id(answer_id, answers)
+        return redirect(f"/question/{answer['question_id']}")
 
 
 if __name__ == '__main__':

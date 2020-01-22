@@ -18,6 +18,8 @@ def create_row(filename, fieldnames, list_of_new_row, q_id_num=None):
     file = get_all_csv_data(filename)
     if q_id_num is None:
         add_list = [0, 0, int(time.time()), int(file[-1]["id"]) + 1]
+        if list_of_new_row[0] == "":
+            list_of_new_row[0] = "-No title given-"
     else:
         add_list = [q_id_num, 0, int(time.time()), int(file[-1]["id"]) + 1]
     for i in add_list:
