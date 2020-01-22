@@ -5,8 +5,9 @@ app = Flask(__name__)
 
 
 @app.route("/")
+@app.route("/question/<question_id>/list")
 @app.route("/list", methods=['GET', 'POST'])
-def route_list(order_by=data_manager.DEFAULT_ORDER_BY, order_direction=data_manager.DEFAULT_ORDER_DIR):
+def route_list(question_id=None, order_by=data_manager.DEFAULT_ORDER_BY, order_direction=data_manager.DEFAULT_ORDER_DIR):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -18,6 +19,7 @@ def route_list(order_by=data_manager.DEFAULT_ORDER_BY, order_direction=data_mana
     return render_template('list.html', questions=questions, headers=headers, raw_headers=raw_headers, new_order_dir=new_order_dir)
 
 
+@app.route("/question/<question_id>/question")
 @app.route("/question/<question_id>")
 def route_question(question_id):
     questions = data_manager.get_all_questions()
@@ -65,16 +67,16 @@ def route_question_edit(question_id):
         return redirect(f"/question/{question_id}")
 
 
-@app.route("/question/<question_id>/vote_up")
-def route_question_vote_up(question_id):
+@app.route("/question/<question_id>/<route>/vote_up")
+def route_question_vote_up(question_id, route):
     data_manager.vote_up(int(question_id))
-    return redirect(f"/question/{question_id}")
+    return redirect(f"/question/{question_id}/{route}")
 
 
-@app.route("/question/<question_id>/vote_down")
-def route_question_vote_down(question_id):
+@app.route("/question/<question_id>/<route>/vote_down")
+def route_question_vote_down(question_id, route):
     data_manager.vote_down(int(question_id))
-    return redirect(f"/question/{question_id}")
+    return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/answer/<answer_id>/delete")
