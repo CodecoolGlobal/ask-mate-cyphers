@@ -80,8 +80,8 @@ def add_answer(file, id_num):
 
 
 def edit_question(file, id_num):
-    title, message = file
-    connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
+    title, message, image = file
+    connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message, image)
 
 
 def get_time(table):

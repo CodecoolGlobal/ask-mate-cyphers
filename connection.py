@@ -30,13 +30,15 @@ def create_row(filename, fieldnames, list_of_new_row, q_id_num=None):
         temp.writerow(dict_of_new_row)
 
 
-def edit_row(filename, id_num, fieldnames, title=None, message=None):
+def edit_row(filename, id_num, fieldnames, title=None, message=None, image=None):
     file = get_all_csv_data(filename)
     index = util.find_row_index_by_id(file, id_num)
     if title is not None:
         file[index]["title"] = title
     if message is not None:
         file[index]["message"] = message
+    if image is not None:
+        file[index]["image"] = image
     file[index]["submission_time"] = int(time.time())
     write_file(fieldnames, file, filename)
 
