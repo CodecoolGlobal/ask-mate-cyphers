@@ -4,8 +4,12 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-   <div id="main_page">
-  <h1>Questions</h1>
+  <div id="header">
+  <a href="/">AskMate</a>
+  <a href="/">Questions</a>
+  <a href="/add-question" class="button">New question</a>
+  </div>
+  <div id="main_page">
   <table>
       <tr>
           {% for header in headers %}
@@ -26,6 +30,6 @@
        </tr>
   {% endfor %}
   </table>
-    <button><a href="/add-question">New question</a></button>
+
    </div>
 {% endblock %}
