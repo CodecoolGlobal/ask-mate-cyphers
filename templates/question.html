@@ -22,8 +22,9 @@
                 {% if answer["image"] != "" %}
                     <img src={{ answer["image"] }} alt="image" width="200"><br>
                 {% endif %}
-                <button><a href="/answer/<answer_id>/vote_up">Upvote</a></button>
-                <button><a href="/answer/<answer_id>/vote_down">Downvote</a></button><br><br><br>
+                <button><a href="/answer/{{ answer["id"] }}/vote_up">Upvote</a></button>
+                <button><a href="/answer/{{ answer["id"] }}/vote_down">Downvote</a></button>
+                <button><a href="/answer/{{ answer["id"] }}/edit">Edit answer</a></button><br><br><br>
             {% endif %}
     {% endfor %}
     <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>
