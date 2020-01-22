@@ -105,3 +105,7 @@ def delete_question(id_num):
 
 def delete_answer(id_num):
     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
+
+
+def answer_vote_up():
+    pass

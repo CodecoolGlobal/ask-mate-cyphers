@@ -22,6 +22,7 @@
                 {% if answer["image"] != "" %}
                     <img src={{ answer["image"] }} alt="image" width="200"><br>
                 {% endif %}
+                <button><a href="">Upvote</a></button>
             {% endif %}
     {% endfor %}
     <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>

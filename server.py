@@ -84,6 +84,16 @@ def route_answer_delete(answer_id):
     return redirect("/")
 
 
+@app.route("/ansswer/<answer_id>/vote_up")
+def route_answer_vote_up(answer_id):
+    pass
+
+
+@app.route("//ansswer/<answer_id>/vote_down")
+def route_answer_vote_down(answer_id):
+    pass
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
