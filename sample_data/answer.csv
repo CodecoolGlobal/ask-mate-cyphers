@@ -1,9 +1,10 @@
 id,submission_time,vote_number,question_id,message,image
-1,1493398154,4,1,"You need to use brackets: my_list = []",
-2,1493088154,35,2,"Look it up in the Python docs",
-
+1,1493398154,4,1,You need to use brackets: my_list = [],
+2,1493088154,35,2,Look it up in the Python docs,
 3,1579611292,0,7,Azért mert béna vagy!,
 4,1579611313,0,7,Valami miatt!!,
 5,1579614897,0,4,,https://24.p3k.hu/app/uploads/2018/07/a_000_17z5yn_gettyimageshungary_eza.jpg
 6,1579685374,0,1,asd,
 7,1579685380,0,1,asd2,
+8,1579692361,1,5,Joel is a nice guy,
+9,1579690146,0,3,asd,
