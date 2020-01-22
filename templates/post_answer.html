@@ -1,14 +1,12 @@
 {% extends "layout.html" %}
-{% block title %}Ask question{% endblock %}
+{% block title %}Post answer{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
 {% block content %}
-    <h1>Ask a question:</h1>
-    <form action="/add-question" method="POST">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br><br>
-        <label for="message">Question:</label><br>
+    <h1>{{ question["title"] }}</h1>
+    <form action="/question/{{ question_id }}/new-answer" method="POST">
+        <label for="message">Answer:</label><br>
         <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
         <label for="image">Add image link:</label><br>
         <input type="text" id="image" name="image"><br><br>

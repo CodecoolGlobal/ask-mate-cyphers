@@ -1,6 +1,7 @@
 import os
 import connection
 import time
+import util
 
 DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
 DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
@@ -63,15 +64,19 @@ def get_all_answers():
 
 
 def get_row_for_id(id_num, file):
-    return connection.get_data_for_id(id_num, file)
+    return util.get_data_for_id(id_num, file)
 
 
 def get_view_num(id_num):
-    connection.numbers_up(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number")
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number", 1)
 
 
 def add_question(file):
     connection.create_row(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
+
+
+def add_answer(file, id_num):
+    connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
 
 
 def edit_question(file, id_num):
@@ -83,3 +88,24 @@ def get_time(table):
     for item in table:
         item['submission_time'] = time.ctime(item.get('submission_time'))
     return table
+
+
+def vote_up(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", 1)
+
+
+def vote_down(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", -1)
+
+
+def delete_question(id_num):
+    connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
+    connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, question_id=id_num)
+
+
+def delete_answer(id_num):
+    connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
+
+
+def answer_vote_up():
+    pass
