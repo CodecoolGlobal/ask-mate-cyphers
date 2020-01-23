@@ -30,11 +30,10 @@ def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_D
         order_direction = False
     questions = connection.get_all_csv_data(DATA_FILE_PATH_QUESTIONS)
     for i in range(len(questions)):
-        for k, v in questions[i].items():
-            try:
-                questions[i][k] = int(v)
-            except ValueError:
-                pass
+        questions[i]["id"] = int(questions[i]["id"])
+        questions[i]["submission_time"] = int(questions[i]["submission_time"])
+        questions[i]["view_number"] = int(questions[i]["view_number"])
+        questions[i]["vote_number"] = int(questions[i]["vote_number"])
     order_dict = {}
     counter = 0.01
     for question in questions:
