@@ -5,13 +5,13 @@
 {% endblock %}
 {% block content %}
     <h1>Ask a question:</h1>
-    <form action="/add-question" method="POST">
+    <form action="/add-question" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br><br>
         <label for="message">Question:</label><br>
         <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
-        <label for="image">Add image link:</label><br>
-        <input type="text" id="image" name="image"><br><br>
+        <label for="image">Add image:</label><br><br>
+        <input type="file" id="image" name="image"><br><br>
         <button>Add</button>
     </form>
 {% endblock %}

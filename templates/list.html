@@ -25,10 +25,10 @@
                      {% if header == 'title' %}
                          <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
                      {% elif header == 'image' and question["image"] != "" %}
-                         <td><img src={{question["image"]}} alt="image"></td>
+                         <td><img src=/{{question["image"]}} alt="image"></td>
                      {% elif header == "vote_number" %}
                          <td width="150"><button><a href="/question/{{ question["id"] }}/list/vote_up"><img
-                          src="https://cdn0.iconfinder.com/data/icons/business-glyphs-vol-3-1/52/like__thumbs__up__vote__accept__agree__voteup-512.png", width="15"></a></button>
+                          src="/static/voteup.png", width="15"></a></button>
                           <b>
                               {% if question["vote_number"] > 1000 %}
                                   {{ question["vote_number"] / 1000 }}k
@@ -39,7 +39,7 @@
                               {% endif %}
                           </b>
                           <button><a href="/question/{{ question["id"] }}/list/vote_down"><img
-                          src="https://cdn3.iconfinder.com/data/icons/inficons-set-2/512/648981-star-ratings-512.png", width="15"></a></button>
+                          src="/static/votedown.png", width="15"></a></button>
                          </td>
                      {% else %}
                          <td>{{ question[header] }}</td>

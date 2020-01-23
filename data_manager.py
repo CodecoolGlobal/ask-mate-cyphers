@@ -86,7 +86,12 @@ def add_answer(file, id_num):
 
 
 def edit_question(file, id_num):
-    title, message, image = file
+    try:
+        title, message, image = file
+    except ValueError:
+        image = None
+        title = file[0]
+        message = file[1]
     connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message, image)
 
 
@@ -122,5 +127,9 @@ def answer_vote_down(id_num):
 
 
 def edit_answer(file, id_num):
-    message, image = file
+    try:
+        message, image = file
+    except ValueError:
+        message = file[0]
+        image = None
     connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message, image=image)
