@@ -39,7 +39,12 @@ def route_add_question():
             image.save(os.path.join("static", image.filename))
             file.append(f"static/{image.filename}")
         data_manager.add_question(file)
-        return redirect("/")
+        questions = data_manager.get_all_questions()
+        new_id = 0
+        for question in questions:
+            if question["id"] > new_id:
+                new_id = question["id"]
+        return redirect(f"/question/{new_id}")
     return render_template("ask_question.html")
 
 

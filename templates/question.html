@@ -29,9 +29,10 @@
                 <b>{{ answer["vote_number"] }}</b>
                 <button><a href="/answer/{{ answer["id"] }}/vote_down"><img
             src="/static/votedown.png", width="15"></a></button><br><br>
-                <button><a href="/answer/{{ answer["id"] }}/edit">Edit answer</a></button><br><br><br>
-                <button><a href="/answer/{{ answer["id"] }}/delete">Delete answer</a></button><br><br>
+                <button><a href="/answer/{{ answer["id"] }}/edit">Edit answer</a></button>
+                <button><a href="/answer/{{ answer["id"] }}/delete">Delete answer</a></button>
             {% endif %}
     {% endfor %}
-    <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button>
+    <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button><br><br>
+    <button><a href="/">Back to the form</a></button>
 {% endblock %}
