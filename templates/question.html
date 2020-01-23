@@ -32,14 +32,22 @@
     <a href="/question/{{ question_id }}/delete">Delete question</a>
     <h1>Answer:</h1>
     {% for answer in answers %}
-        {% if answer["question_id"] == question_id %}
-            <p>{{ answer["message"] }}</p>
-            {% if answer["image"] != "" %}
-                <img src=/{{ answer["image"] }} alt="image" width="200"><br>
+            {% if answer["question_id"] == question_id %}
+                <p>{{ answer["message"] }}</p><br>
+                {% if answer["image"] != "" %}
+                    <img src=/{{ answer["image"] }} alt="image" width="200"><br><br>
+                {% endif %}
+                <button><a href="/answer/{{ answer["id"] }}/vote_up"><img
+            src="/static/voteup.png", width="15"></a></button>
+                <b>{{ answer["vote_number"] }}</b>
+                <button><a href="/answer/{{ answer["id"] }}/vote_down"><img
+            src="/static/votedown.png", width="15"></a></button><br><br>
+                <button><a href="/answer/{{ answer["id"] }}/edit">Edit answer</a></button>
+                <button><a href="/answer/{{ answer["id"] }}/delete">Delete answer</a></button>
             {% endif %}
             <a href="">Upvote</a>
-        {% endif %}
     {% endfor %}
-    <a href="/question/{{ question_id }}/new-answer">Add answer</a>
+    <button><a href="/question/{{ question_id }}/new-answer">Add answer</a></button><br><br>
+    <button><a href="/">Back to the form</a></button>
     </div>
 {% endblock %}
