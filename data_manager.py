@@ -51,6 +51,11 @@ def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_D
     return questions
 
 
+def get_all_answers():
+    answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
+    return answers
+
+
 def get_new_order_dir(order_direction):
     if order_direction == 'asc':
         return 'desc'
@@ -64,6 +69,7 @@ def get_all_answers():
 
 
 def get_row_for_id(id_num, file):
+    print(file)
     return util.get_data_for_id(id_num, file)
 
 
@@ -80,8 +86,8 @@ def add_answer(file, id_num):
 
 
 def edit_question(file, id_num):
-    title, message = file
-    connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message)
+    title, message, image = file
+    connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message, image)
 
 
 def get_time(table):
@@ -107,5 +113,14 @@ def delete_answer(id_num):
     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
 
 
-def answer_vote_up():
-    pass
+def answer_vote_up(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, "vote_number", 1)
+
+
+def answer_vote_down(id_num):
+    connection.numbers_modify(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, "vote_number", -1)
+
+
+def edit_answer(file, id_num):
+    message, image = file
+    connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message, image=image)
