@@ -10,4 +10,3 @@ id,submission_time,vote_number,question_id,message,image
 It can have any number of items and they may be of different types (integer, float, string etc.).",static/e2c097ee3097d70470c282496faffb29c44eb2a8.png
 8,1579780957,0,5,"List comprehensions are used for creating new lists from other iterables. As list comprehensions returns lists, they consist of brackets containing the expression, which is executed for each element along with the for loop to iterate over each element.",
 9,1579781191,0,7,"Every Cascading Style Sheet (whether it is contained in a .css file, or embedded in the head element of an HTML document) is a series of instructions called statements. A statement does two things: it identifies the elements in an HTML document that it affects.",static/letöltés.jpeg
-10,1579795544,0,9,123,
