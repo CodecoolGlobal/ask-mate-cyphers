@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Questions{% endblock %}
 {% block head %}
-  {{ super() }}
+    {{ super() }}
 {% endblock %}
 {% block content %}
   <div id="header">
@@ -27,7 +27,7 @@
                      {% elif header == 'image' and question["image"] != "" %}
                          <td><img src=/{{question["image"]}} alt="image"></td>
                      {% elif header == "vote_number" %}
-                         <td><button><a href="/question/{{ question["id"] }}/list/vote_up"><img src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                         <td><button><a onclick="event.stopPropagation()" href="/question/{{ question["id"] }}/list/vote_up"><img src="/static/voteup.png" alt="Upvote" width="15"></a></button>
                           <b>
                               {% if question["vote_number"] > 1000 %}
                                   {% set proc_err = question["vote_number"] / 1000 %}
@@ -39,7 +39,7 @@
                                   {{ question["vote_number"] }}
                               {% endif %}
                           </b>
-                          <button><a href="/question/{{ question["id"] }}/list/vote_down"><img src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                          <button><a onclick="event.stopPropagation()" href="/question/{{ question["id"] }}/list/vote_down"><img src="/static/votedown.png" alt="Downvote" width="15"></a></button>
                          </td>
                      {% elif question["message"]|length > 100 and header == "message" %}
                          <td>
@@ -54,5 +54,5 @@
   {% endfor %}
   </table>
 
-   </div>
+    </div>
 {% endblock %}
