@@ -2,3 +2,4 @@ id,submission_time,vote_number,question_id,message,image
 1,1493398154,4,1,You need to use brackets: my_list = [],
 2,1493088154,36,2,Look it up in the Python docs,
 3,1579769048,0,6,,
+4,1579773334,0,3,asd,
