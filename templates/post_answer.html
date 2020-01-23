@@ -5,9 +5,9 @@
 {% endblock %}
 {% block content %}
     <a href="/">AskMate</a>
-    <a href="/">Back to the forum</a>
+    <a href="/question{{ question_id }}">Back to the question</a>
     <h1>{{ question["title"] }}</h1>
-    <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
+    <form action="/question/{{ question_id }}/new-answer" method="POST" enctype="multipart/form-data">
         <label for="message">Answer:</label><br>
         <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
         <label for="image">Add image:</label><br><br>

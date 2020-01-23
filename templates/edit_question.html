@@ -5,8 +5,8 @@
 {% endblock %}
 {% block content %}
     <a href="/">AskMate</a>
-    <a href="/">Back to the forum</a>
-    <a href="/question/{{ question["id"] }}">Back to the forum</a>
+{#    <a href="/">Back to the forum</a>#}
+    <a href="/question/{{ question["id"] }}">Back to the question</a>
     <h1>Edit a question:</h1><br>
     <form action="/question/{{ question_id }}/edit" method="POST" enctype="multipart/form-data">
         <strong><label for="title">Title:</label><br></strong>

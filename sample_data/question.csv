@@ -16,7 +16,8 @@ This is the code I'm using to draw the image (that works on web/desktop but not 
 4,1579780392,16,2,What is Reddit?,I dont understand what is this form..,static/letöltés.png
 5,1579780912,3,1,List Comprehension,What Is Python List Comprehension? ,static/Python-List-Comprehension.png
 6,1579781034,1,0,Generator expression,What is generator expression?,static/687474703a2f2f692e696d6775722e636f6d2f4763423745625a2e706e67.png
-7,1579781140,4,1,CSS meaining,What is CSS and how does it work?,static/css-png-1.png
-8,1579781523,11,2,Pyspark structured streaming window (moving average) over last N data points,"I read several data frames from kafka topics using Pyspark Structured Streaming 2.4.4. I would like to add some new columns to that data frames that mainly are based on window calculations over past N data points (for instance: Moving average over last 20 data points), and as a new data point is delivered, the corresponding value of MA_20 should be instantly calculated.
+7,1579781140,5,1,CSS meaining,What is CSS and how does it work?,static/css-png-1.png
+8,1579781523,13,2,Pyspark structured streaming window (moving average) over last N data points,"I read several data frames from kafka topics using Pyspark Structured Streaming 2.4.4. I would like to add some new columns to that data frames that mainly are based on window calculations over past N data points (for instance: Moving average over last 20 data points), and as a new data point is delivered, the corresponding value of MA_20 should be instantly calculated.
 
 Data may look like this: Timestamp | VIX",static/stack.png
+9,1579795066,13,0,asd,asd2,
