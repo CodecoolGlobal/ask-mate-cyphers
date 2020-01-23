@@ -7,12 +7,7 @@
     {% endblock %}
   </head>
   <body>
-    <div id="header">
-        {% block header %}
-            <h2><a href="/">AskMate</a></h2>
-        {% endblock %}
-    </div>
-    <div id="content">{% block content %}{% endblock %}</div>
+    {% block content %}{% endblock %}
     <div id="footer">
       {% block footer %}
       {% endblock %}

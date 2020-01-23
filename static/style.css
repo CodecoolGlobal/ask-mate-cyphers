@@ -3,30 +3,6 @@
     padding: 0;
 }
 
-#content    {
-   align-content: center;
-   height: 1600px;
-   margin-left: 20%;
-   margin-right: 20%;
-   border-right: 2px solid #DCDCDC;
-   border-left: 2px solid #DCDCDC;
-   font-weight: normal;
-}
-
-#header    {
-   padding-left: 30px;
-   min-width: 1920px;
-   height: 50px;
-   display: table-cell;
-   vertical-align: middle;
-   background-color: #FFFAFA;
-   border-bottom: 2px solid #DCDCDC;
-}
-
-h2 {
-   align-content: center;
-}
-
 body {
    font-family: verdana, arial, helvetica, sans-serif;
    font-size: 14px;
@@ -44,9 +20,37 @@ a:hover {
   text-decoration: underline;
 }
 
+#header  {
+  overflow: hidden;
+  background-color: #FFFAFA;
+  padding-left: 20vw;
+  padding-right: 20vw;
+  line-height: 20px;
+  border-bottom: 2px solid #DCDCDC;
+  position: sticky;
+}
+#header a {
+  float: left;
+  display: block;
+  color: #333333;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 3px;
+}
+#header a:hover {
+  background-color: #ddd;
+}
+
 #main_page      {
-    position: relative;
-    bottom: 46px;
+   margin-left: 20vw;
+   margin-right: 20vw;
+   border-right: 2px solid #DCDCDC;
+   border-left: 2px solid #DCDCDC;
+   font-weight: normal;
+   height: 100vh;
 }
 
 #main_page img{
@@ -55,29 +59,21 @@ a:hover {
 }
 
 
-#main_page h1 {
-   font-family: verdana, arial, helvetica, sans-serif;
-   font-size: 18px;
-   font-weight: normal;
-   color: #333333;
-   padding-left: 10px;
-   padding-top: 10px;
+#main_page button {
+
 }
-
-
 #main_page table {
+  position: relative;
+  bottom: 10px;
   border-spacing: 0px 10px;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;;
+  word-break: break-word;
 }
 
-#main_page table:first-child    {
-   width: 1200px;
-}
 #main_page th {
-  height: 50px;
   background-color: #FFFAFA;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 5px;
 }
 
 #main_page th:first-child      {
@@ -103,6 +99,7 @@ a:hover {
 
 #main_page td {
   padding: 5px;
+  min-width: 20px;
   max-width: 500px;
 }
 #main_page table, th, td {
