@@ -27,7 +27,7 @@
                      {% elif header == 'image' and question["image"] != "" %}
                          <td><img src=/{{question["image"]}} alt="image"></td>
                      {% elif header == "vote_number" %}
-                         <td width="150"><button><a href="/question/{{ question["id"] }}/list/vote_up"><img src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                         <td><button><a href="/question/{{ question["id"] }}/list/vote_up"><img src="/static/voteup.png" alt="Upvote" width="15"></a></button>
                           <b>
                               {% if question["vote_number"] > 1000 %}
                                   {% set proc_err = question["vote_number"] / 1000 %}
@@ -40,6 +40,10 @@
                               {% endif %}
                           </b>
                           <button><a href="/question/{{ question["id"] }}/list/vote_down"><img src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                         </td>
+                     {% elif question["message"]|length > 100 and header == "message" %}
+                         <td>
+                         {{ question["message"][:100] }}...
                          </td>
                      {% else %}
                          <td>{{ question[header] }}</td>

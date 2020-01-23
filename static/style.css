@@ -81,7 +81,7 @@ a:hover {
 }
 #main_page td {
     padding: 5px;
-    min-width: 20px;
+    min-width: 100px;
     max-width: 500px;
 }
 #main_page table, th, td {
