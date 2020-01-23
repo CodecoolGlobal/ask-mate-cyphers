@@ -1,54 +1,59 @@
 {% extends "layout.html" %}
 {% block title %}Questions{% endblock %}
 {% block head %}
-  {{ super() }}
+    {{ super() }}
 {% endblock %}
 {% block content %}
-  <div id="header">
-  <a href="/">AskMate</a>
-  <a href="/">Questions</a>
-  <a href="/add-question" class="button">New question</a>
-  </div>
-  <div id="main_page">
-  <table>
-      <tr>
-          {% for header in headers %}
-              {% if header != headers[0] %}
-                  <th><a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a></th>
-              {% endif %}
-          {% endfor %}
-      </tr>
-  {%  for question in questions %}
-       <tr class="pointer" onclick="document.location = '/question/{{ question['id'] }}'; " >
-           {% for header in question %}
-               {% if header != "id" %}
-                     {% if header == 'title' %}
-                         <td>{{ question[header] }}</td>
-                     {% elif header == 'image' and question["image"] != "" %}
-                         <td><img src=/{{question["image"]}} alt="image"></td>
-                     {% elif header == "vote_number" %}
-                         <td width="150"><button><a href="/question/{{ question["id"] }}/list/vote_up"><img src="/static/voteup.png" alt="Upvote" width="15"></a></button>
-                          <b>
-                              {% if question["vote_number"] > 1000 %}
-                                  {% set proc_err = question["vote_number"] / 1000 %}
-                                  {{ proc_err|int }}k
-                              {% elif question["vote_number"] < -1000 %}
-                                  {% set proc_err = question["vote_number"] / 1000 %}
-                                  {{ proc_err|int }}k
-                              {% else %}
-                                  {{ question["vote_number"] }}
-                              {% endif %}
-                          </b>
-                          <button><a href="/question/{{ question["id"] }}/list/vote_down"><img src="/static/votedown.png" alt="Downvote" width="15"></a></button>
-                         </td>
-                     {% else %}
-                         <td>{{ question[header] }}</td>
-                     {% endif %}
-               {% endif %}
-           {%  endfor %}
-       </tr>
-  {% endfor %}
-  </table>
+    <div id="header">
+        <a href="/">AskMate</a>
+        <a href="/">Questions</a>
+        <a href="/add-question" class="button">New question</a>
+    </div>
+    <div id="main_page">
+        <table>
+            <tr>
+                {% for header in headers %}
+                    {% if header != headers[0] %}
+                        <th>
+                            <a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a>
+                        </th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% for question in questions %}
+                <tr class="pointer" onclick="document.location = '/question/{{ question['id'] }}'; ">
+                    {% for header in question %}
+                        {% if header != "id" %}
+                            {% if header == 'title' %}
+                                <td>{{ question[header] }}</td>
+                            {% elif header == 'image' and question["image"] != "" %}
+                                <td><img src=/{{ question["image"] }} alt="image"></td>
+                            {% elif header == "vote_number" %}
+                                <td width="150">
+                                    <button><a onclick="event.stopPropagation()" href="/question/{{ question["id"] }}/list/vote_up"><img
+                                            src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                                    <b>
+                                        {% if question["vote_number"] > 1000 %}
+                                            {% set proc_err = question["vote_number"] / 1000 %}
+                                            {{ proc_err|int }}k
+                                        {% elif question["vote_number"] < -1000 %}
+                                            {% set proc_err = question["vote_number"] / 1000 %}
+                                            {{ proc_err|int }}k
+                                        {% else %}
+                                            {{ question["vote_number"] }}
+                                        {% endif %}
+                                    </b>
+                                    <button><a onclick="event.stopPropagation()" href="/question/{{ question["id"] }}/list/vote_down"><img
+                                            src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                                </td>
+                            {% else %}
+                                <td>{{ question[header] }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
 
-   </div>
+    </div>
 {% endblock %}
