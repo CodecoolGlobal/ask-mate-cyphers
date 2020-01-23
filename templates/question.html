@@ -78,16 +78,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td></td>
                         <td>
                         <a href="/answer/{{ answer["id"] }}/edit" class="comment_button">Edit answer</a>
                         </td>
-                        <td colspan="2">
+                        <td>
                         <a href="/answer/{{ answer["id"] }}/delete" class="comment_button">Delete answer</a>
                         </td>
                     </tr>
                 </table>
             {% endif %}
     {% endfor %}
-    <a href="/question/{{ question_id }}/new-answer">Add answer</a>
+    <a href="/question/{{ question_id }}/new-answer" class="answer_button">Add answer</a>
     </div>
 {% endblock %}
