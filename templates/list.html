@@ -19,11 +19,11 @@
           {% endfor %}
       </tr>
   {%  for question in questions %}
-       <tr>
+       <tr class="pointer" onclick="document.location = '/question/{{ question['id'] }}'; " >
            {% for header in question %}
                {% if header != "id" %}
                      {% if header == 'title' %}
-                         <td><a href="/question/{{question['id']}}">{{ question[header] }}</a></td>
+                         <td>{{ question[header] }}</td>
                      {% elif header == 'image' and question["image"] != "" %}
                          <td><img src=/{{question["image"]}} alt="image"></td>
                      {% elif header == "vote_number" %}
