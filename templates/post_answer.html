@@ -4,6 +4,8 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+    <a href="/">AskMate</a>
+    <a href="/">Back to the forum</a>
     <h1>{{ question["title"] }}</h1>
     <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
         <label for="message">Answer:</label><br>
