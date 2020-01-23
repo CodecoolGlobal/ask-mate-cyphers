@@ -10,12 +10,23 @@
         <a href="/">Back to the forum</a>
     </div>
     <div id="post">
-    <a href="/question/{{ question_id }}/vote_up" class="vote" ><img src="/static/voteup.png" alt="upvote" width=20></a>
-    <a href="/question/{{ question_id }}/vote_down" class="vote" ><img src="/static/votedown.png" alt="downvote" width=20></a>
+    <a href="/question/{{ question_id }}/{{ "question" }}/vote_up" class="vote" ><img src="/static/voteup.png" alt="upvote" width=20></a>
+    <b>
+          {% if question["vote_number"] > 1000 %}
+              {% set proc_err = question["vote_number"] / 1000 %}
+              {{ proc_err|int }}k
+          {% elif question["vote_number"] < -1000 %}
+              {% set proc_err = question["vote_number"] / 1000 %}
+              {{ proc_err|int }}k
+          {% else %}
+              {{ question["vote_number"] }}
+          {% endif %}
+    </b>
+    <a href="/question/{{ question_id }}/{{ "question" }}/vote_down" class="vote" ><img src="/static/votedown.png" alt="downvote" width=20></a>
     <h2>{{ question["title"] }}</h2>
     <p>{{ question["message"] }}</p>
     {% if question["image"] != "" %}
-        <img src={{ question["image"] }} alt="image" width="200"><br>
+        <img src=/{{ question["image"] }} alt="image" width="200"><br>
     {% endif %}
     <a href="/question/{{ question_id }}/edit">Edit question</a>
     <a href="/question/{{ question_id }}/delete">Delete question</a>
@@ -24,7 +35,7 @@
         {% if answer["question_id"] == question_id %}
             <p>{{ answer["message"] }}</p>
             {% if answer["image"] != "" %}
-                <img src={{ answer["image"] }} alt="image" width="200"><br>
+                <img src=/{{ answer["image"] }} alt="image" width="200"><br>
             {% endif %}
             <a href="">Upvote</a>
         {% endif %}
