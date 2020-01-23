@@ -110,7 +110,7 @@ def vote_down(id_num):
 
 def delete_question(id_num):
     connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
-    connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, question_id=id_num)
+    connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, id_num)
 
 
 def delete_answer(id_num):

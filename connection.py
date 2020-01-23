@@ -73,14 +73,11 @@ def numbers_modify(filename, id_num, fieldnames, column, value):
     write_file(fieldnames, file, filename)
 
 
-def delete_answers(filename, fieldnames, id_num=None, question_id=None):
-    if id_num is not None:
-        delete_row_by_id(filename, id_num, fieldnames)
-    elif question_id is not None:
-        file = get_all_csv_data(filename)
-        list_of_id = []
-        for line in file:
-            if int(line["question_id"]) == question_id:
-                list_of_id.append(int(line["id"]))
-        for i in list_of_id:
-            delete_row_by_id(filename, i, fieldnames)
+def delete_answers(filename, fieldnames, question_id):
+    file = get_all_csv_data(filename)
+    list_of_id = []
+    for line in file:
+        if int(line["question_id"]) == int(question_id):
+            list_of_id.append(int(line["id"]))
+    for i in list_of_id:
+        delete_row_by_id(filename, i, fieldnames)
