@@ -1,6 +1,6 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1493368154,60,7,How to make lists in Python?,"I am totally new to this, any hints?",
-2,1493068124,53,899985,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
+1,1493368154,97,12,How to make lists in Python?,"I am totally new to this, any hints?",
+2,1493068124,219,11899990,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $('.myBook').booklet();
 
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -9,6 +9,14 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)",static/voteup.png
-3,1493015432,1494,264,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
+3,1579780605,1492,86,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
 
-This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+
+This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",static/Web-Design-Questions-You-Should-Ask-Yourself-Before-Building-An-Awesome-Website-1024x513.jpg
+4,1579780392,11,2,What is Reddit?,I dont understand what is this form..,static/letöltés.png
+5,1579780912,3,1,List Comprehension,What Is Python List Comprehension? ,static/Python-List-Comprehension.png
+6,1579781034,1,0,Generator expression,What is generator expression?,static/687474703a2f2f692e696d6775722e636f6d2f4763423745625a2e706e67.png
+7,1579781140,3,1,CSS meaining,What is CSS and how does it work?,static/css-png-1.png
+8,1579781523,7,2,Pyspark structured streaming window (moving average) over last N data points,"I read several data frames from kafka topics using Pyspark Structured Streaming 2.4.4. I would like to add some new columns to that data frames that mainly are based on window calculations over past N data points (for instance: Moving average over last 20 data points), and as a new data point is delivered, the corresponding value of MA_20 should be instantly calculated.
+
+Data may look like this: Timestamp | VIX",static/stack.png

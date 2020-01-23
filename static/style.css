@@ -81,7 +81,7 @@ a:hover {
 }
 #main_page td {
     padding: 5px;
-    min-width: 20px;
+    min-width: 100px;
     max-width: 500px;
 }
 #main_page table, th, td {
@@ -96,17 +96,20 @@ a:hover {
     border-right: 2px solid #DCDCDC;
     border-left: 2px solid #DCDCDC;
     font-weight: normal;
-    height: 100vh;
     padding: 5px;
 }
 
 #post table {
+    width: 100%;
     word-break: break-word;
     background-color: #FFFAFA;
     border-radius: 10px;
     padding: 5px;
 }
 
+#post tr td:first-child {
+    width: 38px;
+}
 #post tr:first-child  td  {
     text-align: left;
     padding: 15px;
@@ -116,4 +119,109 @@ a:hover {
 #post tr:nth-child(2) td:nth-child(2) {
     text-align: left;
     font-size: 15px;
+    padding-left: 10px;
+}
+
+#post tr:nth-child(2) td:nth-child(1) {
+    min-width: 38px;
+    max-width: 38px;
+    padding-right: 5px;
+}
+#post tr:last-child td:first-child {
+    position: absolute;
+    white-space: nowrap;
+}
+
+#post   tr:last-child td {
+    padding: 15px;
+    padding-left: 60px;
+}
+
+#post a.page_button {
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+#post a:hover.page_button {
+    background-color: #ddd;
+}
+
+#post h6 {
+    color: #999999;
+    font-size: 14px;
+}
+
+#comments {
+    margin-left: 20vw;
+    margin-right: 20vw;
+    border-right: 2px solid #DCDCDC;
+    border-left: 2px solid #DCDCDC;
+    font-weight: normal;
+    height: 100vh;
+    padding: 5px;
+}
+
+#comments a.comment_button {
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+#comments a:hover.comment_button {
+    background-color: #ddd;
+}
+
+#comments table {
+    width: 100%;
+    word-break: break-word;
+    background-color: #FFFAFA;
+    border-radius: 10px;
+    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#comments tr:first-child td:first-child {
+    width: 38px;
+    padding-right: 5px;
+}
+
+#comments tr:first-child td:nth-child(2) {
+    text-align: left;
+    padding-left: 10px;
+
+}
+#comments tr:last-child td:first-child {
+    width: 38px;
+    height: 20px;
+}
+#comments tr:last-child td:nth-child(2) {
+    padding-left: 15px;
+    position: absolute;
+    white-space: nowrap;
+    width: 100px;
+    text-align: left;
+}
+#comments tr:last-child td:last-child {
+    text-align: left;
+    position: absolute;
+    left: 34vw
+}
+
+#comments a.answer_button {
+    font-size: 20px;
+    position: relative;
+    top: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 20px;
+    background-color: #FFFAFA;
+}
+
+#comments a:hover.answer_button {
+    background-color: #ddd;
 }
