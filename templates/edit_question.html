@@ -4,17 +4,25 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+    <div id="header">
     <a href="/">AskMate</a>
 {#    <a href="/">Back to the forum</a>#}
     <a href="/question/{{ question["id"] }}">Back to the question</a>
+    </div>
+    <div id="form">
+    <div id="backbox_editq">
+    <div class="col-75">
     <h1>Edit a question:</h1><br>
     <form action="/question/{{ question_id }}/edit" method="POST" enctype="multipart/form-data">
-        <strong><label for="title">Title:</label><br></strong>
+        <h4>Title:</h4><br>
         <input type="text" id="title" name="title" value="{{ question["title"] }}"><br><br>
-        <strong><label for="message">Question:</label><br></strong>
+        <h4>Question:</h4><br>
         <textarea rows="10" cols="60" id="message" name="message">{{ question["message"] }}</textarea><br><br>
         <label for="image">Add image:</label><br><br>
         <input type="file" id="image" name="image"><br><br>
-        <button>Edit</button>
+        <input type="submit" value="Submit">
     </form>
+    </div>
+    </div>
+    </div>
 {% endblock %}

@@ -89,6 +89,7 @@ a:hover {
 }
 
 /* END OF MAIN PAGE */
+/* START OF POST PAGE*/
 
 #post      {
     margin-left: 20vw;
@@ -224,4 +225,141 @@ a:hover {
 
 #comments a:hover.answer_button {
     background-color: #ddd;
+}
+
+/* END OF POST PAGE*/
+
+#form {
+    margin-left: 20vw;
+    margin-right: 20vw;
+    border-right: 2px solid #DCDCDC;
+    border-left: 2px solid #DCDCDC;
+    font-weight: normal;
+    padding: 5px;
+    height: 95vh;
+}
+
+#backbox_askq {
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    width: 83%;
+    height: 460px;
+    background-color: #FFFAFA;
+}
+
+#backbox_editq {
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    width: 83%;
+    height: 580px;
+    background-color: #FFFAFA;
+}
+
+#backbox_adda {
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    width: 83%;
+    height: 470px;
+    background-color: #FFFAFA;
+}
+
+#backbox_edita {
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    width: 83%;
+    height: 470px;
+    background-color: #FFFAFA;
+}
+#form h1 {
+    font-size: 1.7em;
+    font-weight: bold;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#form h1.center {
+    font-size: 1.4em;
+    width: 550px;
+}
+#form input[type=text], select, textarea {
+  width: 50%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+#form input[type=submit] {
+  left: 10px;
+  position: relative;
+  top: 35px;
+  font-size: 1.35em;
+  background-color: #696969;
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#form input[type=submit]:hover {
+  background-color: #808080;
+}
+
+#form input[type=text] {
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    width: 75%;
+    padding: 12px 20px;
+}
+
+#form textarea {
+  width: 75%;
+  height: 200px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+#form input[type=file] {
+   width: 0px;
+   height: 0px;
+   opacity: 0;
+   overflow: hidden;
+   position: absolute;
+   z-index: -1;
+}
+#form label {
+  position: relative;
+  top: 10px;
+  left: 10px;
+  background-color: #696969;
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#form label:hover {
+  background-color: #808080;
+}
+
+.col-75 {
+  float: right;
+  width: 80%;
+  margin-top: 6px;
 }
