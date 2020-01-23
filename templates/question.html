@@ -10,26 +10,51 @@
         <a href="/">Back to the forum</a>
     </div>
     <div id="post">
-    <a href="/question/{{ question_id }}/{{ "question" }}/vote_up" class="vote" ><img src="/static/voteup.png" alt="upvote" width=20></a>
-    <b>
-          {% if question["vote_number"] > 1000 %}
-              {% set proc_err = question["vote_number"] / 1000 %}
-              {{ proc_err|int }}k
-          {% elif question["vote_number"] < -1000 %}
-              {% set proc_err = question["vote_number"] / 1000 %}
-              {{ proc_err|int }}k
-          {% else %}
-              {{ question["vote_number"] }}
-          {% endif %}
-    </b>
-    <a href="/question/{{ question_id }}/{{ "question" }}/vote_down" class="vote" ><img src="/static/votedown.png" alt="downvote" width=20></a>
-    <h2>{{ question["title"] }}</h2>
-    <p>{{ question["message"] }}</p>
+    <table>
+        <tr>
+            <td colspan="3">
+                <h2>{{ question["title"] }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/question/{{ question_id }}/vote_up" class="vote" ><img src="/static/voteup.png" alt="upvote" width=20></a>
+                <h7>
+                  {% if question["vote_number"] > 1000 %}
+                      {% set proc_err = question["vote_number"] / 1000 %}
+                      {{ proc_err|int }}k
+                  {% elif question["vote_number"] < -1000 %}
+                      {% set proc_err = question["vote_number"] / 1000 %}
+                      {{ proc_err|int }}k
+                  {% else %}
+                    {{ question["vote_number"] }}
+                  {% endif %}
+                </h7>
+                <a href="/question/{{ question_id }}/vote_down" class="vote" ><img src="/static/votedown.png" alt="downvote" width=20></a>
+            </td>
+            <td colspan="2">
+                <p>{{ question["message"] }}</p>
+            </td>
+        </tr>
     {% if question["image"] != "" %}
-        <img src=/{{ question["image"] }} alt="image" width="200"><br>
+        <tr>
+            <td colspan="3">
+                <img src={{ question["image"] }} alt="image" width="200">
+            </td>
+        </tr>
     {% endif %}
-    <a href="/question/{{ question_id }}/edit">Edit question</a>
-    <a href="/question/{{ question_id }}/delete">Delete question</a>
+        <tr>
+            <td>
+                <a href="/question/{{ question_id }}/edit">Edit question</a>
+            </td>
+            <td>
+                <a href="/question/{{ question_id }}/delete">Delete question</a>
+            </td>
+            <td>
+                <h8>Posted on {{ question['submission_time'] }}</h8>
+            </td>
+        </tr>
+    </table>
     <h1>Answer:</h1>
     {% for answer in answers %}
             {% if answer["question_id"] == question_id %}
