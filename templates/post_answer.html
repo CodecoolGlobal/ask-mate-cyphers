@@ -4,14 +4,24 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+    <div id="header">
     <a href="/">AskMate</a>
     <a href="/">Back to the forum</a>
-    <h1>{{ question["title"] }}</h1>
+    <a href="/question/{{ question["id"] }}">Back to the question</a>
+    </div>
+    <div id="form">
+    <div id="backbox_adda">
+    <div class="col-75">
+    <h1 class="center">{{ question["title"] }}</h1>
     <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
-        <label for="message">Answer:</label><br>
-        <textarea rows="5" cols="50" id="message" name="message"></textarea><br><br>
+        <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..."></textarea><br><br>
         <label for="image">Add image:</label><br><br>
         <input type="file" id="image" name="image"><br><br>
-        <button>Add</button>
+        <div class="add_answer_submit">
+        <input type="submit" value="Comment" class="add_answer_submit">
+        </div>
     </form>
+    </div>
+    </div>
+    </div>
 {% endblock %}
