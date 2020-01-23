@@ -69,7 +69,6 @@ def get_all_answers():
 
 
 def get_row_for_id(id_num, file):
-    print(file)
     return util.get_data_for_id(id_num, file)
 
 
