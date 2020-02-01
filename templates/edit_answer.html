@@ -5,21 +5,17 @@
 {% endblock %}
 {% block content %}
     <div id="header">
-    <a href="/">AskMate</a>
-{#    <a href="/">Back to the forum</a>#}
-    <a href="/question/{{ answer["question_id"] }}">Back to the question</a>
+        <a href="/" class="logo">AskMate</a>
+        <a href="/" class="menu">Back to the forum</a>
+        <a href="/question/{{ answer["question_id"] }}" class="menu">Back to the question</a>
     </div>
     <div id="form">
-    <div id="backbox_edita">
-    <div class="col-75">
-    <h1>Edit your answer:</h1><br>
-    <form action="/answer/{{ answer_id }}/edit" method="POST" enctype="multipart/form-data">
-        <textarea rows="10" cols="60" id="message" name="message">{{ answer["message"] }}</textarea><br><br>
-        <label for="image">Add image:</label><br><br>
-        <input type="file" id="image" name="image" value={{ answer["image"] }}><br><br>
-        <input type="submit" value="Submit changes">
-    </form>
-    </div>
-    </div>
+        <h1>Edit your answer:</h1>
+        <form action="/answer/{{ answer_id }}/edit" method="POST" enctype="multipart/form-data">
+            <textarea rows="10" cols="60" id="message" name="message">{{ answer["message"] }}</textarea><br>
+            <label for="image">Add image:</label>
+            <input type="file" id="image" name="image" value={{ answer["image"] }}>
+            <input type="submit" value="Submit changes">
+        </form>
     </div>
 {% endblock %}

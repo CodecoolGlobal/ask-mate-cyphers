@@ -5,64 +5,75 @@
 {% endblock %}
 {% block content %}
     <div id="header">
-        <a href="/">AskMate</a>
-        <a href="/question/{{ question_id }}">To the top</a>
-{#        <a href="/">Back to the forum</a>#}
+        <a href="/" class="logo">AskMate</a>
+        <a href="/question/{{ question_id }}" class="menu">To the top</a>
+        <a href="/" class="menu">Back to the forum</a>
     </div>
-    <div id="post">
-    <table>
-        <tr>
-            <td colspan="3">
-                <h2>{{ question["title"] }}</h2>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="/question/{{ question_id }}/{{ "question" }}/vote_up" class="vote" ><img src="/static/voteup.png" alt="upvote" width=20></a>
-                <h5>
-                  {% if question["vote_number"] > 1000 %}
-                      {% set proc_err = question["vote_number"] / 1000 %}
-                      {{ proc_err|int }}k
-                  {% elif question["vote_number"] < -1000 %}
-                      {% set proc_err = question["vote_number"] / 1000 %}
-                      {{ proc_err|int }}k
-                  {% else %}
-                    {{ question["vote_number"] }}
-                  {% endif %}
-                </h5>
-                <a href="/question/{{ question_id }}/{{ "question" }}/vote_down" class="vote" ><img src="/static/votedown.png" alt="downvote" width=20></a>
-            </td>
-            <td colspan="2">
-                <p>{{ question["message"] }}</p>
-            </td>
-        </tr>
-    {% if question["image"] != "" %}
-        <tr>
-            <td colspan="3">
-                <img src=/{{ question["image"] }} alt="image" width="200">
-            </td>
-        </tr>
-    {% endif %}
-        <tr>
-            <td>
-                <a href="/question/{{ question_id }}/edit" class="page_button">Edit question</a>
-            </td>
-            <td>
-                <a href="/question/{{ question_id }}/delete" class="page_button">Delete question</a>
-            </td>
-            <td>
-                <h6>Posted on {{ question['submission_time'] }}</h6>
-            </td>
-        </tr>
-    </table>
-    <h2>Comments:</h2>
+    <div id="question_page">
+        <table>
+            <tr>
+                <td rowspan="3">
+                    <button><a onclick="event.stopPropagation()"
+                               href="/question/{{ question["id"] }}/list/vote_up"><img
+                               src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                    {% if question["vote_number"] > 1000 %}
+                        {% set proc_err = question["vote_number"] / 1000 %}
+                        {{ proc_err|int }}k
+                    {% elif question["vote_number"] < -1000 %}
+                        {% set proc_err = question["vote_number"] / 1000 %}
+                        {{ proc_err|int }}k
+                    {% else %}
+                        {{ question["vote_number"] }}
+                    {% endif %}
+                    <button><a onclick="event.stopPropagation()"
+                               href="/question/{{ question["id"] }}/list/vote_down"><img
+                               src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                </td>
+                <td>
+                    <p class="light">Viewed {{ question['view_number'] }} times</p>
+                </td>
+                <td>
+                    <p class="light">Posted on {{ question['submission_time'] }}</p>
+                </td>
+            </tr>
+            <tr>
+                 <td colspan="2">{{ question['title'] }}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {% if question["message"]|length > 500 %}
+                        {{ question["message"][:500] }}...
+                    {% else %}
+                        {{ question['message'] }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% if question["image"] != "" %}
+                <tr>
+                    <td colspan="3">
+                        <img src=/{{ question["image"] }} alt="image">
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td colspan="2">
+                    <a href="/question/{{ question_id }}/edit" class="edit_button">Edit question</a>
+                </td>
+                <td>
+                    <a href="/question/{{ question_id }}/delete" class="delete_button">Delete question</a>
+                </td>
+            </tr>
+        </table>
+        <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
+    </div>
     </div>
     <div id="comments">
-    {% for answer in answers %}
+        <h2>Comments:</h2>
+        {% for answer in answers %}
             {% if answer["question_id"] == question_id %}
                 <table>
                     <tr>
-                        <td>
+                        <td rowspan="2">
                             <a href="/answer/{{ answer["id"] }}/vote_up"><img src="/static/voteup.png", width="15"></a>
                             <h5>{{ answer["vote_number"] }}</h5>
                             <a href="/answer/{{ answer["id"] }}/vote_down"><img src="/static/votedown.png", width="15"></a>
@@ -77,18 +88,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
                         <td>
-                        <a href="/answer/{{ answer["id"] }}/edit" class="comment_button">Edit answer</a>
+                            <a href="/answer/{{ answer["id"] }}/edit" class="answer_button">Edit answer</a>
                         </td>
                         <td>
-                        <a href="/answer/{{ answer["id"] }}/delete" class="comment_button">Delete answer</a>
+                            <a href="/answer/{{ answer["id"] }}/delete" class="answer_button">Delete answer</a>
                         </td>
                     </tr>
                 </table>
                 <br>
             {% endif %}
-    {% endfor %}
-    <a href="/question/{{ question_id }}/new-answer" class="answer_button">Add answer</a>
+        {% endfor %}
     </div>
 {% endblock %}

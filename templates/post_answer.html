@@ -5,22 +5,16 @@
 {% endblock %}
 {% block content %}
     <div id="header">
-    <a href="/">AskMate</a>
-    <a href="/question{{ question_id }}">Back to the question</a>
+        <a href="/" class="logo">AskMate</a>
+        <a href="/question/{{ question_id }}" class="menu">Back to the question</a>
     </div>
     <div id="form">
-    <div id="backbox_adda">
-    <div class="col-75">
-    <h1 class="center">{{ question["title"] }}</h1>
-    <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
-        <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..."></textarea><br><br>
-        <label for="image">Add image:</label><br><br>
-        <input type="file" id="image" name="image"><br><br>
-        <div class="add_answer_submit">
-        <input type="submit" value="Comment" class="add_answer_submit">
-        </div>
-    </form>
-    </div>
-    </div>
+        <h1 class="center">{{ question["title"] }}</h1>
+        <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
+            <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..."></textarea><br>
+            <label for="image">Add image:</label>
+            <input type="file" id="image" name="image">
+            <input type="submit" value="Comment">
+        </form>
     </div>
 {% endblock %}
