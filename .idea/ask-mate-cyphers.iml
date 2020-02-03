@@ -5,8 +5,9 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 3.7 (ask-mate-cyphers)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (pycharm)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="application-process-CoryonKane" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />

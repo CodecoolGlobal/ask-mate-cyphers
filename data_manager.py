@@ -1,5 +1,5 @@
 # import os
-# import connection
+import connection
 # import time
 # import util
 #
@@ -21,45 +21,29 @@
 #             capitalized_header += ' '
 #         headers.append(capitalized_header.rstrip())
 #     return headers
-#
-#
-# def get_all_questions(order_by=DEFAULT_ORDER_BY, order_direction=DEFAULT_ORDER_DIR):
-#     if order_direction == 'desc':
-#         order_direction = True
-#     elif order_direction == 'asc':
-#         order_direction = False
-#     questions = connection.get_all_csv_data(DATA_FILE_PATH_QUESTIONS)
-#     for i in range(len(questions)):
-#         questions[i]["id"] = int(questions[i]["id"])
-#         questions[i]["submission_time"] = int(questions[i]["submission_time"])
-#         questions[i]["view_number"] = int(questions[i]["view_number"])
-#         questions[i]["vote_number"] = int(questions[i]["vote_number"])
-#     order_dict = {}
-#     counter = 0.01
-#     for question in questions:
-#         if isinstance(question.get(order_by), int):
-#             order_dict[question.get(order_by) + counter] = question
-#             counter += 0.01
-#         else:
-#             order_dict[question.get(order_by) + str(counter)] = question
-#             counter += 0.01
-#     sorted_dict = sorted(order_dict.items(), reverse=order_direction)
-#     questions = []
-#     for item in sorted_dict:
-#         questions.append(item[1])
-#     return questions
-#
-#
-# def get_all_answers():
-#     answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
-#     return answers
-#
-#
-# def get_new_order_dir(order_direction):
-#     if order_direction == 'asc':
-#         return 'desc'
-#     elif order_direction == 'desc':
-#         return 'asc'
+
+
+def get_all_questions(order_by="id"):
+    query = '''
+    SELECT *
+    FROM question
+    ORDER BY {} DESC LIMIT 5'''.format(order_by)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_all_answers():
+    query = '''
+    SELECT *
+    FROM answer
+    ORDER BY id'''
+    return connection.db_mod_with_return(query=query)
+
+
+def get_new_order_dir(order_direction):
+    if order_direction == 'asc':
+        return 'desc'
+    else:
+        return 'asc'
 #
 #
 # def get_all_answers():
@@ -91,12 +75,6 @@
 #         title = file[0]
 #         message = file[1]
 #     connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message, image)
-#
-#
-# def get_time(table):
-#     for item in table:
-#         item['submission_time'] = time.ctime(item.get('submission_time'))
-#     return table
 #
 #
 # def vote_up(id_num):
@@ -131,20 +109,3 @@
 #         message = file[0]
 #         image = None
 #     connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message, image=image)
-from typing import List, Dict
-
-from psycopg2 import sql
-from psycopg2.extras import RealDictCursor
-
-import database_common
-import random
-
-
-@database_common.connection_handler
-def get_applicants(cursor: RealDictCursor) -> list:
-    query = """
-        SELECT first_name, last_name, phone_number, email, application_code
-        FROM applicant
-        ORDER BY first_name"""
-    cursor.execute(query)
-    return cursor.fetchall()

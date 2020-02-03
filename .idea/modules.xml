@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../application-process-CoryonKane/.idea/application-process-CoryonKane.iml" filepath="$PROJECT_DIR$/../application-process-CoryonKane/.idea/application-process-CoryonKane.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ask-mate-cyphers.iml" filepath="$PROJECT_DIR$/.idea/ask-mate-cyphers.iml" />
     </modules>
   </component>
