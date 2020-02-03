@@ -4,62 +4,71 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <a href="/">AskMate</a>
-        <a href="/">Questions</a>
-        <a href="/add-question">New question</a>
-    </div>
     <div id="main_page">
-        <table>
-            <tr>
-                {% for header in headers %}
-                    {% if header != headers[0] %}
-                        <th>
-                            <a href="/list?order_by={{ raw_headers[headers.index(header)] }}&order_direction={{ new_order_dir }}">{{ header }}</a>
-                        </th>
-                    {% endif %}
-                {% endfor %}
-            </tr>
+        <div id="header">
+            <a href="/" class="logo">AskMate</a>
+            <a href="/" class="menu">Questions</a>
+            <a href="/add-question" class="menu">New question</a>
+        </div>
+        <div class="dropdown">
+            <span class="dropdown-button">Sort by</span>
+            <div class="dropdown-content">
+                <a href="/list?order_by=title&order_direction={{ new_order_dir }}" class="dropdown-link">Title</a>
+                <a href="/list?order_by=message&order_direction={{ new_order_dir }}" class="dropdown-link">Message</a>
+                <a href="/list?order_by=view_number&order_direction={{ new_order_dir }}" class="dropdown-link">View Number</a>
+                <a href="/list?order_by=vote_number&order_direction={{ new_order_dir }}" class="dropdown-link">Vote Number</a>
+                <a href="/list?order_by=submission_time&order_direction={{ new_order_dir }}" class="dropdown-link">Most Recent</a>
+            </div>
+        </div>
+        <div id="main_page_list">
             {% for question in questions %}
-                <tr class="pointer" onclick="document.location = '/question/{{ question['id'] }}'; ">
-                    {% for header in question %}
-                        {% if header != "id" %}
-                            {% if header == 'title' %}
-                                <td>{{ question[header] }}</td>
-                            {% elif header == 'image' and question["image"] != "" %}
-                                <td><img src=/{{ question["image"] }} alt="image"></td>
-                            {% elif header == "vote_number" %}
-                                <td>
-                                    <button><a onclick="event.stopPropagation()"
-                                               href="/question/{{ question["id"] }}/list/vote_up"><img
-                                            src="/static/voteup.png" alt="Upvote" width="15"></a></button>
-                                    <b>
-                                        {% if question["vote_number"] > 1000 %}
-                                            {% set proc_err = question["vote_number"] / 1000 %}
-                                            {{ proc_err|int }}k
-                                        {% elif question["vote_number"] < -1000 %}
-                                            {% set proc_err = question["vote_number"] / 1000 %}
-                                            {{ proc_err|int }}k
-                                        {% else %}
-                                            {{ question["vote_number"] }}
-                                        {% endif %}
-                                    </b>
-                                    <button><a onclick="event.stopPropagation()"
-                                               href="/question/{{ question["id"] }}/list/vote_down"><img
-                                            src="/static/votedown.png" alt="Downvote" width="15"></a></button>
-                                </td>
-                            {% elif question["message"]|length > 100 and header == "message" %}
-                                <td>
-                                    {{ question["message"][:100] }}...
-                                </td>
+                <table class="pointer" onclick="document.location = '/question/{{ question['id'] }}'; ">
+                    <tr>
+                        <td rowspan="3">
+                            <button><a onclick="event.stopPropagation()"
+                                       href="/question/{{ question["id"] }}/list/vote_up"><img
+                                    src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                            {% if question["vote_number"] > 1000 %}
+                                {% set proc_err = question["vote_number"] / 1000 %}
+                                {{ proc_err|int }}k
+                            {% elif question["vote_number"] < -1000 %}
+                                {% set proc_err = question["vote_number"] / 1000 %}
+                                {{ proc_err|int }}k
                             {% else %}
-                                <td>{{ question[header] }}</td>
+                                {{ question["vote_number"] }}
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </tr>
+                            <button><a onclick="event.stopPropagation()"
+                                       href="/question/{{ question["id"] }}/list/vote_down"><img
+                                    src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                        </td>
+                        <td>
+                            <p class="light">Viewed {{ question['view_number'] }} times</p>
+                        </td>
+                        <td>
+                            <p class="light">Posted on {{ question['submission_time'] }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                         <td colspan="2">{{ question['title'] }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% if question["message"]|length > 500 %}
+                                {{ question["message"][:500] }}...
+                            {% else %}
+                                {{ question['message'] }}
+                            {% endif %}
+                         </td>
+                    </tr>
+                    {% if question["image"] != "" %}
+                        <tr>
+                            <td colspan="3">
+                                <img src=/{{ question["image"] }} alt="image">
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
             {% endfor %}
-        </table>
-
+        </div>
     </div>
 {% endblock %}
