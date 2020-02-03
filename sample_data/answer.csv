@@ -1,5 +1,5 @@
 id,submission_time,vote_number,question_id,message,image
-1,1493398154,4,1,You need to use brackets: my_list = [],
+1,1493398154,5,1,You need to use brackets: my_list = [],
 2,1493088154,36,2,Look it up in the Python docs,
 3,1579769048,0,6,,
 4,1579780263,1,3,"Q&A software is online software that attempts to answer questions asked by users (Q&A stands for ""question and answer""). Q&A software is frequently integrated by large and specialist corporations and tends to be implemented as a community that allows users in similar fields to discuss questions and provide answers to common and specialist questions.",static/QA770-770x497.jpg
@@ -15,3 +15,4 @@ It can have any number of items and they may be of different types (integer, flo
 12,1579795265,0,9,asdasd,
 15,1579803208,2,10,test,
 16,1579803225,0,10,test,
+17,1580728070,0,4,iosdhlnf,static/Python-List-Comprehension.png
