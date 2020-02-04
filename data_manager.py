@@ -1,6 +1,6 @@
 # import os
 import connection
-# import time
+from datetime import datetime
 # import util
 #
 # DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
@@ -11,7 +11,7 @@ import connection
 # DEFAULT_ORDER_DIR = 'desc'
 
 
-def get_all_questions_with_limit(order_by, desc):
+def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
     SELECT *
     FROM question
@@ -19,7 +19,7 @@ def get_all_questions_with_limit(order_by, desc):
     return connection.db_mod_with_return(query=query)
 
 
-def get_all_questions_without_limit(order_by, desc):
+def get_all_questions_without_limit(order_by='id', desc='DESC'):
     query = '''
         SELECT *
         FROM question
@@ -58,12 +58,21 @@ def vote(table, id_num, num, column):
     SET {} = {} + {}
     WHERE id={}'''.format(table, column, column, num, id_num)
     connection.db_mod_without_return(query=query)
-#
-#
-# def add_question(file):
-#     connection.create_row(DATA_FILE_PATH_QUESTIONS, HEADER_DATA, file)
-#
-#
+
+
+def add_question(file):
+    try:
+        title, message, image = file
+    except ValueError:
+        image = None
+        title = file[0]
+        message = file[1]
+    query = '''
+    INSERT INTO question(submission_time ,view_number, vote_number, title, message, image)
+    VALUES (current_timestamp , 0, 0, '{}', '{}', '{}')'''.format(title, message, image)
+    connection.db_mod_without_return(query=query)
+
+
 # def add_answer(file, id_num):
 #     connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
 #
