@@ -1,5 +1,6 @@
 import data_manager
 import util
+import os
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -75,20 +76,19 @@ def route_question(question_id):
 #     return redirect("/")
 #
 #
-# @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
-# def route_question_edit(question_id):
-#     if request.method == "GET":
-#         questions = data_manager.get_all_questions()
-#         question = data_manager.get_row_for_id(int(question_id), questions)
-#         return render_template("edit_question.html", question=question, question_id=question_id)
-#     if request.method == "POST":
-#         file = [request.form[item] for item in request.form]
-#         image = request.files["image"]
-#         if image.filename != "":
-#             image.save(os.path.join("static", image.filename))
-#             file.append(f"static/{image.filename}")
-#         data_manager.edit_question(file, int(question_id))
-#         return redirect(f"/question/{question_id}")
+@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
+def route_question_edit(question_id):
+    if request.method == "GET":
+        question = data_manager.get_question(int(question_id))
+        return render_template("edit_question.html", question=question, question_id=question_id)
+    if request.method == "POST":
+        file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
+        data_manager.edit_question(file, int(question_id))
+        return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/<route>/vote_up")

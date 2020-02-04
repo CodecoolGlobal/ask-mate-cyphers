@@ -68,15 +68,19 @@ def vote(table, id_num, num, column):
 #     connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
 #
 #
-# def edit_question(file, id_num):
-#     try:
-#         title, message, image = file
-#     except ValueError:
-#         image = None
-#         title = file[0]
-#         message = file[1]
-#     connection.edit_row(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, title, message, image)
-#
+def edit_question(file, id_num):
+    try:
+        title, message, image = file
+    except ValueError:
+        image = None
+        title = file[0]
+        message = file[1]
+    query = '''
+        UPDATE question
+        SET title = '{}', message = '{}', image = '{}'
+        WHERE id = {}'''.format(title, message, image, id_num)
+    return connection.db_mod_without_return(query=query)
+
 #
 # def vote_up(id_num):
 #     connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", 1)
