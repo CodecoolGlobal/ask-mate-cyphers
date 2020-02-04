@@ -9,7 +9,7 @@
         <a href="/question/{{ question_id }}" class="menu">Back to the question</a>
     </div>
     <div id="form">
-        <h1 class="center">{{ question["title"] }}</h1>
+        <h1 class="center">{{ question[0]["title"] }}</h1>
         <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
             <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..."></textarea><br>
             <label for="image">Add image:</label>

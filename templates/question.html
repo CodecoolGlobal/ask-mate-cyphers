@@ -46,7 +46,7 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if question.image != "" %}
+            {% if question.image != 'None' %}
                 <tr>
                     <td colspan="2">
                         <img src=/{{ question.image }} alt="image">
@@ -79,7 +79,7 @@
                             <p>{{ answer.message }}</p><br>
                         </td>
                         <td>
-                            {% if answer.image != "" %}
+                            {% if answer.image != 'None' %}
                                 <img src=/{{ answer.image }} alt="image" width="200"><br><br>
                             {% endif %}
                         </td>
