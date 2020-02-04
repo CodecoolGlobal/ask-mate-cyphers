@@ -39,8 +39,7 @@ def get_one_answer(id_num):
     query = '''
     SELECT *
     FROM answer
-    WHERE id = {}
-    ORDER BY id'''.format(id_num)
+    WHERE id = {}'''.format(id_num)
     return connection.db_mod_with_return(query=query)
 
 
@@ -99,14 +98,14 @@ def edit_question(file, id_num):
     return connection.db_mod_without_return(query=query)
 
 
-def delete_question(id_num):
+def delete(table, id_num):
     query = '''
-    DELETE FROM question
-    WHERE id = {}'''.format(id_num)
+    DELETE FROM {}
+    WHERE id = {}'''.format(table, id_num)
     return connection.db_mod_without_return(query=query)
 
 
-def delete_answer(id_num):
+def delete_answer_by_question_id(id_num):
     query = '''
     DELETE FROM answer
     WHERE question_id = {}'''.format(id_num)

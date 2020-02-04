@@ -71,8 +71,8 @@ def route_new_answer(question_id):
 
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
-    data_manager.delete_question(question_id)
-    data_manager.delete_answer(question_id)
+    data_manager.delete_answer_by_question_id(int(question_id))
+    data_manager.delete('question', int(question_id))
     return redirect("/")
 
 
@@ -101,13 +101,13 @@ def route_question_vote_up(question_id, route):
 def route_question_vote_down(question_id, route):
     data_manager.vote("question", int(question_id), -1, "vote_number")
     return redirect(f"/question/{question_id}/{route}")
-#
-#
-# @app.route("/answer/<answer_id>/delete")
-# def route_answer_delete(answer_id):
-#     answer = data_manager.get_row_for_id(answer_id, data_manager.get_all_answers())
-#     data_manager.delete_answer(answer_id)
-#     return redirect(f"/question/{answer['question_id']}")
+
+
+@app.route("/answer/<answer_id>/delete")
+def route_answer_delete(answer_id):
+    answer = data_manager.get_one_answer(int(answer_id))
+    data_manager.delete('answer', int(answer_id))
+    return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_up")
