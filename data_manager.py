@@ -11,7 +11,7 @@ DEFAULT_ORDER_BY = 'id'
 DEFAULT_ORDER_DIR = 'desc'
 
 
-def get_all_questions(order_by="id", desc="DESC"):
+def get_all_questions(order_by, desc):
     if order_by is None:
         order_by = "id"
     if desc is None:
