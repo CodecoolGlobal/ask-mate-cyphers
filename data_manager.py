@@ -7,27 +7,19 @@ import connection
 # DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
 # HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
 # HEADER_ANSWERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-# DEFAULT_ORDER_BY = 'id'
-# DEFAULT_ORDER_DIR = 'desc'
-#
-#
-# def get_headers():
-#     headers = []
-#     for header in HEADER_DATA:
-#         capitalized_header = ''
-#         header_list = list(header.split('_'))
-#         for word in header_list:
-#             capitalized_header += word.capitalize()
-#             capitalized_header += ' '
-#         headers.append(capitalized_header.rstrip())
-#     return headers
+DEFAULT_ORDER_BY = 'id'
+DEFAULT_ORDER_DIR = 'desc'
 
 
-def get_all_questions(order_by="id"):
+def get_all_questions(order_by="id", desc="DESC"):
+    if order_by is None:
+        order_by = "id"
+    if desc is None:
+        desc = "DESC"
     query = '''
     SELECT *
     FROM question
-    ORDER BY {} DESC LIMIT 5'''.format(order_by)
+    ORDER BY {} {} LIMIT 5'''.format(order_by, desc)
     return connection.db_mod_with_return(query=query)
 
 
