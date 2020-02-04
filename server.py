@@ -122,24 +122,22 @@ def route_answer_vote_down(answer_id):
     answer = data_manager.get_one_answers(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
-#
-#
-# @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
-# def route_answer_edit(answer_id):
-#     if request.method == "GET":
-#         answers = data_manager.get_all_answers()
-#         answer = data_manager.get_row_for_id(answer_id, answers)
-#         return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
-#     if request.method == "POST":
-#         file = [request.form[item] for item in request.form]
-#         image = request.files["image"]
-#         if image.filename != "":
-#             image.save(os.path.join("static", image.filename))
-#             file.append(f"static/{image.filename}")
-#         data_manager.edit_answer(file, int(answer_id))
-#         answers = data_manager.get_all_answers()
-#         answer = data_manager.get_row_for_id(answer_id, answers)
-#         return redirect(f"/question/{answer['question_id']}")
+
+
+@app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
+def route_answer_edit(answer_id):
+    if request.method == "GET":
+        answer = data_manager.get_one_answer(answer_id)
+        return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
+    if request.method == "POST":
+        file = [request.form[item] for item in request.form]
+        image = request.files["image"]
+        if image.filename != "":
+            image.save(os.path.join("static", image.filename))
+            file.append(f"static/{image.filename}")
+        data_manager.edit_answer(file, int(answer_id))
+        answer = data_manager.get_one_answer(answer_id)
+        return redirect(f"/question/{answer[0]['question_id']}")
 
 
 if __name__ == '__main__':

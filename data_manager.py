@@ -35,7 +35,7 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
-def get_one_answers(id_num):
+def get_one_answer(id_num):
     query = '''
     SELECT *
     FROM answer
@@ -105,12 +105,16 @@ def edit_question(file, id_num):
 #
 # def answer_vote_down(id_num):
 #     connection.numbers_modify(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, "vote_number", -1)
-#
-#
-# def edit_answer(file, id_num):
-#     try:
-#         message, image = file
-#     except ValueError:
-#         message = file[0]
-#         image = None
-#     connection.edit_row(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, message=message, image=image)
+
+
+def edit_answer(file, id_num):
+    try:
+        message, image = file
+    except ValueError:
+        message = file[0]
+        image = None
+    query = '''
+        UPDATE answer
+        SET message = '{}', image = '{}'
+        WHERE id = {}'''.format(message, image, id_num)
+    return connection.db_mod_without_return(query=query)
