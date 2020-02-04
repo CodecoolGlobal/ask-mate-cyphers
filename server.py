@@ -99,7 +99,7 @@ def route_question_vote_up(question_id, route):
 
 @app.route("/question/<question_id>/<route>/vote_down")
 def route_question_vote_down(question_id, route):
-    data_manager.vote("question",int(question_id), -1, "vote_number")
+    data_manager.vote("question", int(question_id), -1, "vote_number")
     return redirect(f"/question/{question_id}/{route}")
 #
 #
@@ -112,16 +112,16 @@ def route_question_vote_down(question_id, route):
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    answer = data_manager.get_all_answers()
+    answer = data_manager.get_one_answers(int(answer_id))
     data_manager.vote("answer", int(answer_id), 1, "vote_number")
-    return redirect(f"/question/{answer.question_id}")
+    return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    answer = data_manager.get_all_answers()
+    answer = data_manager.get_one_answers(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
-    return redirect(f"/question/{answer['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}")
 #
 #
 # @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])

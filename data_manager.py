@@ -35,6 +35,15 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
+def get_one_answers(id_num):
+    query = '''
+    SELECT *
+    FROM answer
+    WHERE id = {}
+    ORDER BY id'''.format(id_num)
+    return connection.db_mod_with_return(query=query)
+
+
 def get_question(id_num):
     query = '''
     SELECT *
