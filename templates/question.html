@@ -63,9 +63,35 @@
             </tr>
         </table>
         <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
+        <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
+    </div>
+    <div id="question_page">
+        <h2>Comments:</h2>
+        {% for comment in question_comment %}
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <p class="light">Posted on {{ comment.submission_time }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>{{ comment.message }}</p><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/comment/{{ comment.id }}/edit" class="answer_button">Edit comment</a>
+                    </td>
+                    <td>
+                        <a href="/comment/{{ comment.id }}/delete" class="answer_button">Delete comment</a>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
     </div>
     <div id="comments">
-        <h2>Comments:</h2>
+        <h2>Answers:</h2>
         {% for answer in answers %}
             {% if answer.question_id == question_id %}
                 <table>

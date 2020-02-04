@@ -1,14 +1,4 @@
-# import os
 import connection
-from datetime import datetime
-# import util
-#
-# DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
-# DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
-# HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-# HEADER_ANSWERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-# DEFAULT_ORDER_BY = 'id'
-# DEFAULT_ORDER_DIR = 'desc'
 
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
@@ -40,6 +30,14 @@ def get_one_answer(id_num):
     SELECT *
     FROM answer
     WHERE id = {}'''.format(id_num)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_comment(id_type, id_num):
+    query = '''
+    SELECT *
+    FROM comment
+    WHERE {} = {}'''.format(id_type, id_num)
     return connection.db_mod_with_return(query=query)
 
 
@@ -84,6 +82,13 @@ def add_answer(file, id_num):
     connection.db_mod_without_return(query=query)
 
 
+def add_question_comment(message, id_num):
+    query = '''
+    INSERT INTO comment(question_id, message, submission_time)
+    VALUES ({}, '{}', current_timestamp)'''.format(id_num, message)
+    connection.db_mod_without_return(query=query)
+
+
 def edit_question(file, id_num):
     try:
         title, message, image = file
@@ -98,6 +103,14 @@ def edit_question(file, id_num):
     return connection.db_mod_without_return(query=query)
 
 
+def edit_comment(id_num, message):
+    query = '''
+    UPDATE comment
+    SET  message = '{}'
+    WHERE id = {}'''.format(message, id_num)
+    return connection.db_mod_without_return(query=query)
+
+
 def delete(table, id_num):
     query = '''
     DELETE FROM {}
@@ -105,20 +118,11 @@ def delete(table, id_num):
     return connection.db_mod_without_return(query=query)
 
 
-def delete_answer_by_question_id(id_num):
+def delete_by_question_id(table, id_num):
     query = '''
-    DELETE FROM answer
-    WHERE question_id = {}'''.format(id_num)
+    DELETE FROM {}
+    WHERE question_id = {}'''.format(table ,id_num)
     return connection.db_mod_without_return(query=query)
-
-
-# def delete_question(id_num):
-#     connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
-#     connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, id_num)
-#
-#
-# def delete_answer(id_num):
-#     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
 
 
 def edit_answer(file, id_num):

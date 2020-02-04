@@ -34,7 +34,9 @@ def route_question(question_id):
         data_manager.vote("question", int(question_id), 1, "view_number")
     question = data_manager.get_question(int(question_id))
     answers = data_manager.get_all_answers()
-    return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers)
+    question_comment = data_manager.get_comment('question_id', int(question_id))
+    return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
+                           question_comment=question_comment)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -69,9 +71,20 @@ def route_new_answer(question_id):
     return render_template("post_answer.html", question=question, question_id=question_id)
 
 
+@app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
+def route_new_question_comment(question_id):
+    if request.method == "POST":
+        file = request.form['message']
+        data_manager.add_question_comment(file, int(question_id))
+        return redirect(f"/question/{question_id}")
+    question = data_manager.get_question(int(question_id))
+    return render_template("new_comment.html", question=question, question_id=question_id)
+
+
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
-    data_manager.delete_answer_by_question_id(int(question_id))
+    data_manager.delete_by_question_id('comment', int(question_id))
+    data_manager.delete_by_question_id('answer', int(question_id))
     data_manager.delete('question', int(question_id))
     return redirect("/")
 
@@ -108,6 +121,25 @@ def route_answer_delete(answer_id):
     answer = data_manager.get_one_answer(int(answer_id))
     data_manager.delete('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}")
+
+
+@app.route("/comment/<comment_id>/delete")
+def route_comment_delete(comment_id):
+    comment = data_manager.get_comment('id', int(comment_id))
+    data_manager.delete('comment', int(comment_id))
+    return redirect(f"/question/{comment[0]['question_id']}")
+
+
+@app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
+def route_edit_comment(comment_id):
+    if request.method == 'GET':
+        comment = data_manager.get_comment('id', int(comment_id))
+        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+    else:
+        comment = data_manager.get_comment('id', int(comment_id))
+        message = request.form['message']
+        data_manager.edit_comment(int(comment_id), message)
+        return redirect(f'/question/{comment[0]["question_id"]}')
 
 
 @app.route("/answer/<answer_id>/vote_up")
