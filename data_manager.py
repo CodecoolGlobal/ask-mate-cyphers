@@ -73,10 +73,18 @@ def add_question(file):
     connection.db_mod_without_return(query=query)
 
 
-# def add_answer(file, id_num):
-#     connection.create_row(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, file, id_num)
-#
-#
+def add_answer(file, id_num):
+    try:
+        message, image = file
+    except ValueError:
+        image = None
+        message = file[0]
+    query = '''
+    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
+    VALUES (current_timestamp, 0, {}, '{}', '{}')'''.format(id_num, message, image)
+    connection.db_mod_without_return(query=query)
+
+
 def edit_question(file, id_num):
     try:
         title, message, image = file
@@ -90,15 +98,21 @@ def edit_question(file, id_num):
         WHERE id = {}'''.format(title, message, image, id_num)
     return connection.db_mod_without_return(query=query)
 
-#
-# def vote_up(id_num):
-#     connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", 1)
-#
-#
-# def vote_down(id_num):
-#     connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "vote_number", -1)
-#
-#
+
+def delete_question(id_num):
+    query = '''
+    DELETE FROM question
+    WHERE id = {}'''.format(id_num)
+    return connection.db_mod_without_return(query=query)
+
+
+def delete_answer(id_num):
+    query = '''
+    DELETE FROM answer
+    WHERE question_id = {}'''.format(id_num)
+    return connection.db_mod_without_return(query=query)
+
+
 # def delete_question(id_num):
 #     connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
 #     connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, id_num)
@@ -106,14 +120,6 @@ def edit_question(file, id_num):
 #
 # def delete_answer(id_num):
 #     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
-#
-#
-# def answer_vote_up(id_num):
-#     connection.numbers_modify(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, "vote_number", 1)
-#
-#
-# def answer_vote_down(id_num):
-#     connection.numbers_modify(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS, "vote_number", -1)
 
 
 def edit_answer(file, id_num):
