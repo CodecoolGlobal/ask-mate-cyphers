@@ -7,19 +7,23 @@ import connection
 # DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
 # HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
 # HEADER_ANSWERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-DEFAULT_ORDER_BY = 'id'
-DEFAULT_ORDER_DIR = 'desc'
+# DEFAULT_ORDER_BY = 'id'
+# DEFAULT_ORDER_DIR = 'desc'
 
 
-def get_all_questions(order_by, desc):
-    if order_by is None:
-        order_by = "id"
-    if desc is None:
-        desc = "DESC"
+def get_all_questions_with_limit(order_by, desc):
     query = '''
     SELECT *
     FROM question
     ORDER BY {} {} LIMIT 5'''.format(order_by, desc)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_all_questions_without_limit(order_by, desc):
+    query = '''
+        SELECT *
+        FROM question
+        ORDER BY {} {} '''.format(order_by, desc)
     return connection.db_mod_with_return(query=query)
 
 
@@ -31,24 +35,20 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
-def get_new_order_dir(order_direction):
-    if order_direction == 'asc':
-        return 'desc'
-    else:
-        return 'asc'
-#
-#
-# def get_all_answers():
-#     answers = connection.get_all_csv_data(DATA_FILE_PATH_ANSWERS)
-#     return answers
-#
-#
-# def get_row_for_id(id_num, file):
-#     return util.get_data_for_id(id_num, file)
-#
-#
-# def get_view_num(id_num):
-#     connection.numbers_modify(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA, "view_number", 1)
+def get_question(id_num):
+    query = '''
+    SELECT *
+    FROM question
+    WHERE id={}'''.format(id_num)
+    return connection.db_mod_with_return(query=query)
+
+
+def vote(table, id_num, num, column):
+    query = '''
+    UPDATE {}
+    SET {} = {} + {}
+    WHERE id={}'''.format(table, column, column, num, id_num)
+    connection.db_mod_without_return(query=query)
 #
 #
 # def add_question(file):

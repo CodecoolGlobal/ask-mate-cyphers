@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}{{ question["title"] }}{% endblock %}
+{% block title %}{{ question.title }}{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
@@ -13,45 +13,43 @@
         <table>
             <tr>
                 <td rowspan="3">
-                    <button><a onclick="event.stopPropagation()"
-                               href="/question/{{ question["id"] }}/list/vote_up"><img
+                    <button><a href="/question/{{ question.id }}/question/vote_up"><img
                                src="/static/voteup.png" alt="Upvote" width="15"></a></button>
-                    {% if question["vote_number"] > 1000 %}
-                        {% set proc_err = question["vote_number"] / 1000 %}
+                    {% if question.vote_number > 1000 %}
+                        {% set proc_err = question.vote_number / 1000 %}
                         {{ proc_err|int }}k
-                    {% elif question["vote_number"] < -1000 %}
-                        {% set proc_err = question["vote_number"] / 1000 %}
+                    {% elif question.vote_number < -1000 %}
+                        {% set proc_err = question.vote_number / 1000 %}
                         {{ proc_err|int }}k
                     {% else %}
-                        {{ question["vote_number"] }}
+                        {{ question.vote_number }}
                     {% endif %}
-                    <button><a onclick="event.stopPropagation()"
-                               href="/question/{{ question["id"] }}/list/vote_down"><img
+                    <button><a href="/question/{{ question.id }}/question/vote_down"><img
                                src="/static/votedown.png" alt="Downvote" width="15"></a></button>
                 </td>
                 <td>
-                    <p class="light">Viewed {{ question['view_number'] }} times</p>
+                    <p class="light">Viewed {{ question.view_number }} times</p>
                 </td>
                 <td>
-                    <p class="light">Posted on {{ question['submission_time'] }}</p>
+                    <p class="light">Posted on {{ question.submission_time }}</p>
                 </td>
             </tr>
             <tr>
-                 <td colspan="2">{{ question['title'] }}</td>
+                 <td colspan="2">{{ question.title }}</td>
             </tr>
             <tr>
                 <td colspan="2">
-                    {% if question["message"]|length > 500 %}
-                        {{ question["message"][:500] }}...
+                    {% if question.message|length > 500 %}
+                        {{ question.message[:500] }}...
                     {% else %}
-                        {{ question['message'] }}
+                        {{ question.message }}
                     {% endif %}
                 </td>
             </tr>
-            {% if question["image"] != "" %}
+            {% if question.image != "" %}
                 <tr>
                     <td colspan="3">
-                        <img src=/{{ question["image"] }} alt="image">
+                        <img src=/{{ question.image }} alt="image">
                     </td>
                 </tr>
             {% endif %}
@@ -66,33 +64,32 @@
         </table>
         <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
     </div>
-    </div>
     <div id="comments">
         <h2>Comments:</h2>
         {% for answer in answers %}
-            {% if answer["question_id"] == question_id %}
+            {% if answer.question_id == question_id %}
                 <table>
                     <tr>
                         <td rowspan="2">
-                            <a href="/answer/{{ answer["id"] }}/vote_up"><img src="/static/voteup.png", width="15"></a>
-                            <h5>{{ answer["vote_number"] }}</h5>
-                            <a href="/answer/{{ answer["id"] }}/vote_down"><img src="/static/votedown.png", width="15"></a>
+                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
+                            <h5>{{ answer.vote_number }}</h5>
+                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
                         </td>
                         <td>
-                            <p>{{ answer["message"] }}</p><br>
+                            <p>{{ answer.message }}</p><br>
                         </td>
                         <td>
-                            {% if answer["image"] != "" %}
-                                <img src=/{{ answer["image"] }} alt="image" width="200"><br><br>
+                            {% if answer.image != "" %}
+                                <img src=/{{ answer.image }} alt="image" width="200"><br><br>
                             {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="/answer/{{ answer["id"] }}/edit" class="answer_button">Edit answer</a>
+                            <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
                         </td>
                         <td>
-                            <a href="/answer/{{ answer["id"] }}/delete" class="answer_button">Delete answer</a>
+                            <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
                         </td>
                     </tr>
                 </table>
