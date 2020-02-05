@@ -62,6 +62,10 @@
                 </td>
             </tr>
         </table>
+        {% for tag in tags %}
+             #{{ tag.name }}
+        {% endfor %}
+        <a href="/question/{{ question_id }}/new-tag">Add new tag</a>
         <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
         <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
     </div>
