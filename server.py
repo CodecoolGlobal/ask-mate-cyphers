@@ -34,7 +34,7 @@ def route_question(question_id):
         data_manager.vote("question", int(question_id), 1, "view_number")
     question = data_manager.get_question(int(question_id))
     tags = data_manager.get_tags(question_id)
-    answers = data_manager.get_answers(question_id)
+    answers = data_manager.get_answers_by_question_id(question_id)
     question_comment = data_manager.get_comment('question_id', int(question_id))
     answers_comments = data_manager.get_all_comment()
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,

@@ -17,11 +17,11 @@ def get_all_questions_without_limit(order_by='id', desc='DESC'):
     return connection.db_mod_with_return(query=query)
 
 
-def get_all_answers():
+def get_answers_by_question_id(question_id):
     query = '''
     SELECT *
     FROM answer
-    ORDER BY id'''
+    WHERE question_id = {}'''.format(question_id)
     return connection.db_mod_with_return(query=query)
 
 
