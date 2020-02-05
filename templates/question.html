@@ -97,7 +97,6 @@
     <div id="comments">
         <h2>Answers:</h2>
         {% for answer in answers %}
-            {% if answer.question_id == question_id %}
                 <table>
                     <tr>
                         <td rowspan="2">
@@ -154,7 +153,6 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
