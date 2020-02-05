@@ -1,13 +1,14 @@
 import data_manager
 import util
 import os
+import os.path
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def route_main(question_id=None, order_by="id", order_direction="asc"):
+def route_main(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -18,7 +19,7 @@ def route_main(question_id=None, order_by="id", order_direction="asc"):
 
 @app.route("/question/<question_id>/list")
 @app.route("/list", methods=['GET', 'POST'])
-def route_list(question_id=None, order_by="id", order_direction="asc"):
+def route_list(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -96,9 +97,21 @@ def route_answer_comment(answer_id):
 
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
-    data_manager.delete_by_question_id('comment', int(question_id))
-    data_manager.delete_by_question_id('answer', int(question_id))
-    data_manager.delete('question', int(question_id))
+    answers = data_manager.get_answers_by_question_id(int(question_id))
+    question = data_manager.get_question(int(question_id))
+    comments = data_manager.get_all_comment()
+    for answer in answers:
+        if os.path.exists(answer['image']):
+            os.remove(answer['image'])
+        for comment in comments:
+            if answer['id'] == comment['answer_id']:
+                data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
+    if os.path.exists(question[0]['image']):
+        os.remove(question[0]['image'])
+    data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
+    data_manager.delete_by_id('comment', 'question_id', int(question_id))
+    data_manager.delete_by_id('answer', 'question_id', int(question_id))
+    data_manager.delete_by_id('question', 'id', int(question_id))
     return redirect("/")
 
 
@@ -132,14 +145,17 @@ def route_question_vote_down(question_id, route):
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
     answer = data_manager.get_answer(int(answer_id))
-    data_manager.delete('answer', int(answer_id))
+    if os.path.exists(answer[0]['image']):
+        os.remove(answer[0]['image'])
+    data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
+    data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/comment/<comment_id>/delete")
 def route_comment_delete(comment_id):
     comment = data_manager.get_comment('id', int(comment_id))
-    data_manager.delete('comment', int(comment_id))
+    data_manager.delete_by_id('comment', 'id', int(comment_id))
     if comment[0]['question_id'] is None:
         answer = data_manager.get_answer(int(comment[0]['answer_id']))
         comment = answer
@@ -195,6 +211,18 @@ def route_answer_edit(answer_id):
         return redirect(f"/question/{answer[0]['question_id']}")
 
 
+@app.route("/search")
+def route_search():
+    search = request.args.get("search")
+    questions = data_manager.search_question(search=search)
+    answers = data_manager.search_answer(search=search)
+    questions_with_answers = []
+    for answer in answers:
+        question_list = [data_manager.get_question(answer["question_id"])[0], answer]
+        questions_with_answers.append(question_list)
+    return render_template('search.html', questions=questions, answers=questions_with_answers, new_order_dir='desc', search=search)
+
+                        
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
 def route_tag_edit(question_id):
     if request.method == "GET":

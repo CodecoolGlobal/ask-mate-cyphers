@@ -17,7 +17,7 @@
             <h4>Question:</h4>
             <textarea rows="10" cols="60" id="message" name="message">{{ question[0]['message'] }}</textarea><br>
             <label for="image">Add image:</label>
-            <input type="file" id="image" name="image">
+            <input type="file" id="image" name="image" value="{{ question[0]['image'] }}">
             <input type="submit" value="Submit">
         </form>
     </div>

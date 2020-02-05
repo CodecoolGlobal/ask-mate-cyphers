@@ -5,7 +5,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 3.7 (ask-mate-cyphers)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 virtualenv at ~/Asztal/projets/super-sprinter-3000-python-LJoel777/venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="application-process-CoryonKane" />
   </component>
