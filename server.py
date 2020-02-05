@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def route_main(question_id=None, order_by="id", order_direction="asc"):
+def route_main(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -18,7 +18,7 @@ def route_main(question_id=None, order_by="id", order_direction="asc"):
 
 @app.route("/question/<question_id>/list")
 @app.route("/list", methods=['GET', 'POST'])
-def route_list(question_id=None, order_by="id", order_direction="asc"):
+def route_list(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -195,6 +195,18 @@ def route_answer_edit(answer_id):
         return redirect(f"/question/{answer[0]['question_id']}")
 
 
+@app.route("/search")
+def route_search():
+    search = request.args.get("search")
+    questions = data_manager.search_question(search=search)
+    answers = data_manager.search_answer(search=search)
+    questions_with_answers = []
+    for answer in answers:
+        question_list = [data_manager.get_question(answer["question_id"])[0], answer]
+        questions_with_answers.append(question_list)
+    return render_template('search.html', questions=questions, answers=questions_with_answers, new_order_dir='desc', search=search)
+
+                        
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
 def route_tag_edit(question_id):
     if request.method == "GET":
