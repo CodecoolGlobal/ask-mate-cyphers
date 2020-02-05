@@ -33,8 +33,9 @@ def route_question(question_id):
     if str(request.url_rule) == "/question/<question_id>":
         data_manager.vote("question", int(question_id), 1, "view_number")
     question = data_manager.get_question(int(question_id))
-    answers = data_manager.get_all_answers()
-    return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers)
+    tags = data_manager.get_tags(question_id)
+    answers = data_manager.get_answers(question_id)
+    return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers, tags=tags)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -112,14 +113,14 @@ def route_answer_delete(answer_id):
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_one_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), 1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_one_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
@@ -138,6 +139,20 @@ def route_answer_edit(answer_id):
         data_manager.edit_answer(file, int(answer_id))
         answer = data_manager.get_one_answer(answer_id)
         return redirect(f"/question/{answer[0]['question_id']}")
+
+
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def route_tag_edit(question_id):
+    if request.method == "GET":
+        raw_tags = data_manager.get_tags(question_id)
+        tags = ['#' + str(tag['name']) for tag in raw_tags]
+        return render_template("new-tag.html", tags=tags, question_id=question_id)
+    if request.method == "POST":
+        new_tags = [request.form[item] for item in request.form]
+        new_tags = new_tags[0].split()
+        new_tags = [item.lstrip('#') for item in new_tags]
+        data_manager.modify_tags(question_id, new_tags)
+        return redirect(f"/question/{question_id}")
 
 
 if __name__ == '__main__':

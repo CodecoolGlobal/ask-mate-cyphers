@@ -35,6 +35,14 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
+def get_answers(question_id):
+    query = '''
+    SELECT *
+    FROM answer
+    WHERE question_id = {}'''.format(question_id)
+    return connection.db_mod_with_return(query=query)
+
+
 def get_one_answer(id_num):
     query = '''
     SELECT *
@@ -112,15 +120,6 @@ def delete_answer_by_question_id(id_num):
     return connection.db_mod_without_return(query=query)
 
 
-# def delete_question(id_num):
-#     connection.delete_row_by_id(DATA_FILE_PATH_QUESTIONS, id_num, HEADER_DATA)
-#     connection.delete_answers(DATA_FILE_PATH_ANSWERS, HEADER_ANSWERS, id_num)
-#
-#
-# def delete_answer(id_num):
-#     connection.delete_row_by_id(DATA_FILE_PATH_ANSWERS, id_num, HEADER_ANSWERS)
-
-
 def edit_answer(file, id_num):
     try:
         message, image = file
@@ -132,3 +131,55 @@ def edit_answer(file, id_num):
         SET message = '{}', image = '{}'
         WHERE id = {}'''.format(message, image, id_num)
     return connection.db_mod_without_return(query=query)
+
+
+def get_tags(question_id):
+    query = '''
+        SELECT tag.name
+        FROM question_tag
+        INNER JOIN tag ON question_tag.tag_id=tag.id
+        WHERE question_id = {}'''.format(question_id)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_tag_id(tag_name):
+    query = '''
+        SELECT id
+        FROM tag
+        WHERE name = '{}' '''.format(tag_name)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_all_tag_names():
+    query = '''
+        SELECT name
+        FROM tag'''
+    return connection.db_mod_with_return(query=query)
+
+
+def modify_tags(question_id, new_tags):
+    old_tags = [tag['name'] for tag in get_tags(question_id)]
+    all_tags = [tag['name'] for tag in get_all_tag_names()]
+    print(old_tags)
+    print(new_tags)
+    print(get_tag_id('sql')[0]['id'])
+    print([tag['name'] for tag in get_all_tag_names()])
+    for tag in old_tags:
+        if tag not in new_tags:
+            tag_id = get_tag_id(tag)[0]['id']
+            query = '''
+            DELETE FROM question_tag
+            WHERE question_id = '{}' AND tag_id = '{}' '''.format(question_id, tag_id)
+            return connection.db_mod_without_return(query=query)
+    for tag in new_tags:
+        if tag not in old_tags:
+            if tag not in all_tags:
+                query = '''
+                INSERT INTO tag (name)
+                VALUES ('{}')'''.format(tag)
+                connection.db_mod_without_return(query=query)
+            tag_id = get_tag_id(tag)[0]['id']
+            query = '''
+            INSERT INTO question_tag(question_id, tag_id)
+            VALUES ({}, {})'''.format(question_id, tag_id)
+            return connection.db_mod_without_return(query=query)
