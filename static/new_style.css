@@ -352,6 +352,7 @@ a:hover.dropdown-link {
 #question_page tr:nth-child(5) td:last-child {
     padding-left: 3vw;
 }
+
 a.edit_button, a.delete_button {
     text-align: center;
     display: block;
@@ -373,12 +374,21 @@ a.edit_button:hover, a.delete_button:hover {
 }
 
 a.delete_button {
-    position: relative;
 }
+
+.tags {
+    padding: 10px;
+}
+.tags a {
+    color: #f7f7f7;
+    margin-right: 5px;
+}
+
 a.button {
+    height: 1vw;
     text-align: center;
-    display: block;
-    width: 5.208vw;
+    display: inline-block;
+    width: 6vw;
     margin-top: 0.781vw;
     margin-left: 0.260vw;
     padding: 0.625vw;
@@ -394,59 +404,125 @@ a.button {
 a.button:hover {
     background-color: #4F5459;
 }
+
 #comments {
     margin-left: 20%;
     margin-right: 20%;
     border-left: 2px solid #25272b;
     border-right: 2px solid #25272b;
-    border-bottom: 2px solid #25272b;
-    border-radius: 4px;
     font-weight: 600;
     padding-left: 0.781vw;
     padding-top: 0.781vw;
 }
 
-#comments h2 {
+#comments table {
+    margin-left: 10vw;
+    max-width: 37vw;
+    min-width: 37vw;
+    background-color: #36393f;
+    padding-bottom: 0.5vw;
+    border-radius: 0.260vw;
+    border: 2px solid #25272b;
+    word-break: break-word;
+    margin-top: 0.5vw;
+}
+
+#comments tr:first-child td:first-child {
+    text-align: right;
+    padding-top: 0.260vw;
+    position: relative;
+    padding-right: 1vw;
+    font-weight: lighter;
+    color: #7B8086;
+}
+
+#comments tr:nth-child(2) td:first-child {
+    word-break: break-word;
+    padding: 0 1vw;
+    font-size: 0.65vw;
+    font-weight: normal;
+}
+
+#comments tr:nth-child(3) td:first-child {
+    text-align: right;
+    padding-left: 5vw;
+    width: 22vw;
+}
+
+#comments tr:nth-child(3) td:last-child {
+    padding-right: 2vw;
+    text-align: right;
+}
+a.comment_button {
+    padding: 0.1vw;
+    text-align: right;
+    text-decoration: none;
+    color: #f7f7f7;
+    border-radius: 4px;
+}
+
+a:hover.comment_button{
+    background-color: #4F5459;
+}
+
+#answers {
+    margin-left: 20%;
+    margin-right: 20%;
+    border-left: 2px solid #25272b;
+    border-right: 2px solid #25272b;
+    font-weight: 600;
+    padding-left: 0.781vw;
+    padding-top: 0.781vw;
+}
+
+#answers h2 {
     font-size: 1.094vw;
     margin-bottom: 1.042vw;
 }
 
-#comments table {
+#answers table {
+    max-width: 47vw;
+    min-width: 47vw;
     background-color: #36393f;
     padding-bottom: 1.042vw;
     border-radius: 0.260vw;
-    border: 1px solid #25272b;
+    border: 2px solid #25272b;
     word-break: break-word;
 }
 
-#comments img {
+#answers img {
     max-width: 10.417vw;
     max-height: 10.417vw;
 }
-#comments tr:first-child td:first-child {
-    padding-top: 0.260vw;
+#answers tr:first-child td:first-child {
+    min-width: 0.5vw;
     white-space: pre-line;
-    vertical-align: center;
     text-align: center;
-    line-height: 0.417vw;
-    width: 2.083vw;
+    padding-bottom: 3vw;
 }
 
-#comments tr:first-child td:nth-child(2) {
-    padding-top: 1.042vw;
-    width: 26.042vw;
-    font-weight: 500;
-    padding-left: 0.781vw;
-    color: #f7f7f7;
+#answers tr:first-child td:nth-child(2) {
+    text-align: right;
+    padding-top: 0.260vw;
+    position: relative;
+    padding-right: 1vw;
+    font-weight: lighter;
+    color: #7B8086;
 }
 
-#comments tr:first-child td:last-child {
+#answers tr:nth-child(2) td:nth-child(1) {
+    padding: 0.2vw;
+
+
+}
+#answers tr:nth-child(2) td:nth-child(2) {
     text-align: center;
-    width: 17vw;
-    padding-top: 1.563vw;
-    margin-right: 1.042vw;
 }
 
+
+#answers tr:nth-child(3) td:nth-child(1) {
+
+}
 a.answer_button {
     text-align: center;
     display: block;
