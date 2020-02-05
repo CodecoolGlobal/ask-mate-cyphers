@@ -123,17 +123,10 @@ def edit_comment(id_num, message):
     return connection.db_mod_without_return(query=query)
 
 
-def delete(table, id_num):
+def delete_by_id(table, id_type, id_num):
     query = '''
     DELETE FROM {}
-    WHERE id = {}'''.format(table, id_num)
-    return connection.db_mod_without_return(query=query)
-
-
-def delete_by_question_id(table, id_num):
-    query = '''
-    DELETE FROM {}
-    WHERE question_id = {}'''.format(table ,id_num)
+    WHERE {} = {}'''.format(table, id_type, id_num)
     return connection.db_mod_without_return(query=query)
 
 

@@ -96,9 +96,16 @@ def route_answer_comment(answer_id):
 
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
-    data_manager.delete_by_question_id('comment', int(question_id))
-    data_manager.delete_by_question_id('answer', int(question_id))
-    data_manager.delete('question', int(question_id))
+    answers = data_manager.get_answers_by_question_id(int(question_id))
+    comments = data_manager.get_all_comment()
+    for answer in answers:
+        for comment in comments:
+            if answer['id'] == comment['answer_id']:
+                data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
+    data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
+    data_manager.delete_by_id('comment', 'question_id', int(question_id))
+    data_manager.delete_by_id('answer', 'question_id', int(question_id))
+    data_manager.delete_by_id('question', 'id', int(question_id))
     return redirect("/")
 
 
@@ -132,14 +139,15 @@ def route_question_vote_down(question_id, route):
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
     answer = data_manager.get_answer(int(answer_id))
-    data_manager.delete('answer', int(answer_id))
+    data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
+    data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/comment/<comment_id>/delete")
 def route_comment_delete(comment_id):
     comment = data_manager.get_comment('id', int(comment_id))
-    data_manager.delete('comment', int(comment_id))
+    data_manager.delete_by_id('comment', 'id', int(comment_id))
     if comment[0]['question_id'] is None:
         answer = data_manager.get_answer(int(comment[0]['answer_id']))
         comment = answer
