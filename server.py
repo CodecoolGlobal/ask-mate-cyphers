@@ -127,7 +127,7 @@ def route_question_edit(question_id):
             image.save(os.path.join("static", image.filename))
             file.append(f"static/{image.filename}")
         data_manager.edit_question(file, int(question_id))
-        return redirect(f"/question/{question_id}")
+        return redirect(f"/question/{question_id}/question")
 
 
 @app.route("/question/<question_id>/<route>/vote_up")

@@ -103,15 +103,18 @@ def edit_question(file, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
         title, message, image = file
+        query = '''
+            UPDATE question
+            SET title = '{}', message = '{}', image = '{}', submission_time = '{}'
+            WHERE id = {}'''.format(title, message, image, sub_time, id_num)
+        return connection.db_mod_without_return(query=query)
     except ValueError:
-        image = None
-        title = file[0]
-        message = file[1]
-    query = '''
-        UPDATE question
-        SET title = '{}', message = '{}', image = '{}', submission_time = '{}'
-        WHERE id = {}'''.format(title, message, image, sub_time, id_num)
-    return connection.db_mod_without_return(query=query)
+        title, message = file
+        query = '''
+            UPDATE question
+            SET title = '{}', message = '{}', submission_time = '{}'
+            WHERE id = {}'''.format(title, message, sub_time, id_num)
+        return connection.db_mod_without_return(query=query)
 
 
 def edit_comment(id_num, message):
@@ -134,13 +137,17 @@ def edit_answer(file, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
         message, image = file
+        query = '''
+            UPDATE answer
+            SET message = '{}', image = '{}', submission_time = '{}'
+            WHERE id = {}'''.format(message, image, sub_time, id_num)
+        return connection.db_mod_without_return(query=query)
     except ValueError:
         message = file[0]
-        image = None
     query = '''
         UPDATE answer
-        SET message = '{}', image = '{}', submission_time = '{}'
-        WHERE id = {}'''.format(message, image, sub_time, id_num)
+        SET message = '{}', submission_time = '{}'
+        WHERE id = {}'''.format(message, sub_time, id_num)
     return connection.db_mod_without_return(query=query)
 
 
