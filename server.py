@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def route_main(question_id=None, order_by="id", order_direction="asc"):
+def route_main(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -18,7 +18,7 @@ def route_main(question_id=None, order_by="id", order_direction="asc"):
 
 @app.route("/question/<question_id>/list")
 @app.route("/list", methods=['GET', 'POST'])
-def route_list(question_id=None, order_by="id", order_direction="asc"):
+def route_list(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
         order_by = request.args.get('order_by')
         order_direction = request.args.get('order_direction')
@@ -144,14 +144,14 @@ def route_edit_comment(comment_id):
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_one_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), 1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_one_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
@@ -170,6 +170,18 @@ def route_answer_edit(answer_id):
         data_manager.edit_answer(file, int(answer_id))
         answer = data_manager.get_one_answer(answer_id)
         return redirect(f"/question/{answer[0]['question_id']}")
+
+
+@app.route("/search")
+def route_search():
+    search = request.args.get("search")
+    questions = data_manager.search_question(search=search)
+    answers = data_manager.search_answer(search=search)
+    questions_with_answers = []
+    for answer in answers:
+        question_list = [data_manager.get_question(answer["question_id"])[0], answer]
+        questions_with_answers.append(question_list)
+    return render_template('search.html', questions=questions, answers=questions_with_answers, new_order_dir='desc', search=search)
 
 
 if __name__ == '__main__':

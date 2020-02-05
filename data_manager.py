@@ -136,3 +136,17 @@ def edit_answer(file, id_num):
         SET message = '{}', image = '{}'
         WHERE id = {}'''.format(message, image, id_num)
     return connection.db_mod_without_return(query=query)
+
+
+def search_question(search):
+    query = '''
+    SELECT * FROM question
+    WHERE title LIKE '%{}%' OR message LIKE '%{}%' '''.format(search, search)
+    return connection.db_mod_with_return(query)
+
+
+def search_answer(search):
+    query = '''
+    SELECT * FROM answer
+    WHERE message LIKE '%{}%' '''.format(search)
+    return connection.db_mod_with_return(query)
