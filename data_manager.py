@@ -1,14 +1,4 @@
-# import os
 import connection
-from datetime import datetime
-# import util
-#
-# DATA_FILE_PATH_QUESTIONS = os.getenv('DATA_FILE_PATH_QUESTIONS') if 'DATA_FILE_PATH_QUESTIONS' in os.environ else 'sample_data/question.csv'
-# DATA_FILE_PATH_ANSWERS = os.getenv('DATA_FILE_PATH_ANSWERS') if 'DATA_FILE_PATH_ANSWERS' in os.environ else 'sample_data/answer.csv'
-# HEADER_DATA = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 	'message', 'image']
-# HEADER_ANSWERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-# DEFAULT_ORDER_BY = 'id'
-# DEFAULT_ORDER_DIR = 'desc'
 
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
@@ -35,19 +25,26 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
-def get_answers(question_id):
-    query = '''
-    SELECT *
-    FROM answer
-    WHERE question_id = {}'''.format(question_id)
-    return connection.db_mod_with_return(query=query)
-
-
-def get_one_answer(id_num):
+def get_answer(id_num):
     query = '''
     SELECT *
     FROM answer
     WHERE id = {}'''.format(id_num)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_comment(id_type, id_num):
+    query = '''
+    SELECT *
+    FROM comment
+    WHERE {} = {}'''.format(id_type, id_num)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_all_comment():
+    query = '''
+    SELECT *
+    FROM comment'''
     return connection.db_mod_with_return(query=query)
 
 
@@ -92,6 +89,13 @@ def add_answer(file, id_num):
     connection.db_mod_without_return(query=query)
 
 
+def add_comment(id_type, message, id_num):
+    query = '''
+    INSERT INTO comment({}, message, submission_time)
+    VALUES ({}, '{}', current_timestamp)'''.format(id_type, id_num, message)
+    connection.db_mod_without_return(query=query)
+
+
 def edit_question(file, id_num):
     try:
         title, message, image = file
@@ -106,6 +110,14 @@ def edit_question(file, id_num):
     return connection.db_mod_without_return(query=query)
 
 
+def edit_comment(id_num, message):
+    query = '''
+    UPDATE comment
+    SET  message = '{}'
+    WHERE id = {}'''.format(message, id_num)
+    return connection.db_mod_without_return(query=query)
+
+
 def delete(table, id_num):
     query = '''
     DELETE FROM {}
@@ -113,10 +125,10 @@ def delete(table, id_num):
     return connection.db_mod_without_return(query=query)
 
 
-def delete_answer_by_question_id(id_num):
+def delete_by_question_id(table, id_num):
     query = '''
-    DELETE FROM answer
-    WHERE question_id = {}'''.format(id_num)
+    DELETE FROM {}
+    WHERE question_id = {}'''.format(table ,id_num)
     return connection.db_mod_without_return(query=query)
 
 

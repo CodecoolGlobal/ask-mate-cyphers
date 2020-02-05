@@ -67,36 +67,94 @@
         {% endfor %}
         <a href="/question/{{ question_id }}/new-tag">Add new tag</a>
         <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
+        <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
     </div>
-    <div id="comments">
-        <h2>Comments:</h2>
-        {% for answer in answers %}
+    <div id="question_page">
+        <h2>Question comments:</h2>
+        {% for comment in question_comment %}
             <table>
                 <tr>
-                    <td rowspan="2">
-                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
-                        <h5>{{ answer.vote_number }}</h5>
-                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
+                    <td colspan="2">
+                        <p class="light">Posted on {{ comment.submission_time }}</p>
                     </td>
-                    <td>
-                        <p>{{ answer.message }}</p><br>
-                    </td>
-                    <td>
-                        {% if answer.image != 'None' %}
-                            <img src=/{{ answer.image }} alt="image" width="200"><br><br>
-                        {% endif %}
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>{{ comment.message }}</p><br>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
+                        <a href="/comment/{{ comment.id }}/edit" class="answer_button">Edit comment</a>
                     </td>
                     <td>
-                        <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
+                        <a href="/comment/{{ comment.id }}/delete" class="answer_button">Delete comment</a>
                     </td>
                 </tr>
             </table>
-            <br>
+        {% endfor %}
+    </div>
+    <div id="comments">
+        <h2>Answers:</h2>
+        {% for answer in answers %}
+            {% if answer.question_id == question_id %}
+                <table>
+                    <tr>
+                        <td rowspan="2">
+                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
+                            <h5>{{ answer.vote_number }}</h5>
+                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
+                        </td>
+                        <td>
+                            <p>{{ answer.message }}</p><br>
+                        </td>
+                        <td>
+                            {% if answer.image != 'None' %}
+                                <img src=/{{ answer.image }} alt="image" width="200"><br><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
+                        </td>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
+                        </td>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/new-comment" class="button">Add comment</a>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+            {% for comment in answers_comments %}
+                {% if comment.answer_id == answer.id %}
+                    <h2>Answer comments:</h2>
+                    <div id="question_page">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <p class="light">Posted on {{ comment.submission_time }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p>{{ comment.message }}</p><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="/comment/{{ comment.id }}/edit" class="answer_button">Edit comment</a>
+                                </td>
+                                <td>
+                                    <a href="/comment/{{ comment.id }}/delete" class="answer_button">Delete comment</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

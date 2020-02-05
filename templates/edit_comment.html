@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Comment edit{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <div id="header">
+        <a href="/" class="logo">AskMate</a>
+        {% if answer != '' %}
+            <a href="/question/{{ answer[0]['question_id'] }}" class="menu">Back to the question</a>
+        {% else %}
+            <a href="/question/{{ comment[0]['question_id'] }}" class="menu">Back to the question</a>
+        {% endif %}
+    </div>
+    <div id="form">
+        <h1>Edit comment</h1>
+        <form action="/comment/{{ comment[0]['id'] }}/edit" method="POST">
+            <textarea rows="5" cols="50" id="message" name="message">{{ comment[0]['message'] }}</textarea><br>
+            <input type="submit" value="Comment">
+        </form>
+    </div>
+{% endblock %}
