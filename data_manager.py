@@ -25,7 +25,7 @@ def get_all_answers():
     return connection.db_mod_with_return(query=query)
 
 
-def get_one_answer(id_num):
+def get_answer(id_num):
     query = '''
     SELECT *
     FROM answer
@@ -38,6 +38,13 @@ def get_comment(id_type, id_num):
     SELECT *
     FROM comment
     WHERE {} = {}'''.format(id_type, id_num)
+    return connection.db_mod_with_return(query=query)
+
+
+def get_all_comment():
+    query = '''
+    SELECT *
+    FROM comment'''
     return connection.db_mod_with_return(query=query)
 
 
@@ -82,10 +89,10 @@ def add_answer(file, id_num):
     connection.db_mod_without_return(query=query)
 
 
-def add_question_comment(message, id_num):
+def add_comment(id_type, message, id_num):
     query = '''
-    INSERT INTO comment(question_id, message, submission_time)
-    VALUES ({}, '{}', current_timestamp)'''.format(id_num, message)
+    INSERT INTO comment({}, message, submission_time)
+    VALUES ({}, '{}', current_timestamp)'''.format(id_type, id_num, message)
     connection.db_mod_without_return(query=query)
 
 

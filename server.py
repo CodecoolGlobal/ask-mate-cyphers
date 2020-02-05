@@ -35,8 +35,9 @@ def route_question(question_id):
     question = data_manager.get_question(int(question_id))
     answers = data_manager.get_all_answers()
     question_comment = data_manager.get_comment('question_id', int(question_id))
+    answers_comments = data_manager.get_all_comment()
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
-                           question_comment=question_comment)
+                           question_comment=question_comment, answers_comments=answers_comments)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -72,13 +73,24 @@ def route_new_answer(question_id):
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
-def route_new_question_comment(question_id):
+def route_question_comment(question_id):
     if request.method == "POST":
         file = request.form['message']
-        data_manager.add_question_comment(file, int(question_id))
+        data_manager.add_comment('question_id', file, int(question_id))
         return redirect(f"/question/{question_id}")
     question = data_manager.get_question(int(question_id))
-    return render_template("new_comment.html", question=question, question_id=question_id)
+    return render_template("question_comment.html", question=question, question_id=question_id)
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
+def route_answer_comment(answer_id):
+    if request.method == "POST":
+        answer = data_manager.get_answer(int(answer_id))
+        file = request.form['message']
+        data_manager.add_comment('answer_id', file, int(answer_id))
+        return redirect(f"/question/{answer[0]['question_id']}")
+    answer = data_manager.get_answer(int(answer_id))
+    return render_template("answer_comment.html", answer=answer, answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/delete")
@@ -118,7 +130,7 @@ def route_question_vote_down(question_id, route):
 
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
-    answer = data_manager.get_one_answer(int(answer_id))
+    answer = data_manager.get_answer(int(answer_id))
     data_manager.delete('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}")
 
@@ -127,6 +139,9 @@ def route_answer_delete(answer_id):
 def route_comment_delete(comment_id):
     comment = data_manager.get_comment('id', int(comment_id))
     data_manager.delete('comment', int(comment_id))
+    if comment[0]['question_id'] is None:
+        answer = data_manager.get_answer(int(comment[0]['answer_id']))
+        comment = answer
     return redirect(f"/question/{comment[0]['question_id']}")
 
 
@@ -134,24 +149,31 @@ def route_comment_delete(comment_id):
 def route_edit_comment(comment_id):
     if request.method == 'GET':
         comment = data_manager.get_comment('id', int(comment_id))
-        return render_template("edit_comment.html", comment=comment, comment_id=comment_id)
+        if comment[0]['question_id'] is None:
+            answer = data_manager.get_answer(int(comment[0]['answer_id']))
+            return render_template("edit_comment.html", comment=comment, answer=answer, comment_id=comment_id)
+        else:
+            return render_template("edit_comment.html", comment=comment, comment_id=comment_id, answer='')
     else:
         comment = data_manager.get_comment('id', int(comment_id))
         message = request.form['message']
         data_manager.edit_comment(int(comment_id), message)
+        if comment[0]['question_id'] is None:
+            answer = data_manager.get_answer(int(comment[0]['answer_id']))
+            comment = answer
         return redirect(f'/question/{comment[0]["question_id"]}')
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), 1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    answer = data_manager.get_one_answers(int(answer_id))
+    answer = data_manager.get_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
     return redirect(f"/question/{answer[0]['question_id']}")
 
@@ -159,7 +181,7 @@ def route_answer_vote_down(answer_id):
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def route_answer_edit(answer_id):
     if request.method == "GET":
-        answer = data_manager.get_one_answer(answer_id)
+        answer = data_manager.get_answer(answer_id)
         return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
@@ -168,7 +190,7 @@ def route_answer_edit(answer_id):
             image.save(os.path.join("static", image.filename))
             file.append(f"static/{image.filename}")
         data_manager.edit_answer(file, int(answer_id))
-        answer = data_manager.get_one_answer(answer_id)
+        answer = data_manager.get_answer(answer_id)
         return redirect(f"/question/{answer[0]['question_id']}")
 
 
