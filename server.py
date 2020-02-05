@@ -1,6 +1,7 @@
 import data_manager
 import util
 import os
+import os.path
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -97,11 +98,16 @@ def route_answer_comment(answer_id):
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
     answers = data_manager.get_answers_by_question_id(int(question_id))
+    question = data_manager.get_question(int(question_id))
     comments = data_manager.get_all_comment()
     for answer in answers:
+        if os.path.exists(answer['image']):
+            os.remove(answer['image'])
         for comment in comments:
             if answer['id'] == comment['answer_id']:
                 data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
+    if os.path.exists(question[0]['image']):
+        os.remove(question[0]['image'])
     data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
     data_manager.delete_by_id('comment', 'question_id', int(question_id))
     data_manager.delete_by_id('answer', 'question_id', int(question_id))
@@ -139,6 +145,8 @@ def route_question_vote_down(question_id, route):
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
     answer = data_manager.get_answer(int(answer_id))
+    if os.path.exists(answer[0]['image']):
+        os.remove(answer[0]['image'])
     data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
     data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}")
