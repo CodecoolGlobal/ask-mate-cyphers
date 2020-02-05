@@ -11,7 +11,7 @@
     <div id="form">
         <h1 class="center">{{ question[0]["title"] }}</h1>
         <form action="/question/{{ question_id }}/new-comment" method="POST">
-            <textarea rows="5" cols="50" id="message" name="message" placeholder="Your comment..."></textarea><br>
+            <textarea rows="5" cols="50" id="message" name="message" placeholder="Your comment..." required></textarea><br>
             <input type="submit" value="Comment">
         </form>
     </div>

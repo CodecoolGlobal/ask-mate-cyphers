@@ -12,7 +12,7 @@
     <div id="form">
         <h1>Edit your answer:</h1>
         <form action="/answer/{{ answer_id }}/edit" method="POST" enctype="multipart/form-data">
-            <textarea rows="10" cols="60" id="message" name="message">{{ answer[0]["message"] }}</textarea><br>
+            <textarea rows="10" cols="60" id="message" name="message" required>{{ answer[0]["message"] }}</textarea><br>
             <label for="image">Add image:</label>
             <input type="file" id="image" name="image" value={{ answer[0]["image"] }}>
             <input type="submit" value="Submit changes">
