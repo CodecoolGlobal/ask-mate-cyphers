@@ -6,7 +6,7 @@
 {% block content %}
     <div id="header">
         <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ answer_id }}" class="menu">Back to the question</a>
+        <a href="/question/{{ answer[0]['question_id'] }}/question" class="menu">Back to the question</a>
     </div>
     <div id="form">
         <h1 class="center">{{ answer[0]["message"][:50] }}...</h1>
