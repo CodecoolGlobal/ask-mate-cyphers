@@ -456,6 +456,7 @@ a:hover.comment_button{
 }
 
 #answers {
+    flex-grow: 1;
     margin-left: 20%;
     margin-right: 20%;
     border-left: 2px solid #25272b;

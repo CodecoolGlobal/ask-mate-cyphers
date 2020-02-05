@@ -4,6 +4,7 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
+<div id="main_page">
         <div id="header">
             <a href="/" class="logo">AskMate</a>
             <a href="/list" class="menu">Questions</a>
@@ -12,7 +13,6 @@
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
         </div>
-<div id="main_page">
     <div id="main_page_list">
         <h2>Results in questions:</h2>
         {% for question in questions %}
@@ -63,7 +63,7 @@
                 {% endif %}
             </table>
         {% endfor %}
-        <h2>Results in answers</h2>
+        <h2>Results in answers:</h2>
         {% for question, answer in answers %}
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>

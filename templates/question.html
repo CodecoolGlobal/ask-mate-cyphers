@@ -4,6 +4,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div id="main_page">
     <div id="header">
         <a href="/" class="logo">AskMate</a>
         <a href="/question/{{ question_id }}" class="menu">To the top</a>
@@ -165,3 +166,4 @@
             {% endfor %}
         {% endfor %}
 {% endblock %}
+</div>
