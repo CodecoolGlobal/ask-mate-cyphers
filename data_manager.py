@@ -182,7 +182,7 @@ def modify_tags(question_id, new_tags):
             query = '''
             DELETE FROM question_tag
             WHERE question_id = '{}' AND tag_id = '{}' '''.format(question_id, tag_id)
-            return connection.db_mod_without_return(query=query)
+            connection.db_mod_without_return(query=query)
     for tag in new_tags:
         if tag not in old_tags:
             if tag not in all_tags:
@@ -194,4 +194,4 @@ def modify_tags(question_id, new_tags):
             query = '''
             INSERT INTO question_tag(question_id, tag_id)
             VALUES ({}, {})'''.format(question_id, tag_id)
-            return connection.db_mod_without_return(query=query)
+            connection.db_mod_without_return(query=query)
