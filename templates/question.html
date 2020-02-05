@@ -46,13 +46,13 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if question.image != 'None' %}
-                <tr>
-                    <td colspan="2">
+            <tr>
+                <td colspan="2">
+                    {% if question.image != 'None' %}
                         <img src=/{{ question.image }} alt="image">
-                    </td>
-                </tr>
-            {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
             <tr>
                 <td>
                     <a href="/question/{{ question_id }}/edit" class="edit_button">Edit question</a>
@@ -62,15 +62,16 @@
                 </td>
             </tr>
         </table>
-        {% for tag in tags %}
-             #{{ tag.name }}
-        {% endfor %}
-        <a href="/question/{{ question_id }}/new-tag">Add new tag</a>
+        <div class="tags">
+            <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
+            {% for tag in tags %}
+                #{{ tag.name }}
+            {% endfor %}
+        </div>
         <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
         <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
     </div>
-    <div id="question_page">
-        <h2>Question comments:</h2>
+    <div id="comments">
         {% for comment in question_comment %}
             <table>
                 <tr>
@@ -85,27 +86,31 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="/comment/{{ comment.id }}/edit" class="answer_button">Edit comment</a>
+                        <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
                     </td>
                     <td>
-                        <a href="/comment/{{ comment.id }}/delete" class="answer_button">Delete comment</a>
+                        <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
                     </td>
                 </tr>
             </table>
         {% endfor %}
     </div>
-    <div id="comments">
-        <h2>Answers:</h2>
         {% for answer in answers %}
+            <div id="answers">
                 <table>
                     <tr>
-                        <td rowspan="2">
+                        <td rowspan="3">
                             <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
-                            <h5>{{ answer.vote_number }}</h5>
+                            {{ answer.vote_number }}
                             <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
                         </td>
-                        <td>
-                            <p>{{ answer.message }}</p><br>
+                        <td colspan="3">
+                             Posted on {{ answer.submission_time }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p>{{ answer.message }}</p>
                         </td>
                         <td>
                             {% if answer.image != 'None' %}
@@ -115,21 +120,21 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
+                            <a href="/answer/{{ answer.id }}/new-comment" class="comment_button">Add comment</a>
                         </td>
                         <td>
-                            <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
+                            <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
                         </td>
                         <td>
-                            <a href="/answer/{{ answer.id }}/new-comment" class="button">Add comment</a>
+                            <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
                         </td>
                     </tr>
                 </table>
                 <br>
+                </div>
             {% for comment in answers_comments %}
                 {% if comment.answer_id == answer.id %}
-                    <h2>Answer comments:</h2>
-                    <div id="question_page">
+                    <div id="comments">
                         <table>
                             <tr>
                                 <td colspan="2">
@@ -143,10 +148,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="/comment/{{ comment.id }}/edit" class="answer_button">Edit comment</a>
+                                    <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
                                 </td>
                                 <td>
-                                    <a href="/comment/{{ comment.id }}/delete" class="answer_button">Delete comment</a>
+                                    <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
                                 </td>
                             </tr>
                         </table>
@@ -154,5 +159,4 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-    </div>
 {% endblock %}
