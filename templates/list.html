@@ -10,9 +10,7 @@
             <a href="/list" class="menu">Questions</a>
             <a href="/add-question" class="menu">New question</a>
             <form action="/search">
-                <label for="name-input">Search:</label>
-                <input id="name-input" type="text" name="search">
-                <button type="submit">Search</button>
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
         </div>
         <div class="dropdown">
@@ -30,9 +28,9 @@
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
                         <td rowspan="3">
-                            <button><a onclick="event.stopPropagation()"
+                            <a onclick="event.stopPropagation()"
                                        href="/question/{{ question.id }}/list/vote_up"><img
-                                    src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                                    src="/static/voteup.png" alt="Upvote" width="15"></a>
                             {% if question.vote_number > 1000 %}
                                 {% set proc_err = question.vote_number / 1000 %}
                                 {{ proc_err|int }}k
@@ -42,9 +40,9 @@
                             {% else %}
                                 {{ question.vote_number }}
                             {% endif %}
-                            <button><a onclick="event.stopPropagation()"
+                            <a onclick="event.stopPropagation()"
                                        href="/question/{{ question.id }}/list/vote_down"><img
-                                    src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                                    src="/static/votedown.png" alt="Downvote" width="15"></a>
                         </td>
                         <td>
                             <p class="light">Viewed {{ question.view_number }} times</p>

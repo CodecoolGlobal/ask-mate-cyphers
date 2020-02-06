@@ -4,6 +4,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div id="main_page">
     <div id="header">
         <a href="/" class="logo">AskMate</a>
         <a href="/question/{{ question_id }}" class="menu">To the top</a>
@@ -12,9 +13,9 @@
     <div id="question_page">
         <table>
             <tr>
-                <td rowspan="5">
-                    <button><a href="/question/{{ question.id }}/question/vote_up"><img
-                               src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                <td rowspan="6">
+                    <a href="/question/{{ question.id }}/question/vote_up"><img
+                               src="/static/voteup.png" alt="Upvote" width="15"></a>
                     {% if question.vote_number > 1000 %}
                         {% set proc_err = question.vote_number / 1000 %}
                         {{ proc_err|int }}k
@@ -24,8 +25,8 @@
                     {% else %}
                         {{ question.vote_number }}
                     {% endif %}
-                    <button><a href="/question/{{ question.id }}/question/vote_down"><img
-                               src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                    <a href="/question/{{ question.id }}/question/vote_down"><img
+                               src="/static/votedown.png" alt="Downvote" width="15"></a>
                 </td>
                 <td>
                     <p class="light">Viewed {{ question.view_number }} times</p>
@@ -57,22 +58,26 @@
                 </td>
             </tr>
             <tr>
+                <td colspan="2">
+                    <div class="tags">
+                        <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
+                        {% for tag in tags %}
+                            #{{ tag.name }}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td>
-                    <a href="/question/{{ question_id }}/edit" class="edit_button">Edit question</a>
+                    <a href="/question/{{ question_id }}/edit" class="button">Edit question</a>
+                    <a href="/question/{{ question_id }}/delete" class="button">Delete question</a>
                 </td>
                 <td>
-                    <a href="/question/{{ question_id }}/delete" class="delete_button">Delete question</a>
+                    <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
+                    <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
                 </td>
             </tr>
         </table>
-        <div class="tags">
-            <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
-            {% for tag in tags %}
-                #{{ tag.name }}
-            {% endfor %}
-        </div>
-        <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
-        <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
     </div>
     <div id="comments">
         {% for comment in question_comment %}
@@ -106,7 +111,7 @@
             <div id="answers">
                 <table>
                     <tr>
-                        <td rowspan="3">
+                        <td rowspan="4">
                             <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
                             {{ answer.vote_number }}
                             <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
@@ -119,10 +124,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <p>{{ answer.message }}</p>
                         </td>
-                        <td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
                             {% if answer.image != 'None' %}
                                 <img src={{ answer.image }} alt="image" width="200"><br><br>
                             {% endif %}
@@ -130,7 +137,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="/answer/{{ answer.id }}/new-comment" class="comment_button">Add comment</a>
+                            <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
                         </td>
                         <td>
                             <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
@@ -140,7 +147,6 @@
                         </td>
                     </tr>
                 </table>
-                <br>
                 </div>
             {% for comment in answers_comments %}
                 {% if comment.answer_id == answer.id %}
@@ -174,3 +180,4 @@
             {% endfor %}
         {% endfor %}
 {% endblock %}
+</div>
