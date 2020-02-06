@@ -456,7 +456,6 @@ a:hover.comment_button{
 }
 
 #answers {
-    flex-grow: 1;
     margin-left: 20%;
     margin-right: 20%;
     border-left: 2px solid #25272b;
@@ -544,4 +543,12 @@ a.answer_button {
 
 a.answer_button:hover {
     background-color: #4F5459;
+}
+
+#footer {
+    flex-grow: 1;
+    margin-left: 20%;
+    margin-right: 20%;
+    border-left: 2px solid #25272b;
+    border-right: 2px solid #25272b;
 }
