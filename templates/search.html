@@ -4,19 +4,17 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-<div id="header">
-    <a href="/" class="logo">AskMate</a>
-    <a href="/list" class="menu">Questions</a>
-    <a href="/add-question" class="menu">New question</a>
-    <form action="/search">
-        <label for="name-input">Search:</label>
-        <input id="name-input" type="text" name="search">
-        <button type="submit">Search</button>
-    </form>
-</div>
-<h1>Questions</h1>
 <div id="main_page">
+        <div id="header">
+            <a href="/" class="logo">AskMate</a>
+            <a href="/list" class="menu">Questions</a>
+            <a href="/add-question" class="menu">New question</a>
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     <div id="main_page_list">
+        <h2>Results in questions:</h2>
         {% for question in questions %}
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
@@ -59,17 +57,13 @@
                 {% if question.image != 'None' %}
                     <tr>
                         <td colspan="3">
-                            <img src=/{{ question.image }} alt="image">
+                            <img src={{ question.image }} alt="image">
                         </td>
                     </tr>
                 {% endif %}
             </table>
         {% endfor %}
-    </div>
-</div>
-<h1>Answers</h1>
-<div id="main_page">
-    <div id="main_page_list">
+        <h2>Results in answers:</h2>
         {% for question, answer in answers %}
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
@@ -112,7 +106,7 @@
                 {% if question.image != 'None' %}
                     <tr>
                         <td colspan="3">
-                            <img src=/{{ question.image }} alt="image">
+                            <img src={{ question.image }} alt="image">
                         </td>
                     </tr>
                 {% endif %}
@@ -129,7 +123,7 @@
                     </td>
                     <td>
                         {% if answer.image != 'None' %}
-                            <img src=/{{ answer.image }} alt="image" width="200"><br><br>
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
                         {% endif %}
                     </td>
                 </tr>

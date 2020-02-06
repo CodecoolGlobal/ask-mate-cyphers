@@ -1,14 +1,15 @@
 import connection
 import datetime
 import util
+import os
 
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
     SELECT *
     FROM question
-    ORDER BY %s %s LIMIT 5'''
-    list_of_var = [order_by, desc]
+    ORDER BY {} {} LIMIT 5'''.format(order_by, desc)
+    list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
@@ -16,8 +17,8 @@ def get_all_questions_without_limit(order_by='id', desc='DESC'):
     query = '''
         SELECT *
         FROM question
-        ORDER BY %s %s'''
-    list_of_var = [order_by, desc]
+        ORDER BY {} {}'''.format(order_by, desc)
+    list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
@@ -43,11 +44,11 @@ def get_comment(id_type, id_num):
     query = '''
     SELECT *
     FROM comment
-    WHERE %s = %s'''
-    list_of_var = [id_type, id_num]
+    WHERE {} = %s'''.format(id_type)
+    list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
-
+  
 def get_all_comment():
     query = '''
     SELECT *
@@ -67,10 +68,10 @@ def get_question(id_num):
 
 def vote(table, id_num, num, column):
     query = '''
-    UPDATE %s
-    SET %s = %s + %s
-    WHERE id=%s'''
-    list_of_var = [table, column, column, num, id_num]
+    UPDATE {}
+    SET {} = {} + %s
+    WHERE id=%s'''.format(table, column, column)
+    list_of_var = [num, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
@@ -86,43 +87,44 @@ def add_question(file):
         title = file[0]
         message = file[1]
         query = '''
-        INSERT INTO question(submission_time ,view_number, vote_number, title, message)
-        VALUES (%s, 0, 0, %s, %s)'''
-        list_of_var = [sub_time, title, message]
+        INSERT INTO question(submission_time ,view_number, vote_number, title, message, edit_submission_time)
+        VALUES (%s, 0, 0, %s, %s, %s)'''
+        list_of_var = [sub_time, title, message, sub_time]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def add_answer(file, id_num):
+    sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
         message, image = file
         query = '''
-            INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-            VALUES (current_timestamp, 0, %s, %s, %s)'''
-        list_of_var = [id_num, message, image]
+            INSERT INTO answer(submission_time, vote_number, question_id, message, image, edit_submission_time)
+            VALUES (%s, 0, %s, %s, %s, %s)'''
+        list_of_var = [sub_time, id_num, message, image, sub_time]
     except ValueError:
         message = file[0]
         query = '''
-            INSERT INTO answer(submission_time, vote_number, question_id, message)
-            VALUES (current_timestamp, 0, %s, %s)'''
-        list_of_var = [id_num, message]
+            INSERT INTO answer(submission_time, vote_number, question_id, message, edit_submission_time)
+            VALUES (%s, 0, %s, %s, %s)'''
+        list_of_var = [sub_time, id_num, message, sub_time]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def add_comment_to_question(message, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
-    INSERT INTO comment(question_id, message, submission_time)
-    VALUES (%s, %s, %s)'''
-    list_of_var = [id_num, message, sub_time]
+    INSERT INTO comment(question_id, message, submission_time, edit_submission_time)
+    VALUES (%s, %s, %s, %s)'''
+    list_of_var = [id_num, message, sub_time, sub_time]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def add_comment_to_answer(message, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
-    INSERT INTO comment(answer_id, message, submission_time)
-    VALUES (%s, %s, %s)'''
-    list_of_var = [id_num, message, sub_time]
+    INSERT INTO comment(answer_id, message, submission_time, edit_submission_time)
+    VALUES (%s, %s, %s, %s)'''
+    list_of_var = [id_num, message, sub_time, sub_time]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
@@ -132,16 +134,16 @@ def edit_question(file, id_num):
         title, message, image = file
         query = '''
             UPDATE question
-            SET title = %s, message = %s, image = %s, submission_time = %s
+            SET title = %s, message = %s, image = %s, submission_time = %s, edit_submission_time = %s
             WHERE id = %s'''
-        list_of_var = [title, message, image, sub_time, id_num]
+        list_of_var = [title, message, image, sub_time, sub_time, id_num]
     except ValueError:
         title, message = file
         query = '''
             UPDATE question
-            SET title = %s, message = %s, submission_time = %s
+            SET title = %s, message = %s, submission_time = %s, edit_submission_time = %s
             WHERE id = %s'''
-        list_of_var = title, message, sub_time, id_num
+        list_of_var = [title, message, sub_time, sub_time, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
@@ -149,7 +151,7 @@ def edit_comment(id_num, message):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
     UPDATE comment
-    SET  message = %s, submission_time = %s
+    SET  message = %s, edit_submission_time = %s, edited_count = edited_count + 1
     WHERE id = %s'''
     list_of_var = [message, sub_time, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
@@ -157,9 +159,9 @@ def edit_comment(id_num, message):
 
 def delete_by_id(table, id_type, id_num):
     query = '''
-    DELETE FROM %s
-    WHERE %s = %s'''
-    list_of_var = [table, id_type, id_num]
+    DELETE FROM {}
+    WHERE {} = %s'''.format(table, id_type)
+    list_of_var = [id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
@@ -169,14 +171,14 @@ def edit_answer(file, id_num):
         message, image = file
         query = '''
             UPDATE answer
-            SET message = %s, image = %s, submission_time = %s
+            SET message = %s, image = %s, edit_submission_time = %s
             WHERE id = %s'''
         list_of_var = [message, image, sub_time, id_num]
     except ValueError:
         message = file[0]
         query = '''
             UPDATE answer
-            SET message = %s, submission_time = %s
+            SET message = %s, edit_submission_time = %s
             WHERE id = %s'''
         list_of_var = [message, sub_time, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
@@ -255,3 +257,15 @@ def modify_tags(question_id, new_tags):
             VALUES (%s, %s)'''
             list_of_var = [question_id, tag_id]
             connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
+def get_name_of_image(filename):
+    i = 1
+    while True:
+        if os.path.exists(f"static/{filename}"):
+            print(filename)
+            filename = filename + str(i)
+            i += 1
+        else:
+            return filename
+
