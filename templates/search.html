@@ -63,80 +63,82 @@
                 {% endif %}
             </table>
         {% endfor %}
-        <h2>Results in answers:</h2>
-        {% for question, answer in answers %}
-            <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
-                <tr>
-                    <td rowspan="3">
-                        <button><a onclick="event.stopPropagation()"
-                                   href="/question/{{ question.id }}/list/vote_up"><img
-                                src="/static/voteup.png" alt="Upvote" width="15"></a></button>
-                        {% if question.vote_number > 1000 %}
-                            {% set proc_err = question.vote_number / 1000 %}
-                            {{ proc_err|int }}k
-                        {% elif question.vote_number < -1000 %}
-                            {% set proc_err = question.vote_number / 1000 %}
-                            {{ proc_err|int }}k
-                        {% else %}
-                            {{ question.vote_number }}
-                        {% endif %}
-                        <button><a onclick="event.stopPropagation()"
-                                   href="/question/{{ question.id }}/list/vote_down"><img
-                                src="/static/votedown.png" alt="Downvote" width="15"></a></button>
-                    </td>
-                    <td>
-                        <p class="light">Viewed {{ question.view_number }} times</p>
-                    </td>
-                    <td>
-                        <p class="light">Posted on {{ question.submission_time }}</p>
-                    </td>
-                </tr>
-                <tr>
-                     <td colspan="2">{{ question.title }}</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        {% if question.message|length > 500 %}
-                            {{ question.message[:500] }}...
-                        {% else %}
-                            {{ question.message }}
-                        {% endif %}
-                     </td>
-                </tr>
-                {% if question.image != 'None' %}
+        {% if answers %}
+            <h2>Results in answers:</h2>
+            {% for question, answer in answers %}
+                <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
-                        <td colspan="3">
-                            <img src={{ question.image }} alt="image">
+                        <td rowspan="3">
+                            <button><a onclick="event.stopPropagation()"
+                                       href="/question/{{ question.id }}/list/vote_up"><img
+                                    src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                            {% if question.vote_number > 1000 %}
+                                {% set proc_err = question.vote_number / 1000 %}
+                                {{ proc_err|int }}k
+                            {% elif question.vote_number < -1000 %}
+                                {% set proc_err = question.vote_number / 1000 %}
+                                {{ proc_err|int }}k
+                            {% else %}
+                                {{ question.vote_number }}
+                            {% endif %}
+                            <button><a onclick="event.stopPropagation()"
+                                       href="/question/{{ question.id }}/list/vote_down"><img
+                                    src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                        </td>
+                        <td>
+                            <p class="light">Viewed {{ question.view_number }} times</p>
+                        </td>
+                        <td>
+                            <p class="light">Posted on {{ question.submission_time }}</p>
                         </td>
                     </tr>
-                {% endif %}
-            </table>
-            <table>
-                <tr>
-                    <td rowspan="2">
-                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
-                        <h5>{{ answer.vote_number }}</h5>
-                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
-                    </td>
-                    <td>
-                        <p>{{ answer.message }}</p><br>
-                    </td>
-                    <td>
-                        {% if answer.image != 'None' %}
-                            <img src={{ answer.image }} alt="image" width="200"><br><br>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
-                    </td>
-                    <td>
-                        <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
-                    </td>
-                </tr>
-            </table>
-        {% endfor %}
+                    <tr>
+                         <td colspan="2">{{ question.title }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            {% if question.message|length > 500 %}
+                                {{ question.message[:500] }}...
+                            {% else %}
+                                {{ question.message }}
+                            {% endif %}
+                         </td>
+                    </tr>
+                    {% if question.image != 'None' %}
+                        <tr>
+                            <td colspan="3">
+                                <img src={{ question.image }} alt="image">
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+                <table>
+                    <tr>
+                        <td rowspan="2">
+                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
+                            <h5>{{ answer.vote_number }}</h5>
+                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
+                        </td>
+                        <td>
+                            <p>{{ answer.message }}</p><br>
+                        </td>
+                        <td>
+                            {% if answer.image != 'None' %}
+                                <img src={{ answer.image }} alt="image" width="200"><br><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
+                        </td>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
