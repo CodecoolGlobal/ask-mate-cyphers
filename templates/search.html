@@ -57,7 +57,7 @@
                 {% if question.image != 'None' %}
                     <tr>
                         <td colspan="3">
-                            <img src=/{{ question.image }} alt="image">
+                            <img src={{ question.image }} alt="image">
                         </td>
                     </tr>
                 {% endif %}
@@ -106,7 +106,7 @@
                 {% if question.image != 'None' %}
                     <tr>
                         <td colspan="3">
-                            <img src=/{{ question.image }} alt="image">
+                            <img src={{ question.image }} alt="image">
                         </td>
                     </tr>
                 {% endif %}
@@ -123,7 +123,7 @@
                     </td>
                     <td>
                         {% if answer.image != 'None' %}
-                            <img src=/{{ answer.image }} alt="image" width="200"><br><br>
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
                         {% endif %}
                     </td>
                 </tr>
