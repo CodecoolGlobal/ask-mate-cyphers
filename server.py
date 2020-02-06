@@ -28,11 +28,14 @@ def route_list(question_id=None, order_by="id", order_direction="desc"):
     return render_template('list.html', questions=questions, new_order_dir=order_direction)
 
 
-@app.route("/question/<question_id>/question")
 @app.route("/question/<question_id>")
+def route_question_view(question_id):
+    data_manager.vote("question", int(question_id), 1, "view_number")
+    return redirect(f"/question/{question_id}/question")
+
+
+@app.route("/question/<question_id>/question")
 def route_question(question_id):
-    if str(request.url_rule) == "/question/<question_id>":
-        data_manager.vote("question", int(question_id), 1, "view_number")
     question = data_manager.get_question(int(question_id))
     tags = data_manager.get_tags(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
@@ -57,7 +60,7 @@ def route_add_question():
         for question in questions:
             if question['id'] > new_id:
                 new_id = question['id']
-        return redirect(f"/question/{new_id}")
+        return redirect(f"/question/{new_id}/question")
     return render_template("ask_question.html")
 
 
