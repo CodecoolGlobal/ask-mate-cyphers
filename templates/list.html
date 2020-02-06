@@ -31,12 +31,18 @@
                             <a onclick="event.stopPropagation()"
                                        href="/question/{{ question.id }}/list/vote_up"><img
                                     src="/static/voteup.png" alt="Upvote" width="15"></a>
-                            {% if question.vote_number > 1000 %}
+                            {% if question.vote_number > 1000000 %}
+                                {% set proc_err = question.vote_number / 1000000 %}
+                                {{ proc_err|int }}M
+                            {% elif question.vote_number < -1000000 %}
+                                {% set proc_err = question.vote_number / 1000000 %}
+                                {{ proc_err|int }}M
+                            {% elif question.vote_number > 1000 %}
                                 {% set proc_err = question.vote_number / 1000 %}
-                                {{ proc_err|int }}k
+                                {{ proc_err|int }}K
                             {% elif question.vote_number < -1000 %}
                                 {% set proc_err = question.vote_number / 1000 %}
-                                {{ proc_err|int }}k
+                                {{ proc_err|int }}K
                             {% else %}
                                 {{ question.vote_number }}
                             {% endif %}
