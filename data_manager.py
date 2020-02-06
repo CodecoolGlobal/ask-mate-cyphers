@@ -49,7 +49,7 @@ def get_comment(id_type, id_num):
     list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
-  
+
 def get_all_comment():
     query = '''
     SELECT *
@@ -71,7 +71,7 @@ def vote(table, id_num, num, column):
     query = '''
     UPDATE {}
     SET {} = {} + %s
-    WHERE id=%s'''.format(table, column, column)
+    WHERE id = %s'''.format(table, column, column)
     list_of_var = [num, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
@@ -190,7 +190,7 @@ def search_question(search):
     search = '%' + search + '%'
     query = '''
     SELECT * FROM question
-    WHERE title LIKE %s OR message LIKE %s '''
+    WHERE title ILIKE %s OR message ILIKE %s '''
     list_of_var = [search, search]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
@@ -200,7 +200,7 @@ def search_answer(search):
     search = '%' + search + '%'
     query = """
     SELECT * FROM answer
-    WHERE message LIKE %s"""
+    WHERE message ILIKE %s"""
     list_of_var = [search]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
