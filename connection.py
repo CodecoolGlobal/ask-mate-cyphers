@@ -5,11 +5,11 @@ import database_comman
 
 
 @database_comman.connection_handler
-def db_mod_with_return(cursor: RealDictCursor, query) -> list:
-    cursor.execute(query)
+def db_mod_list_with_return(cursor: RealDictCursor, query, list_of_var) -> list:
+    cursor.execute(query, list_of_var)
     return cursor.fetchall()
 
 
 @database_comman.connection_handler
-def db_mod_without_return(cursor: RealDictCursor, query):
-    cursor.execute(query)
+def db_mod_list_without_return(cursor: RealDictCursor, query, list_of_var):
+    cursor.execute(query, list_of_var)
