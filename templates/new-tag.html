@@ -12,7 +12,7 @@
     <div id="form">
         <h1>Edit tags</h1>
         <form action="/question/{{ question_id }}/new-tag" method="POST" enctype="multipart/form-data">
-            <textarea rows="10" cols="60" id="message" name="message" required>{{ " ".join(tags) }}</textarea><br>
+            <textarea rows="10" cols="60" id="message" name="message">{{ " ".join(tags) }}</textarea><br>
             <input type="submit" value="Submit">
         </form>
     </div>
