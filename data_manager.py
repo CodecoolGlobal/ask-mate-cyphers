@@ -198,10 +198,9 @@ def search_question(search):
 def search_answer(search):
     search = util.modify_search(search)
     search = '%' + search + '%'
-    print(search)
     query = """
     SELECT * FROM answer
-    WHERE message LIKE %s ESCAPE '\'"""
+    WHERE message LIKE %s"""
     list_of_var = [search]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 

@@ -9,8 +9,6 @@ def modify_search(search):
     length = 0
     char = ["'", "%"]
     while length != len(search):
-        print(length, end="")
-        print(len(search))
         if search[length] in char:
             search = search[:length] + "\\" + search[length:]
             length += 2
