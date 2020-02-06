@@ -26,7 +26,8 @@ def get_answers_by_question_id(question_id):
     query = '''
     SELECT *
     FROM answer
-    WHERE question_id = %s'''
+    WHERE question_id = %s
+    ORDER BY id'''
     list_of_var = [question_id]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
