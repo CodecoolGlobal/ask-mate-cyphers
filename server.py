@@ -216,16 +216,26 @@ def route_answer_edit(answer_id):
         return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
+@app.route("/search/<tag>")
 @app.route("/search")
-def route_search():
-    search = request.args.get("search")
-    questions = data_manager.search_question(search=search)
-    answers = data_manager.search_answer(search=search)
-    questions_with_answers = []
-    for answer in answers:
-        question_list = [data_manager.get_question(answer["question_id"])[0], answer]
-        questions_with_answers.append(question_list)
-    return render_template('search.html', questions=questions, answers=questions_with_answers, new_order_dir='desc', search=search)
+def route_search(tag=None):
+    if tag is None:
+        search = request.args.get("search")
+        questions = data_manager.search_question(search=search)
+        answers = data_manager.search_answer(search=search)
+        questions_with_answers = []
+        for answer in answers:
+            question_list = [data_manager.get_question(answer["question_id"])[0], answer]
+            questions_with_answers.append(question_list)
+        return render_template('search.html', questions=questions, answers=questions_with_answers, search=search)
+    else:
+        list_of_question_id = data_manager.get_whole_tags(tag_name=tag)
+        questions = []
+        for i in list_of_question_id:
+            question = data_manager.get_question(i["question_id"])[0]
+            questions.append(question)
+        print(questions)
+        return render_template('search.html', questions=questions, answers=None, search=tag)
 
                         
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
