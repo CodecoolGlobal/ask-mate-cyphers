@@ -21,7 +21,7 @@ body {
     background-color: #222629;
     position: sticky;
     top: 0;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid #222222;
     white-space: nowrap;
     z-index: 3;
 }
