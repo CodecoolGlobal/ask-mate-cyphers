@@ -11,8 +11,8 @@
     <div id="form">
         <h1>Ask a question</h1>
         <form action="/add-question" method="POST" enctype="multipart/form-data">
-            <input type="text" id="title" name="title" placeholder="Title"><br>
-            <textarea id="message" name="message" placeholder="Question"></textarea><br>
+            <input type="text" id="title" name="title" placeholder="Title" required><br>
+            <textarea id="message" name="message" placeholder="Question" required></textarea><br>
             <input type="file" id="image" name="image" value="/static"> >
             <label for="image">Add image</label>
             <input type="submit" value="Submit">

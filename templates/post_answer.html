@@ -6,12 +6,12 @@
 {% block content %}
     <div id="header">
         <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ question_id }}" class="menu">Back to the question</a>
+        <a href="/question/{{ question_id }}/question" class="menu">Back to the question</a>
     </div>
     <div id="form">
         <h1 class="center">{{ question[0]["title"] }}</h1>
         <form action="/question/{{ question_id }}/new-answer" method="POST", enctype="multipart/form-data">
-            <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..."></textarea><br>
+            <textarea rows="5" cols="50" id="message" name="message" placeholder="Your answer..." required></textarea><br>
             <label for="image">Add image:</label>
             <input type="file" id="image" name="image">
             <input type="submit" value="Comment">

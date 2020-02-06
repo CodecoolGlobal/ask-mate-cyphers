@@ -7,12 +7,12 @@
     <div id="header">
         <a href="/" class="logo">AskMate</a>
         <a href="/" class="menu">Back to the forum</a>
-        <a href="/question/{{ question_id }}" class="menu">Back to the question</a>
+        <a href="/question/{{ question_id }}/question" class="menu">Back to the question</a>
     </div>
     <div id="form">
         <h1>Edit tags</h1>
         <form action="/question/{{ question_id }}/new-tag" method="POST" enctype="multipart/form-data">
-            <textarea rows="10" cols="60" id="message" name="message">{{ " ".join(tags) }}</textarea><br>
+            <textarea rows="10" cols="60" id="message" name="message" required>{{ " ".join(tags) }}</textarea><br>
             <input type="submit" value="Submit">
         </form>
     </div>

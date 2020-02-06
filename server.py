@@ -69,7 +69,7 @@ def route_new_answer(question_id):
             image.save(os.path.join("static", image.filename))
             file.append(f"static/{image.filename}")
         data_manager.add_answer(file, int(question_id))
-        return redirect(f"/question/{question_id}")
+        return redirect(f"/question/{question_id}/question")
     question = data_manager.get_question(int(question_id))
     return render_template("post_answer.html", question=question, question_id=question_id)
 
@@ -79,7 +79,7 @@ def route_question_comment(question_id):
     if request.method == "POST":
         file = request.form['message']
         data_manager.add_comment('question_id', file, int(question_id))
-        return redirect(f"/question/{question_id}")
+        return redirect(f"/question/{question_id}/question")
     question = data_manager.get_question(int(question_id))
     return render_template("question_comment.html", question=question, question_id=question_id)
 
@@ -90,7 +90,7 @@ def route_answer_comment(answer_id):
         answer = data_manager.get_answer(int(answer_id))
         file = request.form['message']
         data_manager.add_comment('answer_id', file, int(answer_id))
-        return redirect(f"/question/{answer[0]['question_id']}")
+        return redirect(f"/question/{answer[0]['question_id']}/question")
     answer = data_manager.get_answer(int(answer_id))
     return render_template("answer_comment.html", answer=answer, answer_id=answer_id)
 
@@ -149,7 +149,7 @@ def route_answer_delete(answer_id):
         os.remove(answer[0]['image'])
     data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
     data_manager.delete_by_id('answer', 'id', int(answer_id))
-    return redirect(f"/question/{answer[0]['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/comment/<comment_id>/delete")
@@ -159,7 +159,7 @@ def route_comment_delete(comment_id):
     if comment[0]['question_id'] is None:
         answer = data_manager.get_answer(int(comment[0]['answer_id']))
         comment = answer
-    return redirect(f"/question/{comment[0]['question_id']}")
+    return redirect(f"/question/{comment[0]['question_id']}/question")
 
 
 @app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
@@ -178,21 +178,21 @@ def route_edit_comment(comment_id):
         if comment[0]['question_id'] is None:
             answer = data_manager.get_answer(int(comment[0]['answer_id']))
             comment = answer
-        return redirect(f'/question/{comment[0]["question_id"]}')
+        return redirect(f'/question/{comment[0]["question_id"]}/question')
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
     answer = data_manager.get_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), 1, "vote_number")
-    return redirect(f"/question/{answer[0]['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
     answer = data_manager.get_answer(int(answer_id))
     data_manager.vote("answer", int(answer_id), -1, "vote_number")
-    return redirect(f"/question/{answer[0]['question_id']}")
+    return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
@@ -208,7 +208,7 @@ def route_answer_edit(answer_id):
             file.append(f"static/{image.filename}")
         data_manager.edit_answer(file, int(answer_id))
         answer = data_manager.get_answer(answer_id)
-        return redirect(f"/question/{answer[0]['question_id']}")
+        return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/search")
@@ -234,7 +234,7 @@ def route_tag_edit(question_id):
         new_tags = new_tags[0].split()
         new_tags = [item.lstrip('#') for item in new_tags]
         data_manager.modify_tags(question_id, new_tags)
-        return redirect(f"/question/{question_id}")
+        return redirect(f"/question/{question_id}/question")
 
 
 if __name__ == '__main__':
