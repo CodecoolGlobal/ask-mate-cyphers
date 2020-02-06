@@ -63,7 +63,7 @@
                     <div class="tags">
                         <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
                         {% for tag in tags %}
-                            #{{ tag.name }}
+                            <a href="/search/{{ tag.name }}">#{{ tag.name }}</a>
                         {% endfor %}
                     </div>
                 </td>

@@ -269,3 +269,21 @@ def get_name_of_image(filename):
         else:
             return filename
 
+
+def get_question_id_from_tag_id(tag_id):
+    query = '''
+    SELECT question_id
+    FROM question_tag
+    WHERE tag_id=%s'''
+    list_of_var = [tag_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_whole_tags(tag_name):
+    query = '''
+        SELECT question_id
+        FROM question_tag
+        RIGHT JOIN tag ON question_tag.tag_id=tag.id
+        WHERE tag.name = %s'''
+    list_of_var = [tag_name]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
