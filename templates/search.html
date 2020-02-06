@@ -13,15 +13,15 @@
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
         </div>
-    <div id="main_page_list">
+    <div id="search_list">
         <h2>Results in questions:</h2>
         {% for question in questions %}
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
                     <td rowspan="3">
-                        <button><a onclick="event.stopPropagation()"
+                        <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_up"><img
-                                src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                                src="/static/voteup.png" alt="Upvote" width="15"></a>
                         {% if question.vote_number > 1000 %}
                             {% set proc_err = question.vote_number / 1000 %}
                             {{ proc_err|int }}k
@@ -31,9 +31,9 @@
                         {% else %}
                             {{ question.vote_number }}
                         {% endif %}
-                        <button><a onclick="event.stopPropagation()"
+                        <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_down"><img
-                                src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                                src="/static/votedown.png" alt="Downvote" width="15"></a>
                     </td>
                     <td>
                         <p class="light">Viewed {{ question.view_number }} times</p>
@@ -68,9 +68,9 @@
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
                     <td rowspan="3">
-                        <button><a onclick="event.stopPropagation()"
+                        <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_up"><img
-                                src="/static/voteup.png" alt="Upvote" width="15"></a></button>
+                                src="/static/voteup.png" alt="Upvote" width="15"></a>
                         {% if question.vote_number > 1000 %}
                             {% set proc_err = question.vote_number / 1000 %}
                             {{ proc_err|int }}k
@@ -80,9 +80,9 @@
                         {% else %}
                             {{ question.vote_number }}
                         {% endif %}
-                        <button><a onclick="event.stopPropagation()"
+                        <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_down"><img
-                                src="/static/votedown.png" alt="Downvote" width="15"></a></button>
+                                src="/static/votedown.png" alt="Downvote" width="15"></a>
                     </td>
                     <td>
                         <p class="light">Viewed {{ question.view_number }} times</p>
@@ -111,32 +111,37 @@
                     </tr>
                 {% endif %}
             </table>
-            <table>
-                <tr>
-                    <td rowspan="2">
-                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
-                        <h5>{{ answer.vote_number }}</h5>
-                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
-                    </td>
-                    <td>
-                        <p>{{ answer.message }}</p><br>
-                    </td>
-                    <td>
-                        {% if answer.image != 'None' %}
-                            <img src={{ answer.image }} alt="image" width="200"><br><br>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="/answer/{{ answer.id }}/edit" class="answer_button">Edit answer</a>
-                    </td>
-                    <td>
-                        <a href="/answer/{{ answer.id }}/delete" class="answer_button">Delete answer</a>
-                    </td>
-                </tr>
-            </table>
+    </div>
+    <div id="search_answer">
+                <table>
+                    <tr>
+                        <td rowspan="4">
+                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
+                            {{ answer.vote_number }}
+                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
+                        </td>
+                        <td colspan="3">
+                            {% if answer.edit_submission_time != answer.submission_time %}
+                                Edit on {{ answer.edit_submission_time }}
+                            {% else %}
+                                Posted on {{ answer.submission_time }}<br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <p>{{ answer.message }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            {% if answer.image != 'None' %}
+                                <img src={{ answer.image }} alt="image" width="200"><br><br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
         {% endfor %}
     </div>
-</div>
 {% endblock %}
+</div>
