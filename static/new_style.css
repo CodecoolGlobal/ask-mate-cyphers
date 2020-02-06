@@ -330,6 +330,7 @@ a:hover.dropdown-link {
 #question_page tr:first-child td:nth-child(3) {
     padding-top: 0.260vw;
     position: relative;
+    left: 4vw;
     width: 15vw;
     padding-left: 1vw;
     font-weight: lighter;
