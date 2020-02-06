@@ -32,9 +32,10 @@
                     <p class="light">Viewed {{ question.view_number }} times</p>
                 </td>
                 <td>
-                    <p class="light">Posted on {{ question.submission_time }}</p>
                     {% if question.edit_submission_time != question.submission_time %}
                         <p class="light">Edited on {{ question.edit_submission_time }}</p>
+                    {% else %}
+                        <p class="light">Posted on {{ question.submission_time }}</p>
                     {% endif %}
                 </td>
             </tr>
@@ -84,11 +85,12 @@
             <table>
                 <tr>
                     <td colspan="2">
-                        <p class="light">Posted on {{ comment.submission_time }}</p>
                         {% if comment.edit_submission_time != comment.submission_time %}
                             <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                            <p class="light">Edited {{ comment.edited_count }} times</p>
+                        {% else %}
+                            <p class="light">Posted on {{ comment.submission_time }}</p>
                         {% endif %}
-                        <p class="light">Edited {{ comment.edited_count }} times</p>
                     </td>
                 </tr>
                 <tr>
@@ -117,9 +119,10 @@
                             <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
                         </td>
                         <td colspan="3">
-                            Posted on {{ answer.submission_time }}<br>
                             {% if answer.edit_submission_time != answer.submission_time %}
                                 Edit on {{ answer.edit_submission_time }}
+                            {% else %}
+                                Posted on {{ answer.submission_time }}<br>
                             {% endif %}
                         </td>
                     </tr>
@@ -154,11 +157,12 @@
                         <table>
                             <tr>
                                 <td colspan="2">
-                                    <p class="light">Posted on {{ comment.submission_time }}</p>
                                     {% if comment.edit_submission_time != comment.submission_time %}
                                         <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                                        <p class="light">Edited {{ comment.edited_count }} times</p>
+                                    {% else %}
+                                        <p class="light">Posted on {{ comment.submission_time }}</p>
                                     {% endif %}
-                                    <p class="light">Edited {{ comment.edited_count }} times</p>
                                 </td>
                             </tr>
                             <tr>

@@ -134,16 +134,16 @@ def edit_question(file, id_num):
         title, message, image = file
         query = '''
             UPDATE question
-            SET title = %s, message = %s, image = %s, submission_time = %s, edit_submission_time = %s
+            SET title = %s, message = %s, image = %s, edit_submission_time = %s
             WHERE id = %s'''
-        list_of_var = [title, message, image, sub_time, sub_time, id_num]
+        list_of_var = [title, message, image, sub_time, id_num]
     except ValueError:
         title, message = file
         query = '''
             UPDATE question
-            SET title = %s, message = %s, submission_time = %s, edit_submission_time = %s
+            SET title = %s, message = %s, edit_submission_time = %s
             WHERE id = %s'''
-        list_of_var = [title, message, sub_time, sub_time, id_num]
+        list_of_var = [title, message, sub_time, id_num]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
