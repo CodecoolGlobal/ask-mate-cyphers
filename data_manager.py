@@ -1,5 +1,6 @@
 import connection
 import datetime
+import os
 
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
@@ -74,28 +75,29 @@ def add_question(file):
         title = file[0]
         message = file[1]
     query = '''
-    INSERT INTO question(submission_time ,view_number, vote_number, title, message, image)
-    VALUES ('{}', 0, 0, '{}', '{}', '{}')'''.format(sub_time, title, message, image)
+    INSERT INTO question(submission_time ,view_number, vote_number, title, message, image, edit_submission_time)
+    VALUES ('{}', 0, 0, '{}', '{}', '{}', '{}')'''.format(sub_time, title, message, image, sub_time)
     connection.db_mod_without_return(query=query)
 
 
 def add_answer(file, id_num):
+    sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
         message, image = file
     except ValueError:
         image = None
         message = file[0]
     query = '''
-    INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-    VALUES (current_timestamp, 0, {}, '{}', '{}')'''.format(id_num, message, image)
+    INSERT INTO answer(submission_time, vote_number, question_id, message, image, edit_submission_time)
+    VALUES ('{}', 0, {}, '{}', '{}', '{}')'''.format(sub_time, id_num, message, image, sub_time)
     connection.db_mod_without_return(query=query)
 
 
 def add_comment(id_type, message, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
-    INSERT INTO comment({}, message, submission_time)
-    VALUES ({}, '{}', '{}')'''.format(id_type, id_num, message, sub_time)
+    INSERT INTO comment({}, message, submission_time, edit_submission_time)
+    VALUES ({}, '{}', '{}', '{}')'''.format(id_type, id_num, message, sub_time, sub_time)
     connection.db_mod_without_return(query=query)
 
 
@@ -105,14 +107,14 @@ def edit_question(file, id_num):
         title, message, image = file
         query = '''
             UPDATE question
-            SET title = '{}', message = '{}', image = '{}', submission_time = '{}'
+            SET title = '{}', message = '{}', image = '{}', edit_submission_time = '{}'
             WHERE id = {}'''.format(title, message, image, sub_time, id_num)
         return connection.db_mod_without_return(query=query)
     except ValueError:
         title, message = file
         query = '''
             UPDATE question
-            SET title = '{}', message = '{}', submission_time = '{}'
+            SET title = '{}', message = '{}', edit_submission_time = '{}'
             WHERE id = {}'''.format(title, message, sub_time, id_num)
         return connection.db_mod_without_return(query=query)
 
@@ -121,7 +123,7 @@ def edit_comment(id_num, message):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
     UPDATE comment
-    SET  message = '{}', submission_time = '{}'
+    SET  message = '{}', edit_submission_time = '{}', edited_count = edited_count + 1
     WHERE id = {}'''.format(message, sub_time, id_num)
     return connection.db_mod_without_return(query=query)
 
@@ -139,14 +141,14 @@ def edit_answer(file, id_num):
         message, image = file
         query = '''
             UPDATE answer
-            SET message = '{}', image = '{}', submission_time = '{}'
+            SET message = '{}', image = '{}', edit_submission_time = '{}'
             WHERE id = {}'''.format(message, image, sub_time, id_num)
         return connection.db_mod_without_return(query=query)
     except ValueError:
         message = file[0]
     query = '''
         UPDATE answer
-        SET message = '{}', submission_time = '{}'
+        SET message = '{}', edit_submission_time = '{}'
         WHERE id = {}'''.format(message, sub_time, id_num)
     return connection.db_mod_without_return(query=query)
 
@@ -211,3 +213,14 @@ def modify_tags(question_id, new_tags):
             INSERT INTO question_tag(question_id, tag_id)
             VALUES ({}, {})'''.format(question_id, tag_id)
             connection.db_mod_without_return(query=query)
+
+
+def get_name_of_image(filename):
+    i = 1
+    while True:
+        if os.path.exists(f"static/{filename}"):
+            print(filename)
+            filename = filename + str(i)
+            i += 1
+        else:
+            return filename

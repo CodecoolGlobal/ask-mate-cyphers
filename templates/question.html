@@ -32,6 +32,9 @@
                 </td>
                 <td>
                     <p class="light">Posted on {{ question.submission_time }}</p>
+                    {% if question.edit_submission_time != question.submission_time %}
+                        <p class="light">Edited on {{ question.edit_submission_time }}</p>
+                    {% endif %}
                 </td>
             </tr>
             <tr>
@@ -49,7 +52,7 @@
             <tr>
                 <td colspan="2">
                     {% if question.image != 'None' %}
-                        <img src=/{{ question.image }} alt="image">
+                        <img src={{ question.image }} alt="image">
                     {% endif %}
                 </td>
             </tr>
@@ -77,6 +80,10 @@
                 <tr>
                     <td colspan="2">
                         <p class="light">Posted on {{ comment.submission_time }}</p>
+                        {% if comment.edit_submission_time != comment.submission_time %}
+                            <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                        {% endif %}
+                        <p class="light">Edited {{ comment.edited_count }} times</p>
                     </td>
                 </tr>
                 <tr>
@@ -105,7 +112,10 @@
                             <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
                         </td>
                         <td colspan="3">
-                             Posted on {{ answer.submission_time }}
+                            Posted on {{ answer.submission_time }}<br>
+                            {% if answer.edit_submission_time != answer.submission_time %}
+                                Edit on {{ answer.edit_submission_time }}
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
@@ -114,7 +124,7 @@
                         </td>
                         <td>
                             {% if answer.image != 'None' %}
-                                <img src=/{{ answer.image }} alt="image" width="200"><br><br>
+                                <img src={{ answer.image }} alt="image" width="200"><br><br>
                             {% endif %}
                         </td>
                     </tr>
@@ -139,6 +149,10 @@
                             <tr>
                                 <td colspan="2">
                                     <p class="light">Posted on {{ comment.submission_time }}</p>
+                                    {% if comment.edit_submission_time != comment.submission_time %}
+                                        <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                                    {% endif %}
+                                    <p class="light">Edited {{ comment.edited_count }} times</p>
                                 </td>
                             </tr>
                             <tr>

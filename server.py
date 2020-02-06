@@ -48,8 +48,9 @@ def route_add_question():
         file = [request.form[item] for item in request.form]
         image = request.files["image"]
         if image.filename != "":
-            image.save(os.path.join("static", image.filename))
-            file.append(f"static/{image.filename}")
+            filename = data_manager.get_name_of_image(image.filename)
+            image.save(os.path.join("static", filename))
+            file.append(f"/static/{filename}")
         data_manager.add_question(file)
         questions = data_manager.get_all_questions_without_limit()
         new_id = 0
@@ -66,8 +67,9 @@ def route_new_answer(question_id):
         file = [request.form[item] for item in request.form]
         image = request.files["image"]
         if image.filename != "":
-            image.save(os.path.join("static", image.filename))
-            file.append(f"static/{image.filename}")
+            filename = data_manager.get_name_of_image(image.filename)
+            image.save(os.path.join("static", filename))
+            file.append(f"/static/{filename}")
         data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}/question")
     question = data_manager.get_question(int(question_id))
@@ -101,13 +103,13 @@ def route_question_delete(question_id):
     question = data_manager.get_question(int(question_id))
     comments = data_manager.get_all_comment()
     for answer in answers:
-        if os.path.exists(answer['image']):
-            os.remove(answer['image'])
+        if os.path.exists(answer['image'][1:]):
+            os.remove(answer['image'][1:])
         for comment in comments:
             if answer['id'] == comment['answer_id']:
                 data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
-    if os.path.exists(question[0]['image']):
-        os.remove(question[0]['image'])
+    if os.path.exists(question[0]['image'][1:]):
+        os.remove(question[0]['image'][1:])
     data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
     data_manager.delete_by_id('comment', 'question_id', int(question_id))
     data_manager.delete_by_id('answer', 'question_id', int(question_id))
@@ -125,7 +127,7 @@ def route_question_edit(question_id):
         image = request.files["image"]
         if image.filename != "":
             image.save(os.path.join("static", image.filename))
-            file.append(f"static/{image.filename}")
+            file.append(f"/static/{image.filename}")
         data_manager.edit_question(file, int(question_id))
         return redirect(f"/question/{question_id}/question")
 
@@ -145,8 +147,8 @@ def route_question_vote_down(question_id, route):
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
     answer = data_manager.get_answer(int(answer_id))
-    if os.path.exists(answer[0]['image']):
-        os.remove(answer[0]['image'])
+    if os.path.exists(answer[0]['image'][1:]):
+        os.remove(answer[0]['image'][1:])
     data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
     data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
@@ -205,7 +207,7 @@ def route_answer_edit(answer_id):
         image = request.files["image"]
         if image.filename != "":
             image.save(os.path.join("static", image.filename))
-            file.append(f"static/{image.filename}")
+            file.append(f"/static/{image.filename}")
         data_manager.edit_answer(file, int(answer_id))
         answer = data_manager.get_answer(answer_id)
         return redirect(f"/question/{answer[0]['question_id']}/question")
