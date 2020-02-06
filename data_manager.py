@@ -81,9 +81,9 @@ def add_question(file):
     try:
         title, message, image = file
         query = '''
-            INSERT INTO question(submission_time ,view_number, vote_number, title, message, image)
-            VALUES (%s, 0, 0, %s, %s, %s)'''
-        list_of_var = [sub_time, title, message, image]
+            INSERT INTO question(submission_time, edit_submission_time, view_number, vote_number, title, message, image)
+            VALUES (%s, %s, 0, 0, %s, %s, %s)'''
+        list_of_var = [sub_time, sub_time, title, message, image]
     except ValueError:
         title = file[0]
         message = file[1]
