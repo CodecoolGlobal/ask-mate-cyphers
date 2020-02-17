@@ -2,9 +2,41 @@ import data_manager
 import util
 import os
 import os.path
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash, session
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+
+@app.route('/registration')
+def registration():
+    if request.method == 'POST':
+        req = request.form
+        hashed_password = util.hash_password(req['password'])
+        if not util.verify_password(req['password_again'], hashed_password):
+            flash('The passwords are different!')
+            return redirect(request.url)
+        else:
+            util.users[req['email']] = util.hash_password(req['password'])
+            return redirect(url_for('login'))
+    return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        req = request.form
+        try:
+            if not util.verify_password(req['password'], util.users[req['email']]):
+                flash('Wrong password!')
+                return redirect(request.url)
+            else:
+                session['email'] = req['email']
+                return redirect(url_for('route_main'))
+        except KeyError:
+            flash('Wrong email!')
+            return redirect(request.url)
+    return render_template('login.html')
 
 
 @app.route("/")
