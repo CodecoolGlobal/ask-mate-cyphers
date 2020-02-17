@@ -8,37 +8,6 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
-@app.route('/registration')
-def registration():
-    if request.method == 'POST':
-        req = request.form
-        hashed_password = util.hash_password(req['password'])
-        if not util.verify_password(req['password_again'], hashed_password):
-            flash('The passwords are different!')
-            return redirect(request.url)
-        else:
-            [req['email']] = util.hash_password(req['password'])
-            return redirect(url_for('login'))
-    return render_template('registration.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        req = request.form
-        try:
-            if not util.verify_password(req['password'], data_manager.get_password(req['email'])[0]['password']):
-                flash('Wrong password!')
-                return redirect(request.url)
-            else:
-                session['email'] = req['email']
-                return redirect(url_for('route_main'))
-        except IndexError:
-            flash('Wrong email!')
-            return redirect(request.url)
-    return render_template('login.html')
-
-
 @app.route("/")
 def route_main(question_id=None, order_by="id", order_direction="desc"):
     if request.args.get('order_by') is not None:
@@ -79,6 +48,8 @@ def route_question(question_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def route_add_question():
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
         image = request.files["image"]
@@ -269,7 +240,7 @@ def route_search(tag=None):
         print(questions)
         return render_template('search.html', questions=questions, answers=None, search=tag)
 
-                        
+
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
 def route_tag_edit(question_id):
     if request.method == "GET":
@@ -282,6 +253,48 @@ def route_tag_edit(question_id):
         new_tags = [item.lstrip('#') for item in new_tags]
         data_manager.modify_tags(question_id, new_tags)
         return redirect(f"/question/{question_id}/question")
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'POST':
+        req = request.form
+        hashed_password = util.hash_password(req['password'])
+        if not util.verify_password(req['password_again'], hashed_password):
+            flash('The passwords are different!')
+            return redirect(request.url)
+        else:
+            list_of_data = [req['username'], req['email'], util.hash_password(req['password'])]
+            data_manager.add_new_user(list_of_data)
+            return redirect(url_for('route_main'))
+    return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'id' in session:
+        return redirect(url_for('route_main'))
+    if request.method == 'POST':
+        req = request.form
+        try:
+            if not util.verify_password(req['password'], data_manager.get_password(req['username'])[0]['password']):
+                flash('Wrong password!')
+                return redirect(request.url)
+            else:
+                session['id'] = data_manager.get_user_id(req['username'])[0]['id']
+                session['username'] = req['username']
+                return redirect(url_for('route_main'))
+        except IndexError:
+            flash('Wrong email!')
+            return redirect(request.url)
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('route_main'))
 
 
 if __name__ == '__main__':

@@ -26,6 +26,16 @@ body {
     z-index: 3;
 }
 
+#header p.logo {
+    font-size: 1.2vw;
+    display: block;
+    padding: 0.57vw;
+    margin-left: 1%;
+    margin-right: 13vw;
+    position: absolute;
+    left: 1100px;
+}
+
 #header a.logo {
     font-size: 1.2vw;
     display: block;

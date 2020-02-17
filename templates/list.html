@@ -8,7 +8,14 @@
         <div id="header">
             <a href="/" class="logo">AskMate</a>
             <a href="/list" class="menu">Questions</a>
-            <a href="/add-question" class="menu">New question</a>
+            {% if 'id' in session %}
+                <p class="logo">{{ session['username'] }}</p>
+                <a href="/add-question" class="menu">New question</a>
+                <a href="{{ url_for('logout') }}" class="menu">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu">Login</a>
+            {% endif %}
+            <a href="{{ url_for('registration') }}" class="menu">Registration</a>
             <form action="/search">
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
@@ -18,9 +25,12 @@
             <div class="dropdown-content">
                 <a href="/list?order_by=title&order_direction={{ new_order_dir }}" class="dropdown-link">Title</a>
                 <a href="/list?order_by=message&order_direction={{ new_order_dir }}" class="dropdown-link">Message</a>
-                <a href="/list?order_by=view_number&order_direction={{ new_order_dir }}" class="dropdown-link">View Number</a>
-                <a href="/list?order_by=vote_number&order_direction={{ new_order_dir }}" class="dropdown-link">Vote Number</a>
-                <a href="/list?order_by=submission_time&order_direction={{ new_order_dir }}" class="dropdown-link">Most Recent</a>
+                <a href="/list?order_by=view_number&order_direction={{ new_order_dir }}" class="dropdown-link">View
+                    Number</a>
+                <a href="/list?order_by=vote_number&order_direction={{ new_order_dir }}" class="dropdown-link">Vote
+                    Number</a>
+                <a href="/list?order_by=submission_time&order_direction={{ new_order_dir }}" class="dropdown-link">Most
+                    Recent</a>
             </div>
         </div>
         <div id="main_page_list">
@@ -29,7 +39,7 @@
                     <tr>
                         <td rowspan="3">
                             <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_up"><img
+                               href="/question/{{ question.id }}/list/vote_up"><img
                                     src="/static/voteup.png" alt="Upvote" width="15"></a>
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
@@ -51,7 +61,7 @@
                                 {{ question.vote_number }}
                             {% endif %}
                             <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_down"><img
+                               href="/question/{{ question.id }}/list/vote_down"><img
                                     src="/static/votedown.png" alt="Downvote" width="15"></a>
                         </td>
                         <td>
@@ -62,7 +72,7 @@
                         </td>
                     </tr>
                     <tr>
-                         <td colspan="2">{{ question.title }}</td>
+                        <td colspan="2">{{ question.title }}</td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -71,7 +81,7 @@
                             {% else %}
                                 {{ question.message }}
                             {% endif %}
-                         </td>
+                        </td>
                     </tr>
                     {% if question.image != 'None' %}
                         <tr>

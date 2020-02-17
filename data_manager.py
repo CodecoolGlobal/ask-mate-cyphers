@@ -4,15 +4,6 @@ import util
 import os
 
 
-def get_password(email):
-    query = '''
-    SELECT password
-    FROM users
-    WHERE email_address = %s'''
-    list_of_var = [email]
-    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
-
-
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
     SELECT *
@@ -300,9 +291,38 @@ def get_whole_tags(tag_name):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
-def registration(list_of_data):
+def get_password(username):
     query = '''
-    INSERT INTO users (username, email_address, registration_date, password)
-    VALUES (%s, %s, %s, %s)'''
-    list_of_var = list_of_data
-    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+    SELECT password
+    FROM users
+    WHERE username = %s'''
+    list_of_var = [username]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def add_new_user(list_of_data):
+    username, email_address, password = list_of_data
+    registration_date = datetime.datetime.now().replace(microsecond=0).isoformat()
+    query = '''
+    INSERT INTO users(username, email_address, registration_date, password)
+    VALUES (%s, %s, %s, %s)'''.format(registration_date)
+    list_of_var = [username, email_address, registration_date, password]
+    return connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
+def get_user_id(username):
+    query = '''
+    SELECT id
+    FROM users
+    WHERE username = %s'''
+    list_of_var = [username]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_user_name_by_id(id_num):
+    query = '''
+    SELECT username
+    FROM users
+    WHERE id = %s'''
+    list_of_var = [id_num]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
