@@ -4,6 +4,15 @@ import util
 import os
 
 
+def get_password(email):
+    query = '''
+    SELECT password
+    FROM users
+    WHERE email_address = %s'''
+    list_of_var = [email]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
     SELECT *
