@@ -56,7 +56,7 @@ CREATE TABLE comment (
 
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
-    id integer,
+    id serial NOT NULL,
     username text,
     email_address text,
     registration_date timestamp without time zone,
@@ -120,7 +120,7 @@ ALTER TABLE ONLY answer
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
 
-INSERT INTO users VALUES (1, 'CoryonKane', 'test@test.com', '2020-02-17 09:43:00', 50, '$2b$12$GSe0MVPaocELPfqge517ze0c8X5Csm1jklkMdKnfkVpxgi71/8Yl6');
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('CoryonKane', 'test@test.com', '2020-02-17 09:43:00', 50, '$2b$12$GSe0MVPaocELPfqge517ze0c8X5Csm1jklkMdKnfkVpxgi71/8Yl6');
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', 'None', 1);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
@@ -143,10 +143,9 @@ INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is to
 INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00', '2017-05-02 16:55:00', 0, 1);
 SELECT pg_catalog.setval('comment_id_seq', 2, true);
 
-INSERT INTO tag VALUES (1, 'python');
-INSERT INTO tag VALUES (2, 'sql');
-INSERT INTO tag VALUES (3, 'css');
-SELECT pg_catalog.setval('tag_id_seq', 3, true);
+INSERT INTO tag (name) VALUES ('python');
+INSERT INTO tag (name) VALUES ('sql');
+INSERT INTO tag (name) VALUES ('css');
 
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);

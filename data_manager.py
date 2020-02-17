@@ -289,3 +289,9 @@ def get_whole_tags(tag_name):
         WHERE tag.name = %s'''
     list_of_var = [tag_name]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def registration(list_of_data):
+    query = '''
+    INSERT INTO users (username, email_address, registration_date, reputation, password)
+    VALUES (%s, %s, %s, %s, %s)'''
