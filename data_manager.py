@@ -79,53 +79,55 @@ def vote(table, id_num, num, column):
 def add_question(file):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
-        title, message, image = file
+        title, message, image, id = file
         query = '''
-            INSERT INTO question(submission_time, edit_submission_time, view_number, vote_number, title, message, image)
-            VALUES (%s, %s, 0, 0, %s, %s, %s)'''
-        list_of_var = [sub_time, sub_time, title, message, image]
+            INSERT INTO question(submission_time, edit_submission_time, view_number, vote_number, title, message, image, user_id)
+            VALUES (%s, %s, 0, 0, %s, %s, %s, %s)'''
+        list_of_var = [sub_time, sub_time, title, message, image, id]
     except ValueError:
         title = file[0]
         message = file[1]
+        id = file[2]
         query = '''
-        INSERT INTO question(submission_time ,view_number, vote_number, title, message, edit_submission_time)
+        INSERT INTO question(submission_time ,view_number, vote_number, title, message, edit_submission_time, user_id)
         VALUES (%s, 0, 0, %s, %s, %s)'''
-        list_of_var = [sub_time, title, message, sub_time]
+        list_of_var = [sub_time, title, message, sub_time, id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def add_answer(file, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
-        message, image = file
+        message, image, id = file
         query = '''
-            INSERT INTO answer(submission_time, vote_number, question_id, message, image, edit_submission_time)
-            VALUES (%s, 0, %s, %s, %s, %s)'''
-        list_of_var = [sub_time, id_num, message, image, sub_time]
+            INSERT INTO answer(submission_time, vote_number, question_id, message, image, edit_submission_time, user_id)
+            VALUES (%s, 0, %s, %s, %s, %s, %s)'''
+        list_of_var = [sub_time, id_num, message, image, sub_time, id]
     except ValueError:
         message = file[0]
+        id = file[1]
         query = '''
-            INSERT INTO answer(submission_time, vote_number, question_id, message, edit_submission_time)
-            VALUES (%s, 0, %s, %s, %s)'''
-        list_of_var = [sub_time, id_num, message, sub_time]
+            INSERT INTO answer(submission_time, vote_number, question_id, message, edit_submission_time, user_id)
+            VALUES (%s, 0, %s, %s, %s, %s)'''
+        list_of_var = [sub_time, id_num, message, sub_time, id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
-def add_comment_to_question(message, id_num):
+def add_comment_to_question(message, q_id_num, u_id):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
-    INSERT INTO comment(question_id, message, submission_time, edit_submission_time)
-    VALUES (%s, %s, %s, %s)'''
-    list_of_var = [id_num, message, sub_time, sub_time]
+    INSERT INTO comment(question_id, message, submission_time, edit_submission_time, user_id)
+    VALUES (%s, %s, %s, %s, %s)'''
+    list_of_var = [q_id_num, message, sub_time, sub_time, u_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
-def add_comment_to_answer(message, id_num):
+def add_comment_to_answer(message, q_id_num, u_id):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
-    INSERT INTO comment(answer_id, message, submission_time, edit_submission_time)
+    INSERT INTO comment(answer_id, message, submission_time, edit_submission_time, user_id)
     VALUES (%s, %s, %s, %s)'''
-    list_of_var = [id_num, message, sub_time, sub_time]
+    list_of_var = [q_id_num, message, sub_time, sub_time, u_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
