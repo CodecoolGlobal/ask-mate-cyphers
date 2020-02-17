@@ -17,7 +17,7 @@ def registration():
             flash('The passwords are different!')
             return redirect(request.url)
         else:
-            util.users[req['email']] = util.hash_password(req['password'])
+            [req['email']] = util.hash_password(req['password'])
             return redirect(url_for('login'))
     return render_template('registration.html')
 
@@ -27,13 +27,13 @@ def login():
     if request.method == 'POST':
         req = request.form
         try:
-            if not util.verify_password(req['password'], util.users[req['email']]):
+            if not util.verify_password(req['password'], data_manager.get_password(req['email'])[0]['password']):
                 flash('Wrong password!')
                 return redirect(request.url)
             else:
                 session['email'] = req['email']
                 return redirect(url_for('route_main'))
-        except KeyError:
+        except IndexError:
             flash('Wrong email!')
             return redirect(request.url)
     return render_template('login.html')
