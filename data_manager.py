@@ -293,5 +293,7 @@ def get_whole_tags(tag_name):
 
 def registration(list_of_data):
     query = '''
-    INSERT INTO users (username, email_address, registration_date, reputation, password)
-    VALUES (%s, %s, %s, %s, %s)'''
+    INSERT INTO users (username, email_address, registration_date, password)
+    VALUES (%s, %s, %s, %s)'''
+    list_of_var = list_of_data
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
