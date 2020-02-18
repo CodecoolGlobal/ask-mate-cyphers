@@ -1,26 +1,38 @@
 {% extends "layout.html" %}
+{% block title %}List of users{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
         {% if 'id' in session %}
             <p class="logo">{{ session['username'] }}</p>
         {% endif %}
-        <p class="logo">{{ session['username'] }}</p>
-        <a href="/" class="logo">AskMate</a>
-        <a href="/" class="menu">Back to the forum</a>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/">Back</a>
+            <a href="/list">Questions</a>
+            <a href="/add-question">New question</a>
+        </div>
     <div id="users">
         <table>
             <tr>
-                <td>User id</td>
-                <td>User name</td>
-                <td>Registration date</td>
-                <td>Count of asked</td>
-                <td>Count of answers</td>
-                <td>Count of comments</td>
-                <td>Reputation</td>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Registration date</th>
+                <th>Questions</th>
+                <th>Answers</th>
+                <th>Comments</th>
+                <th>Reputation</th>
             </tr>
             {% for user in users %}
                 <tr>
@@ -34,5 +46,6 @@
                 </tr>
             {% endfor %}
         </table>
+    </div>
     </div>
 {% endblock %}

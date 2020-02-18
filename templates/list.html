@@ -27,13 +27,12 @@
                 </div>
             </div>
             <a href="/list" class="active">Questions</a>
-            <a href="/add-question">New question</a>
-                        {% if 'id' in session %}
+            <a href="{{ url_for('tags_data') }}">Tags</a>
+            {% if 'id' in session %}
                 <a href="{{ url_for('list_users') }}">Users</a>
                 <p class="logo">{{ session['username'] }}</p>
                 <a href="/add-question">New question</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
-                <a href="{{ url_for('tags_data') }}">Tags</a>
             {% else %}
                 <a href="{{ url_for('registration') }}">Registration</a>
                 <a href="{{ url_for('login') }}">Login</a>
