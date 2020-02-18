@@ -57,6 +57,7 @@ def route_add_question():
             filename = data_manager.get_name_of_image(image.filename)
             image.save(os.path.join("static", filename))
             file.append(f"/static/{filename}")
+        file.append(session['id'])
         data_manager.add_question(file)
         questions = data_manager.get_all_questions_without_limit()
         new_id = 0
@@ -76,6 +77,7 @@ def route_new_answer(question_id):
             filename = data_manager.get_name_of_image(image.filename)
             image.save(os.path.join("static", filename))
             file.append(f"/static/{filename}")
+        file.append(session['id'])
         data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}/question")
     question = data_manager.get_row_from_table('question', int(question_id))
@@ -86,7 +88,7 @@ def route_new_answer(question_id):
 def route_question_comment(question_id):
     if request.method == "POST":
         file = request.form['message']
-        data_manager.add_comment_to_question(file, int(question_id))
+        data_manager.add_comment_to_question(file, int(question_id), session['id'])
         return redirect(f"/question/{question_id}/question")
     question = data_manager.get_row_from_table('question', int(question_id))
     return render_template("question_comment.html", question=question, question_id=question_id)
@@ -97,7 +99,7 @@ def route_answer_comment(answer_id):
     if request.method == "POST":
         answer = data_manager.get_row_from_table('answer', int(answer_id))
         file = request.form['message']
-        data_manager.add_comment_to_answer('answer', file, int(answer_id))
+        data_manager.add_comment_to_answer(file, int(answer_id), session['id'])
         return redirect(f"/question/{answer[0]['question_id']}/question")
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return render_template("answer_comment.html", answer=answer, answer_id=answer_id)
