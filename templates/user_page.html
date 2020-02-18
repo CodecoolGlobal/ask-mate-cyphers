@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div id="header">
+        <p class="logo">{{ session['username'] }}</p>
+        <a href="/" class="logo">AskMate</a>
+        <a href="/question/{{ question_id }}/question" class="menu">To the top</a>
+        <a href="/" class="menu">Back to the forum</a>
+        <a href="{{ url_for('list_users') }}" class="menu">Users</a>
+    </div>
+    <div id="users">
+        <table>
+            <tr>
+                <td>User id</td>
+                <td>User name</td>
+                <td>Registration date</td>
+                <td>Count of asked</td>
+                <td>Count of answers</td>
+                <td>Count of comments</td>
+                <td>Reputation</td>
+            </tr>
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.registration_date }}</td>
+                <td>{{ user.count_of_asked }}</td>
+                <td>{{ user.count_of_answers }}</td>
+                <td>{{ user.count_of_comments }}</td>
+                <td>{{ user.reputation }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="main_page_list">
+        <h1>Questions</h1>
+        {% for question in questions %}
+            <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
+                <tr>
+                    <td>
+                        <p class="light">Viewed {{ question.view_number }} times</p>
+                    </td>
+                    <td>
+                        <p class="light">Posted on {{ question.submission_time }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">{{ question.title }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {% if question.message|length > 500 %}
+                            {{ question.message[:500] }}...
+                        {% else %}
+                            {{ question.message }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if question.image != 'None' %}
+                    <tr>
+                        <td colspan="3">
+                            <img src={{ question.image }} alt="image">
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+        {% endfor %}
+    </div>
+
+    <div id="main_page_list">
+        <h1>Comments</h1>
+        {% for comment in comments %}
+            <table>
+                <tr>
+                    <td colspan="2">
+                        {% if comment.edit_submission_time != comment.submission_time %}
+                            <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                            <p class="light">Edited {{ comment.edited_count }} times</p>
+                        {% else %}
+                            <p class="light">Posted on {{ comment.submission_time }}</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>{{ comment.message }}</p><br>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
+
+    <div id="main_page_list">
+        <h1>Answers</h1>
+        {% for answer in answers %}
+            <table>
+                <tr>
+                    <td colspan="3">
+                        {% if answer.edit_submission_time != answer.submission_time %}
+                            Edit on {{ answer.edit_submission_time }}
+                        {% else %}
+                            Posted on {{ answer.submission_time }}<br>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <p>{{ answer.message }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        {% if answer.image != 'None' %}
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}
