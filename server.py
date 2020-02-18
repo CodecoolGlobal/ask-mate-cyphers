@@ -162,8 +162,6 @@ def route_question_vote_up(question_id, route):
 
 @app.route("/question/<question_id>/<route>/vote_down")
 def route_question_vote_down(question_id, route):
-    if 'id' not in session:
-        return redirect(url_for('route_main'))
     user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
     if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("question", int(question_id), -1, "vote_number")
@@ -219,8 +217,6 @@ def route_edit_comment(comment_id):
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    if 'id' not in session:
-        return redirect(url_for('route_main'))
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
     if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), 1, "vote_number")
@@ -232,8 +228,6 @@ def route_answer_vote_up(answer_id):
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    if 'id' not in session:
-        return redirect(request.url)
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
     if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), -1, "vote_number")
