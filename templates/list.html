@@ -34,7 +34,8 @@
                 <a href="/add-question">New question</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
-                <a href="{{ url_for('registration') }}">Registration</a>
+                            <a href="{{ url_for('tags_data') }}">Tags</a>
+                            <a href="{{ url_for('registration') }}">Registration</a>
                 <a href="{{ url_for('login') }}">Login</a>
             {% endif %}
         </div>
