@@ -328,6 +328,46 @@ def get_user_name_by_id(id_num):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
+def get_users():
+    query = '''
+    SELECT u.id, 
+    username,
+    registration_date,
+    (SELECT count(*) FROM question WHERE user_id = u.id) AS count_of_asked,
+    (SELECT COUNT(*) FROM answer WHERE user_id = u.id) AS count_of_answers,
+    (SELECT COUNT(*) FROM comment WHERE user_id = u.id) AS count_of_comments,
+    reputation
+    FROM users u
+    GROUP BY u.id'''
+    list_of_var = []
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_data_by_user_id(table_name, user_id):
+    query = '''
+        SELECT *
+        FROM {}
+        WHERE user_id = %s'''.format(table_name)
+    list_of_var = [user_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_user(user_id):
+    query = '''
+    SELECT u.id, 
+    username,
+    registration_date,
+    (SELECT count(*) FROM question WHERE user_id = u.id) AS count_of_asked,
+    (SELECT COUNT(*) FROM answer WHERE user_id = u.id) AS count_of_answers,
+    (SELECT COUNT(*) FROM comment WHERE user_id = u.id) AS count_of_comments,
+    reputation
+    FROM users u
+    WHERE id = %s
+    GROUP BY u.id'''
+    list_of_var = [user_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+  
 def connect_vote_to_user_question(id_num, user_id_num):
     query = '''
         INSERT INTO votes (question_id, user_id)
@@ -374,3 +414,4 @@ def user_vote_saving(column, vote_id, u_id):
     VALUES (%s, %s)'''.format(column)
     list_of_var = [vote_id, u_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+

@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block head %}
+    {{ super() }}
     <h1>Login</h1>
 {% endblock %}
 {% block content %}
-    <div id="login">
+    <div id="form">
         <form action="{{ url_for('login') }}" method="post">
             <label for="username">Username</label>
             <input id="username" name="username" type="text" required><br>
