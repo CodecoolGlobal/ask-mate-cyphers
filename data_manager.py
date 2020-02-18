@@ -79,55 +79,55 @@ def vote(table, id_num, num, column):
 def add_question(file):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
-        title, message, image, id = file
+        title, message, image, user_id = file
         query = '''
             INSERT INTO question(submission_time, edit_submission_time, view_number, vote_number, title, message, image, user_id)
             VALUES (%s, %s, 0, 0, %s, %s, %s, %s)'''
-        list_of_var = [sub_time, sub_time, title, message, image, id]
+        list_of_var = [sub_time, sub_time, title, message, image, user_id]
     except ValueError:
         title = file[0]
         message = file[1]
-        id = file[2]
+        user_id = file[2]
         query = '''
         INSERT INTO question(submission_time ,view_number, vote_number, title, message, edit_submission_time, user_id)
-        VALUES (%s, 0, 0, %s, %s, %s)'''
-        list_of_var = [sub_time, title, message, sub_time, id]
+        VALUES (%s, 0, 0, %s, %s, %s, %s)'''
+        list_of_var = [sub_time, title, message, sub_time, user_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def add_answer(file, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:
-        message, image, id = file
+        message, image, user_id = file
         query = '''
             INSERT INTO answer(submission_time, vote_number, question_id, message, image, edit_submission_time, user_id)
             VALUES (%s, 0, %s, %s, %s, %s, %s)'''
-        list_of_var = [sub_time, id_num, message, image, sub_time, id]
+        list_of_var = [sub_time, id_num, message, image, sub_time, user_id]
     except ValueError:
         message = file[0]
-        id = file[1]
+        user_id = file[1]
         query = '''
             INSERT INTO answer(submission_time, vote_number, question_id, message, edit_submission_time, user_id)
             VALUES (%s, 0, %s, %s, %s, %s)'''
-        list_of_var = [sub_time, id_num, message, sub_time, id]
+        list_of_var = [sub_time, id_num, message, sub_time, user_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
-def add_comment_to_question(message, q_id_num, u_id):
+def add_comment_to_question(message, q_id_num, user_id):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
     INSERT INTO comment(question_id, message, submission_time, edit_submission_time, user_id)
     VALUES (%s, %s, %s, %s, %s)'''
-    list_of_var = [q_id_num, message, sub_time, sub_time, u_id]
+    list_of_var = [q_id_num, message, sub_time, sub_time, user_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
-def add_comment_to_answer(message, q_id_num, u_id):
+def add_comment_to_answer(message, q_id_num, user_id):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     query = '''
     INSERT INTO comment(answer_id, message, submission_time, edit_submission_time, user_id)
-    VALUES (%s, %s, %s, %s)'''
-    list_of_var = [q_id_num, message, sub_time, sub_time, u_id]
+    VALUES (%s, %s, %s, %s, %s)'''
+    list_of_var = [q_id_num, message, sub_time, sub_time, user_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
@@ -328,6 +328,46 @@ def get_user_name_by_id(id_num):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
+def get_users():
+    query = '''
+    SELECT u.id, 
+    username,
+    registration_date,
+    (SELECT count(*) FROM question WHERE user_id = u.id) AS count_of_asked,
+    (SELECT COUNT(*) FROM answer WHERE user_id = u.id) AS count_of_answers,
+    (SELECT COUNT(*) FROM comment WHERE user_id = u.id) AS count_of_comments,
+    reputation
+    FROM users u
+    GROUP BY u.id'''
+    list_of_var = []
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_data_by_user_id(table_name, user_id):
+    query = '''
+        SELECT *
+        FROM {}
+        WHERE user_id = %s'''.format(table_name)
+    list_of_var = [user_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def get_user(user_id):
+    query = '''
+    SELECT u.id, 
+    username,
+    registration_date,
+    (SELECT count(*) FROM question WHERE user_id = u.id) AS count_of_asked,
+    (SELECT COUNT(*) FROM answer WHERE user_id = u.id) AS count_of_answers,
+    (SELECT COUNT(*) FROM comment WHERE user_id = u.id) AS count_of_comments,
+    reputation
+    FROM users u
+    WHERE id = %s
+    GROUP BY u.id'''
+    list_of_var = [user_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+  
 def connect_vote_to_user_question(id_num, user_id_num):
     query = '''
         INSERT INTO votes (question_id, user_id)
@@ -383,3 +423,4 @@ def change_answer_accepted(answer_id, value):
     WHERE id = %s'''
     list_of_var = [value, answer_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+

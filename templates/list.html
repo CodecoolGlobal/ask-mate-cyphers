@@ -9,13 +9,14 @@
             <a href="/" class="logo">AskMate</a>
             <a href="/list" class="menu">Questions</a>
             {% if 'id' in session %}
+                <a href="{{ url_for('list_users') }}" class="menu">Users</a>
                 <p class="logo">{{ session['username'] }}</p>
                 <a href="/add-question" class="menu">New question</a>
                 <a href="{{ url_for('logout') }}" class="menu">Logout</a>
             {% else %}
+                <a href="{{ url_for('registration') }}" class="menu">Registration</a>
                 <a href="{{ url_for('login') }}" class="menu">Login</a>
             {% endif %}
-            <a href="{{ url_for('registration') }}" class="menu">Registration</a>
             <form action="/search">
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
