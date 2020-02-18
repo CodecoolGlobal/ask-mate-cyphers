@@ -4,6 +4,15 @@ import util
 import os
 
 
+def get_user_id_by_id(table, question_id):
+    query = '''
+    SELECT user_id
+    FROM {}
+    WHERE id = %s'''.format(table)
+    list_of_var = [question_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
     SELECT *
@@ -32,11 +41,11 @@ def get_answers_by_question_id(question_id):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
-def get_answer(id_num):
+def get_row_from_table(table, id_num):
     query = '''
     SELECT *
-    FROM answer
-    WHERE id = %s'''
+    FROM {}
+    WHERE id = %s'''.format(table)
     list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
@@ -55,15 +64,6 @@ def get_all_comment():
     SELECT *
     FROM comment'''
     list_of_var = []
-    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
-
-
-def get_question(id_num):
-    query = '''
-    SELECT *
-    FROM question
-    WHERE id=%s'''
-    list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
@@ -326,3 +326,51 @@ def get_user_name_by_id(id_num):
     WHERE id = %s'''
     list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def connect_vote_to_user_question(id_num, user_id_num):
+    query = '''
+        INSERT INTO votes (question_id, user_id)
+        VALUES (%s, %s)
+        '''
+    list_of_var = [id_num, user_id_num]
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
+def connect_vote_to_user_answer(id_num, user_id_num):
+    query = '''
+        INSERT INTO votes (answer_id, user_id)
+        VALUES (%s, %s)
+        '''
+    list_of_var = [id_num, user_id_num]
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
+def check_if_user_voted_question(question_id, u_id):
+    query = '''
+    SELECT *
+    FROM votes
+    WHERE question_id = %s AND user_id = %s'''
+    list_of_var = [question_id, u_id]
+    if connection.db_mod_list_with_return(query=query, list_of_var=list_of_var):
+        return True
+    return False
+
+
+def check_if_user_voted_answer(answer_id, u_id):
+    query = '''
+    SELECT *
+    FROM votes
+    WHERE answer_id = %s AND user_id = %s'''
+    list_of_var = [answer_id, u_id]
+    if connection.db_mod_list_with_return(query=query, list_of_var=list_of_var):
+        return True
+    return False
+
+
+def user_vote_saving(column, vote_id, u_id):
+    query = '''
+    INSERT INTO votes ({}, user_id)
+    VALUES (%s, %s)'''.format(column)
+    list_of_var = [vote_id, u_id]
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
