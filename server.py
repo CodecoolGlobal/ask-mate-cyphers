@@ -31,7 +31,10 @@ def route_list(question_id=None, order_by="id", order_direction="desc"):
 
 @app.route("/question/<question_id>")
 def route_question_view(question_id):
-    data_manager.vote("question", int(question_id), 1, "view_number")
+    print(question_id)
+    question = data_manager.get_row_from_table('question', question_id)[0]
+    if session["id"] != question["user_id"]:
+        data_manager.vote("question", int(question_id), 1, "view_number")
     return redirect(f"/question/{question_id}/question")
 
 
@@ -154,6 +157,16 @@ def route_question_vote_up(question_id, route):
     return redirect(f"/question/{question_id}/{route}")
 
 
+@app.route("/question/<question_id>/<route>/vote_down")
+def route_question_vote_down(question_id, route):
+    owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
+    if not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and 'id' in session and int(session["id"]) != owner_id:
+        data_manager.vote("question", int(question_id), -1, "vote_number")
+        data_manager.vote('users', int(question_id), -2, 'reputation')
+        data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
+    return redirect(f"/question/{question_id}/{route}")
+
+
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
     owner_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
@@ -163,16 +176,6 @@ def route_answer_vote_up(answer_id):
         data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
-
-
-@app.route("/question/<question_id>/<route>/vote_down")
-def route_question_vote_down(question_id, route):
-    owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and 'id' in session and int(session["id"]) != owner_id:
-        data_manager.vote("question", int(question_id), -1, "vote_number")
-        data_manager.vote('users', int(question_id), -2, 'reputation')
-        data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
-    return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/answer/<answer_id>/vote_down")
@@ -369,6 +372,12 @@ def user_page(user_id):
 def tags_data():
     tags = data_manager.get_tags_data()
     return render_template('tags.html', tags=tags)
+
+
+@app.route('/answer/comment/<answer_id>')
+def route_from_comment_to_question(answer_id):
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
+    return redirect(f"/question/{answer[0]['question_id']}")
 
 
 if __name__ == '__main__':
