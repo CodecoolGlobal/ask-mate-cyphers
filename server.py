@@ -126,6 +126,7 @@ def route_question_delete(question_id):
                 data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
     if os.path.exists(question[0]['image'][1:]):
         os.remove(question[0]['image'][1:])
+    data_manager.delete_by_id('votes', 'question_id', int(question_id))
     data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
     data_manager.delete_by_id('comment', 'question_id', int(question_id))
     data_manager.delete_by_id('answer', 'question_id', int(question_id))
@@ -177,6 +178,7 @@ def route_answer_delete(answer_id):
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     if os.path.exists(answer[0]['image'][1:]):
         os.remove(answer[0]['image'][1:])
+    data_manager.delete_by_id('votes', 'answer_id', int(answer_id))
     data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
     data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
@@ -218,7 +220,7 @@ def route_edit_comment(comment_id):
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+    if not data_manager.check_if_user_voted_answer(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), 1, "vote_number")
         data_manager.vote('users', int(answer_id), 10, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, user_id)
@@ -229,7 +231,7 @@ def route_answer_vote_up(answer_id):
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+    if not data_manager.check_if_user_voted_answer(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), -1, "vote_number")
         data_manager.vote('users', int(answer_id), -2, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, user_id)
@@ -297,7 +299,13 @@ def registration():
     if request.method == 'POST':
         req = request.form
         hashed_password = util.hash_password(req['password'])
-        if not util.verify_password(req['password_again'], hashed_password):
+        if data_manager.check_user_data('username', req['username']) is True:
+            flash('Wrong name!')
+            return redirect(request.url)
+        elif data_manager.check_user_data('email_address', req['email']) is True:
+            flash('Wrong email!')
+            return redirect(request.url)
+        elif not util.verify_password(req['password_again'], hashed_password):
             flash('The passwords are different!')
             return redirect(request.url)
         else:

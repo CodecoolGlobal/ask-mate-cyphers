@@ -432,3 +432,16 @@ def get_tags_data():
     GROUP BY t.name, t.id '''
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def check_user_data(column, data):
+    query = '''
+    SELECT {}
+    FROM users
+    WHERE {} = %s'''.format(column, column)
+    list_of_var = [data]
+    if connection.db_mod_list_with_return(query=query, list_of_var=list_of_var):
+        return True
+    return False
+
+
