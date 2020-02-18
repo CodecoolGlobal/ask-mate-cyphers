@@ -4,18 +4,31 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <a href="/" class="logo">AskMate</a>
-        <a href="/" class="menu">Back to the forum</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/">Back</a>
+            <a href="/list">Questions</a>
+            <a href="/add-question" class="active">New question</a>
+        </div>
     <div id="form">
         <h1>Ask a question</h1>
         <form action="/add-question" method="POST" enctype="multipart/form-data">
             <input type="text" id="title" name="title" placeholder="Title" required><br>
             <textarea id="message" name="message" placeholder="Question" required></textarea><br>
             <input type="file" id="image" name="image" value="/static">
-            <label for="image">Add image</label>
-            <input type="submit" value="Submit">
+            <label for="image" class="leftbutton">Add image</label>
+            <input type="submit" value="Submit" class="rightbutton">
         </form>
+    </div>
     </div>
 {% endblock %}

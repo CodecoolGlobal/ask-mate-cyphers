@@ -1,21 +1,31 @@
 {% extends "layout.html" %}
 {% block title %}{{ question.title }}{% endblock %}
 {% block head %}
-  {{ super() }}
+    {{ super() }}
 {% endblock %}
 {% block content %}
-<div id="main_page">
-    <div id="header">
-        <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ question_id }}/question" class="menu">To the top</a>
-        <a href="/" class="menu">Back to the forum</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+<div class="page_body">
+        <div class="menu">
+            <a href="" class="active">This question</a>
+            <a href="/list">Questions</a>
+            <a href="/add-question">New question</a>
+        </div>
     <div id="question_page">
         <table>
             <tr>
                 <td rowspan="6">
                     <a href="/question/{{ question.id }}/question/vote_up"><img
-                               src="/static/voteup.png" alt="Upvote" width="15"></a>
+                               src="/static/voteup.png" alt="Upvote" width="15"></a><br>
                     {% if question.vote_number >= 1000000000 %}
                         a lot
                     {% elif question.vote_number <= -1000000000 %}
@@ -34,19 +44,19 @@
                         {{ proc_err|int }}K
                     {% else %}
                         {{ question.vote_number }}
-                    {% endif %}
+                    {% endif %}<br>
                     <a href="/question/{{ question.id }}/question/vote_down"><img
                                src="/static/votedown.png" alt="Downvote" width="15"></a>
                 </td>
                 <td>
-                    <p class="light">Viewed {{ question.view_number }} times</p>
+                    {% if question.edit_submission_time != question.submission_time %}
+                        <p class="light">Edited on {{ question.edit_submission_time }} by (user_name)</p>
+                    {% else %}
+                        <p class="light">Posted on {{ question.submission_time }} by (user_name)</p>
+                    {% endif %}
                 </td>
                 <td>
-                    {% if question.edit_submission_time != question.submission_time %}
-                        <p class="light">Edited on {{ question.edit_submission_time }}</p>
-                    {% else %}
-                        <p class="light">Posted on {{ question.submission_time }}</p>
-                    {% endif %}
+                    <p class="light">Viewed {{ question.view_number }} times</p>
                 </td>
             </tr>
             <tr>
@@ -54,11 +64,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    {% if question.message|length > 500 %}
-                        {{ question.message[:500] }}...
-                    {% else %}
-                        {{ question.message }}
-                    {% endif %}
+                    {{ question.message }}
                 </td>
             </tr>
             <tr>

@@ -4,33 +4,39 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="main_page">
-        <div id="header">
-            <a href="/" class="logo">AskMate</a>
-            <a href="/list" class="menu">Questions</a>
-            <a href="/add-question" class="menu">New question</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
             <form action="/search">
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
         </div>
-        <div class="dropdown">
-            <span class="dropdown-button">Sort by</span>
-            <div class="dropdown-content">
-                <a href="/list?order_by=title&order_direction={{ new_order_dir }}" class="dropdown-link">Title</a>
-                <a href="/list?order_by=message&order_direction={{ new_order_dir }}" class="dropdown-link">Message</a>
-                <a href="/list?order_by=view_number&order_direction={{ new_order_dir }}" class="dropdown-link">View Number</a>
-                <a href="/list?order_by=vote_number&order_direction={{ new_order_dir }}" class="dropdown-link">Vote Number</a>
-                <a href="/list?order_by=submission_time&order_direction={{ new_order_dir }}" class="dropdown-link">Most Recent</a>
+    </div>
+    <div class="page_body">
+        <div class="menu">
+            <div class="dropdown">
+                <button onclick="dropdown_menu()" class="dropbutton">Sort</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="/list?order_by=title&order_direction={{ new_order_dir }}" class="dropdown-link">Title</a>
+                    <a href="/list?order_by=message&order_direction={{ new_order_dir }}" class="dropdown-link">Message</a>
+                    <a href="/list?order_by=view_number&order_direction={{ new_order_dir }}" class="dropdown-link">View Number</a>
+                    <a href="/list?order_by=vote_number&order_direction={{ new_order_dir }}" class="dropdown-link">Vote Number</a>
+                    <a href="/list?order_by=submission_time&order_direction={{ new_order_dir }}" class="dropdown-link">Most Recent</a>
+                </div>
             </div>
+            <a href="/list" class="active">Questions</a>
+            <a href="/add-question">New question</a>
         </div>
         <div id="main_page_list">
             {% for question in questions %}
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
-                        <td rowspan="3">
+                        <td rowspan="2">
                             <a onclick="event.stopPropagation()"
                                        href="/question/{{ question.id }}/list/vote_up"><img
-                                    src="/static/voteup.png" alt="Upvote" width="15"></a>
+                                    src="/static/voteup.png" alt="Upvote" width="15"></a><br>
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
                             {% elif question.vote_number <= -1000000000 %}
@@ -49,22 +55,23 @@
                                 {{ proc_err|int }}K
                             {% else %}
                                 {{ question.vote_number }}
-                            {% endif %}
+                            {% endif %}<br>
                             <a onclick="event.stopPropagation()"
                                        href="/question/{{ question.id }}/list/vote_down"><img
                                     src="/static/votedown.png" alt="Downvote" width="15"></a>
                         </td>
                         <td>
-                            <p class="light">Viewed {{ question.view_number }} times</p>
+                            <p class="light">Posted by (user_name) on {{ question.submission_time }}</p>
                         </td>
                         <td>
-                            <p class="light">Posted on {{ question.submission_time }}</p>
+                            <p class="light">Viewed {{ question.view_number }} times</p>
                         </td>
                     </tr>
                     <tr>
                          <td colspan="2">{{ question.title }}</td>
                     </tr>
                     <tr>
+                        <td>&nbsp;</td>
                         <td colspan="2">
                             {% if question.message|length > 500 %}
                                 {{ question.message[:500] }}...
@@ -82,6 +89,7 @@
                     {% endif %}
                 </table>
             {% endfor %}
-        </div>
     </div>
+    </div>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 <html>
   <head>
     {% block head %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='even_newer_style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>{% block title %}{% endblock %} | AskMate</title>
     {% endblock %}
@@ -10,8 +10,8 @@
   <body>
         {% block content %}{% endblock %}
     <div id="footer">
-        {% block footer %}
-        {% endblock %}
+        {% block footer %}<br>{% endblock %}
     </div>
   </body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </html>
