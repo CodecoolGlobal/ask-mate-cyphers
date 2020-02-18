@@ -12,7 +12,7 @@ body {
     --bg-color-2: #40444b;
     --bg-color-3: #36393f;
     color: var(--text-color);
-    background-color: var(--bg-color-3);
+    background-color: var(--first-color);
 }
 
 a {
@@ -23,7 +23,7 @@ a {
 .page_body {
     margin: 0 calc(50% - 480px);
     border-left: 2px solid var(--second-color);
-    min-height: calc(100vh - 54px);
+    min-height: calc(100vh - 58px);
     padding-bottom: 10px;
 }
 
@@ -464,6 +464,28 @@ a.answer_button:hover {
     color: var(--text-color);
 }
 
+#form input[type=email] {
+    background-color: var(--bg-color-2);
+    box-sizing: border-box;
+    border: 1px solid var(--third-color);
+    border-radius: 4px;
+    width: 90%;
+    padding: 12px 20px;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+#form input[type=password] {
+    background-color: var(--bg-color-2);
+    box-sizing: border-box;
+    border: 1px solid var(--third-color);
+    border-radius: 4px;
+    width: 90%;
+    padding: 12px 20px;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
 #form input[type=text]:focus {
     border: none;
 }
@@ -479,6 +501,7 @@ a.answer_button:hover {
     resize: none;
     color: var(--text-color);
     margin-bottom: 28px;
+    font-size: 18px;
 }
 
 #form input[type=submit] {
@@ -660,4 +683,53 @@ a.answer_button:hover {
     padding-right: 40px;
     text-align: right;
     width: 160px;
+}
+
+h1.tag {
+    font-size: 25px;
+    padding: 15px;
+}
+
+#tags {
+    display: flex;
+}
+
+#tags a {
+    font-size: 20px;
+    margin: 16px;
+    display: block;
+    padding: 12px;
+    background-color: var(--bg-color-2);
+    border: 2px solid var(--third-color);
+    border-radius: 4px;
+}
+
+#tags a:hover {
+    background-color: var(--second-color);
+}
+
+#users table {
+    text-align: center;
+    font-size: 18px;
+    position: relative;
+    top: 30px;
+    margin-left: 42px;
+    width: 860px;
+    background-color: var(--bg-color-2);
+    border: 2px solid var(--third-color);
+    border-collapse: collapse;
+    border-radius: 4px;
+}
+
+#users th {
+    background-color: var(--second-color);
+    padding: 6px 0;
+}
+
+#users tr:nth-child(2) td {
+    padding: 20px 0 10px 0;
+}
+
+#users td {
+    padding: 10px 0;
 }

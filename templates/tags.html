@@ -3,24 +3,26 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <p class="logo">{{ session['username'] }}</p>
-        <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ question_id }}/question" class="menu">To the top</a>
-        <a href="/" class="menu">Back to the forum</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
-
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="{{ url_for('tags_data') }}" class="active">Tags</a>
+            <a href="/">Back</a>
+        </div>
+    <h1 class="tag">Tag name and count</h1>
     <div id="tags">
-        <table>
-            <tr>
-                <td>Tag name</td>
-                <td>Count of marked</td>
-            </tr>
             {% for tag in tags %}
-                <tr>
-                    <td>{{ tag.name }}</td>
-                    <td>{{ tag.count_of_marked }}</td>
-                </tr>
+                    <a href="/search/{{ tag.name }}">{{ tag.name }} - {{ tag.count_of_marked }}</a>
             {% endfor %}
         </table>
     </div>

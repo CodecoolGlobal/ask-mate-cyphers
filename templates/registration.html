@@ -1,20 +1,31 @@
 {% extends "layout.html" %}
 {% block head %}
     {{ super() }}
-    <h1>Registration</h1>
 {% endblock %}
 {% block content %}
-    <div id="registration">
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
+    </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="/">Back</a>
+        </div>
+    <div id="form">
+        <h1>Registration</h1>
         <form action="{{ url_for('registration') }}" method="post">
-            <label for="username">Username</label>
-            <input id="username" name="username" type="text" required><br>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required><br>
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" required><br>
-            <label for="password_again">Password again</label>
-            <input id="password_again" name="password_again" type="password" required><br>
-            <button type="submit">Submit</button>
+            <input id="username" name="username" type="text" required placeholder="Username"><br>
+            <input id="email" name="email" type="email" required placeholder="example@example.com"><br>
+            <input id="password" name="password" type="password" required placeholder="Password"><br>
+            <input id="password_again" name="password_again" type="password" required placeholder="Password again"><br>
+            <input type="submit" value="Submit">
         </form>
     </div>
 {% endblock %}
