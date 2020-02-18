@@ -41,7 +41,7 @@ def get_answers_by_question_id(question_id):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
-def get_row_from_table(id_num, table):
+def get_row_from_table(table, id_num):
     query = '''
     SELECT *
     FROM {}
