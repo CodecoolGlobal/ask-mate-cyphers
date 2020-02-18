@@ -117,20 +117,13 @@ def route_question_delete(question_id):
         return redirect(url_for('route_main'))
     answers = data_manager.get_answers_by_question_id(int(question_id))
     question = data_manager.get_row_from_table('question', int(question_id))
-    comments = data_manager.get_all_comment()
     for answer in answers:
         if os.path.exists(answer['image'][1:]):
             os.remove(answer['image'][1:])
-        for comment in comments:
-            if answer['id'] == comment['answer_id']:
-                data_manager.delete_by_id('comment', 'answer_id', int(comment['answer_id']))
     if os.path.exists(question[0]['image'][1:]):
         os.remove(question[0]['image'][1:])
-    data_manager.delete_by_id('votes', 'question_id', int(question_id))
-    data_manager.delete_by_id('question_tag', 'question_id', int(question_id))
-    data_manager.delete_by_id('comment', 'question_id', int(question_id))
-    data_manager.delete_by_id('answer', 'question_id', int(question_id))
     data_manager.delete_by_id('question', 'id', int(question_id))
+    data_manager.tag_delete()
     return redirect("/")
 
 
@@ -178,8 +171,6 @@ def route_answer_delete(answer_id):
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     if os.path.exists(answer[0]['image'][1:]):
         os.remove(answer[0]['image'][1:])
-    data_manager.delete_by_id('votes', 'answer_id', int(answer_id))
-    data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
     data_manager.delete_by_id('answer', 'id', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
 
@@ -272,9 +263,10 @@ def route_search(tag=None):
     else:
         list_of_question_id = data_manager.get_whole_tags(tag_name=tag)
         questions = []
-        for i in list_of_question_id:
-            question = data_manager.get_row_from_table('question', i["question_id"])[0]
-            questions.append(question)
+        if list_of_question_id[0]['question_id'] is not None:
+            for i in list_of_question_id:
+                question = data_manager.get_row_from_table('question', i["question_id"])[0]
+                questions.append(question)
         return render_template('search.html', questions=questions, answers=None, search=tag)
 
 
@@ -330,7 +322,7 @@ def login():
                 session['username'] = req['username']
                 return redirect(url_for('route_main'))
         except IndexError:
-            flash('Wrong email!')
+            flash('Wrong username!')
             return redirect(request.url)
     return render_template('login.html')
 

@@ -367,7 +367,7 @@ def get_user(user_id):
     list_of_var = [user_id]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
-  
+
 def connect_vote_to_user_question(id_num, user_id_num):
     query = '''
         INSERT INTO votes (question_id, user_id)
@@ -429,7 +429,8 @@ def get_tags_data():
     query = '''
     SELECT t.name as name,
     (SELECT COUNT(*) FROM question_tag WHERE tag_id = t.id) as count_of_marked FROM tag t
-    GROUP BY t.name, t.id '''
+    GROUP BY t.name, t.id
+     ORDER BY count_of_marked'''
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
@@ -445,3 +446,9 @@ def check_user_data(column, data):
     return False
 
 
+def tag_delete():
+    query = '''
+    DELETE FROM tag t
+    WHERE t.id not in (SELECT tag_id FROM question_tag)'''
+    list_of_var = []
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)

@@ -71,30 +71,34 @@
     <div id="main_page_list">
         <h1>Comments</h1>
         {% for comment in comments %}
-            <table>
-                <tr>
-                    <td colspan="2">
-                        {% if comment.edit_submission_time != comment.submission_time %}
-                            <p class="light">Edited on {{ comment.edit_submission_time }}</p>
-                            <p class="light">Edited {{ comment.edited_count }} times</p>
-                        {% else %}
-                            <p class="light">Posted on {{ comment.submission_time }}</p>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <p>{{ comment.message }}</p><br>
-                    </td>
-                </tr>
-            </table>
+            {% if comment.answer_id %}
+                <table class="pointer" onclick="document.location = '/question/{{ comment.question_id }}'; ">
+            {% else %}
+                <table class="pointer" onclick="document.location = '/question/{{ comment.answer_id }}'; ">
+            {% endif %}
+        <tr>
+            <td colspan="2">
+                {% if comment.edit_submission_time != comment.submission_time %}
+                    <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                    <p class="light">Edited {{ comment.edited_count }} times</p>
+                {% else %}
+                    <p class="light">Posted on {{ comment.submission_time }}</p>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p>{{ comment.message }}</p><br>
+            </td>
+        </tr>
+        </table>
         {% endfor %}
     </div>
 
     <div id="main_page_list">
         <h1>Answers</h1>
         {% for answer in answers %}
-            <table>
+            <table class="pointer" onclick="document.location = '/question/{{ answer.question_id }}'; ">
                 <tr>
                     <td colspan="3">
                         {% if answer.edit_submission_time != answer.submission_time %}
