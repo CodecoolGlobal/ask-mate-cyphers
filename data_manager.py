@@ -217,15 +217,6 @@ def get_tags(question_id):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
-def get_tag_id(tag_name):
-    query = '''
-        SELECT id
-        FROM tag
-        WHERE name = %s'''
-    list_of_var = [tag_name]
-    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
-
-
 def get_all_tag_names():
     query = '''
         SELECT name
@@ -235,30 +226,17 @@ def get_all_tag_names():
 
 
 def modify_tags(question_id, new_tags):
-    old_tags = [tag['name'] for tag in get_tags(question_id)]
-    all_tags = [tag['name'] for tag in get_all_tag_names()]
-    for tag in old_tags:
-        if tag not in new_tags:
-            tag_id = get_tag_id(tag)[0]['id']
-            query = '''
-            DELETE FROM question_tag
-            WHERE question_id = %s AND tag_id = %s'''
-            list_of_var = [question_id, tag_id]
-            connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
     for tag in new_tags:
-        if tag not in old_tags:
-            if tag not in all_tags:
-                query = '''
-                INSERT INTO tag (name)
-                VALUES (%s)'''
-                list_of_var = [tag]
-                connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
-            tag_id = get_tag_id(tag)[0]['id']
-            query = '''
-            INSERT INTO question_tag(question_id, tag_id)
-            VALUES (%s, %s)'''
-            list_of_var = [question_id, tag_id]
-            connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+        query = '''
+        INSERT INTO tag (name)
+        SELECT %s
+        WHERE NOT EXISTS (SELECT name FROM tag WHERE name = %s);
+        INSERT INTO question_tag(question_id, tag_id)
+        SELECT %s, (SELECT id FROM tag WHERE name = %s)
+        WHERE NOT EXISTS (SELECT question_id, tag_id FROM question_tag 
+        WHERE question_id = %s and tag_id = (SELECT id FROM tag WHERE name = %s))'''
+        list_of_var = [tag, tag, question_id, tag, question_id, tag]
+        connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
 def get_name_of_image(filename):
@@ -430,7 +408,7 @@ def get_tags_data():
     SELECT t.name as name,
     (SELECT COUNT(*) FROM question_tag WHERE tag_id = t.id) as count_of_marked FROM tag t
     GROUP BY t.name, t.id
-     ORDER BY count_of_marked'''
+    ORDER BY count_of_marked'''
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 

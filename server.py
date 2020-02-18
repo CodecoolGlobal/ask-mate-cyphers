@@ -147,9 +147,9 @@ def route_question_edit(question_id):
 @app.route("/question/<question_id>/<route>/vote_up")
 def route_question_vote_up(question_id, route):
     user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and session["id"] != user_id:
         data_manager.vote("question", int(question_id), 1, "vote_number")
-        data_manager.vote('users', int(user_id), 5, 'reputation')
+        data_manager.vote('users', int(question_id), 5, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, user_id)
     return redirect(f"/question/{question_id}/{route}")
 
