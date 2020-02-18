@@ -25,7 +25,8 @@ CREATE TABLE question (
     vote_number integer,
     title text,
     message text,
-    image text default 'None'
+    image text default 'None',
+    user_id integer NOT NULL
 );
 
 DROP TABLE IF EXISTS public.answer;
@@ -36,7 +37,9 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    image text default 'None'
+    image text default 'None',
+    user_id integer NOT NULL,
+    accepted boolean DEFAULT FALSE
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -47,7 +50,27 @@ CREATE TABLE comment (
     message text,
     submission_time timestamp without time zone,
     edit_submission_time timestamp without time zone,
-    edited_count integer default 0
+    edited_count integer default 0,
+    user_id integer NOT NULL
+);
+
+
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    question_id integer,
+    answer_id integer,
+    user_id integer NOT NULL
+);
+
+
+DROP TABLE IF EXISTS public.users CASCADE;
+CREATE TABLE users (
+    id serial NOT NULL,
+    username text,
+    email_address text,
+    registration_date timestamp without time zone,
+    reputation integer DEFAULT 0,
+    password text
 );
 
 
@@ -79,6 +102,18 @@ ALTER TABLE ONLY question_tag
 ALTER TABLE ONLY tag
     ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
 
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_users_id PRIMARY KEY (id);
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id);
+
+ALTER TABLE votes
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id);
 
@@ -94,7 +129,17 @@ ALTER TABLE ONLY comment
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
 
-INSERT INTO question VALUES (0, '2017-04-28 08:29:00', '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', 'None');
+ALTER TABLE ONLY question
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
+INSERT INTO users (username, email_address, registration_date, reputation, password) VALUES ('CoryonKane', 'test@test.com', '2020-02-17 09:43:00', 50, '$2b$12$GSe0MVPaocELPfqge517ze0c8X5Csm1jklkMdKnfkVpxgi71/8Yl6');
+INSERT INTO question VALUES (0, '2017-04-28 08:29:00', '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', 'None', 1);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -103,23 +148,22 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 
 jquery
 booklet
-app.js (bundled file with webpack, including jquery)', 'None');
+app.js (bundled file with webpack, including jquery)', 'None', 1);
 INSERT INTO question VALUES (2, '2017-05-01 10:41:00', '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
-', 'None');
+', 'None', 1);
 SELECT pg_catalog.setval('question_id_seq', 2, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', 'None');
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'None');
+INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', 'None', 1, False);
+INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'None', 1, False);
 SELECT pg_catalog.setval('answer_id_seq', 2, true);
 
-INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00', '2017-05-01 05:49:00', 0);
-INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00', '2017-05-02 16:55:00', 0);
+INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00', '2017-05-01 05:49:00', 0, 1);
+INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00', '2017-05-02 16:55:00', 0, 1);
 SELECT pg_catalog.setval('comment_id_seq', 2, true);
 
-INSERT INTO tag VALUES (1, 'python');
-INSERT INTO tag VALUES (2, 'sql');
-INSERT INTO tag VALUES (3, 'css');
-SELECT pg_catalog.setval('tag_id_seq', 3, true);
+INSERT INTO tag (name) VALUES ('python');
+INSERT INTO tag (name) VALUES ('sql');
+INSERT INTO tag (name) VALUES ('css');
 
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);

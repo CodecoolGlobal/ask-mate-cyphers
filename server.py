@@ -2,9 +2,10 @@ import data_manager
 import util
 import os
 import os.path
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash, session, url_for
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
@@ -36,7 +37,7 @@ def route_question_view(question_id):
 
 @app.route("/question/<question_id>/question")
 def route_question(question_id):
-    question = data_manager.get_question(int(question_id))
+    question = data_manager.get_row_from_table('question', int(question_id))
     tags = data_manager.get_tags(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     question_comment = data_manager.get_comment('question_id', int(question_id))
@@ -47,6 +48,8 @@ def route_question(question_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def route_add_question():
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
         image = request.files["image"]
@@ -54,6 +57,7 @@ def route_add_question():
             filename = data_manager.get_name_of_image(image.filename)
             image.save(os.path.join("static", filename))
             file.append(f"/static/{filename}")
+        file.append(session['id'])
         data_manager.add_question(file)
         questions = data_manager.get_all_questions_without_limit()
         new_id = 0
@@ -66,6 +70,8 @@ def route_add_question():
 
 @app.route("/question/<question_id>/new-answer", methods=["GET", "POST"])
 def route_new_answer(question_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
         image = request.files["image"]
@@ -73,37 +79,44 @@ def route_new_answer(question_id):
             filename = data_manager.get_name_of_image(image.filename)
             image.save(os.path.join("static", filename))
             file.append(f"/static/{filename}")
+        file.append(session['id'])
         data_manager.add_answer(file, int(question_id))
         return redirect(f"/question/{question_id}/question")
-    question = data_manager.get_question(int(question_id))
+    question = data_manager.get_row_from_table('question', int(question_id))
     return render_template("post_answer.html", question=question, question_id=question_id)
 
 
 @app.route("/question/<question_id>/new-comment", methods=["GET", "POST"])
 def route_question_comment(question_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "POST":
         file = request.form['message']
-        data_manager.add_comment_to_question(file, int(question_id))
+        data_manager.add_comment_to_question(file, int(question_id), session['id'])
         return redirect(f"/question/{question_id}/question")
-    question = data_manager.get_question(int(question_id))
+    question = data_manager.get_row_from_table('question', int(question_id))
     return render_template("question_comment.html", question=question, question_id=question_id)
 
 
 @app.route("/answer/<answer_id>/new-comment", methods=["GET", "POST"])
 def route_answer_comment(answer_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "POST":
-        answer = data_manager.get_answer(int(answer_id))
+        answer = data_manager.get_row_from_table('answer', int(answer_id))
         file = request.form['message']
-        data_manager.add_comment_to_answer(file, int(answer_id))
+        data_manager.add_comment_to_answer(file, int(answer_id), session['id'])
         return redirect(f"/question/{answer[0]['question_id']}/question")
-    answer = data_manager.get_answer(int(answer_id))
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
     return render_template("answer_comment.html", answer=answer, answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/delete")
 def route_question_delete(question_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     answers = data_manager.get_answers_by_question_id(int(question_id))
-    question = data_manager.get_question(int(question_id))
+    question = data_manager.get_row_from_table('question', int(question_id))
     comments = data_manager.get_all_comment()
     for answer in answers:
         if os.path.exists(answer['image'][1:]):
@@ -122,8 +135,10 @@ def route_question_delete(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def route_question_edit(question_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "GET":
-        question = data_manager.get_question(int(question_id))
+        question = data_manager.get_row_from_table('question', int(question_id))
         return render_template("edit_question.html", question=question, question_id=question_id)
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
@@ -137,19 +152,31 @@ def route_question_edit(question_id):
 
 @app.route("/question/<question_id>/<route>/vote_up")
 def route_question_vote_up(question_id, route):
-    data_manager.vote("question", int(question_id), 1, "vote_number")
+    user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
+    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+        data_manager.vote("question", int(question_id), 1, "vote_number")
+        data_manager.vote('users', int(user_id), 5, 'reputation')
+        data_manager.user_vote_saving('question_id', question_id, user_id)
     return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/question/<question_id>/<route>/vote_down")
 def route_question_vote_down(question_id, route):
-    data_manager.vote("question", int(question_id), -1, "vote_number")
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
+    user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
+    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+        data_manager.vote("question", int(question_id), -1, "vote_number")
+        data_manager.vote('users', int(question_id), -2, 'reputation')
+        data_manager.user_vote_saving('question_id', question_id, user_id)
     return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/answer/<answer_id>/delete")
 def route_answer_delete(answer_id):
-    answer = data_manager.get_answer(int(answer_id))
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
     if os.path.exists(answer[0]['image'][1:]):
         os.remove(answer[0]['image'][1:])
     data_manager.delete_by_id('comment', 'answer_id', int(answer_id))
@@ -159,20 +186,24 @@ def route_answer_delete(answer_id):
 
 @app.route("/comment/<comment_id>/delete")
 def route_comment_delete(comment_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     comment = data_manager.get_comment('id', int(comment_id))
     data_manager.delete_by_id('comment', 'id', int(comment_id))
     if comment[0]['question_id'] is None:
-        answer = data_manager.get_answer(int(comment[0]['answer_id']))
+        answer = data_manager.get_row_from_table('answer', int(comment[0]['answer_id']))
         comment = answer
     return redirect(f"/question/{comment[0]['question_id']}/question")
 
 
 @app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
 def route_edit_comment(comment_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == 'GET':
         comment = data_manager.get_comment('id', int(comment_id))
         if comment[0]['question_id'] is None:
-            answer = data_manager.get_answer(int(comment[0]['answer_id']))
+            answer = data_manager.get_row_from_table('answer', int(comment[0]['answer_id']))
             return render_template("edit_comment.html", comment=comment, answer=answer, comment_id=comment_id)
         else:
             return render_template("edit_comment.html", comment=comment, comment_id=comment_id, answer='')
@@ -181,29 +212,43 @@ def route_edit_comment(comment_id):
         message = request.form['message']
         data_manager.edit_comment(int(comment_id), message)
         if comment[0]['question_id'] is None:
-            answer = data_manager.get_answer(int(comment[0]['answer_id']))
+            answer = data_manager.get_row_from_table('answer', int(comment[0]['answer_id']))
             comment = answer
         return redirect(f'/question/{comment[0]["question_id"]}/question')
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
-    answer = data_manager.get_answer(int(answer_id))
-    data_manager.vote("answer", int(answer_id), 1, "vote_number")
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
+    user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
+    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+        data_manager.vote("answer", int(answer_id), 1, "vote_number")
+        data_manager.vote('users', int(answer_id), 10, 'reputation')
+        data_manager.user_vote_saving('answer_id', answer_id, user_id)
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
-    answer = data_manager.get_answer(int(answer_id))
-    data_manager.vote("answer", int(answer_id), -1, "vote_number")
+    if 'id' not in session:
+        return redirect(request.url)
+    user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
+    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
+        data_manager.vote("answer", int(answer_id), -1, "vote_number")
+        data_manager.vote('users', int(answer_id), -2, 'reputation')
+        data_manager.user_vote_saving('answer_id', answer_id, user_id)
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
 @app.route("/answer/<answer_id>/edit", methods=["GET", "POST"])
 def route_answer_edit(answer_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "GET":
-        answer = data_manager.get_answer(answer_id)
+        answer = data_manager.get_row_from_table('answer', answer_id)
         return render_template("edit_answer.html", answer=answer, answer_id=answer_id)
     if request.method == "POST":
         file = [request.form[item] for item in request.form]
@@ -212,7 +257,7 @@ def route_answer_edit(answer_id):
             image.save(os.path.join("static", image.filename))
             file.append(f"/static/{image.filename}")
         data_manager.edit_answer(file, int(answer_id))
-        answer = data_manager.get_answer(answer_id)
+        answer = data_manager.get_row_from_table('answer', answer_id)
         return redirect(f"/question/{answer[0]['question_id']}/question")
 
 
@@ -225,21 +270,22 @@ def route_search(tag=None):
         answers = data_manager.search_answer(search=search)
         questions_with_answers = []
         for answer in answers:
-            question_list = [data_manager.get_question(answer["question_id"])[0], answer]
+            question_list = [data_manager.get_row_from_table('question', answer["question_id"])[0], answer]
             questions_with_answers.append(question_list)
         return render_template('search.html', questions=questions, answers=questions_with_answers, search=search)
     else:
         list_of_question_id = data_manager.get_whole_tags(tag_name=tag)
         questions = []
         for i in list_of_question_id:
-            question = data_manager.get_question(i["question_id"])[0]
+            question = data_manager.get_row_from_table('question', i["question_id"])[0]
             questions.append(question)
-        print(questions)
         return render_template('search.html', questions=questions, answers=None, search=tag)
 
-                        
+
 @app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
 def route_tag_edit(question_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
     if request.method == "GET":
         raw_tags = data_manager.get_tags(question_id)
         tags = ['#' + str(tag['name']) for tag in raw_tags]
@@ -250,6 +296,85 @@ def route_tag_edit(question_id):
         new_tags = [item.lstrip('#') for item in new_tags]
         data_manager.modify_tags(question_id, new_tags)
         return redirect(f"/question/{question_id}/question")
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'POST':
+        req = request.form
+        hashed_password = util.hash_password(req['password'])
+        if not util.verify_password(req['password_again'], hashed_password):
+            flash('The passwords are different!')
+            return redirect(request.url)
+        else:
+            list_of_data = [req['username'], req['email'], util.hash_password(req['password'])]
+            data_manager.add_new_user(list_of_data)
+            return redirect(url_for('route_main'))
+    return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'id' in session:
+        return redirect(url_for('route_main'))
+    if request.method == 'POST':
+        req = request.form
+        try:
+            if not util.verify_password(req['password'], data_manager.get_password(req['username'])[0]['password']):
+                flash('Wrong password!')
+                return redirect(request.url)
+            else:
+                session['id'] = data_manager.get_user_id(req['username'])[0]['id']
+                session['username'] = req['username']
+                return redirect(url_for('route_main'))
+        except IndexError:
+            flash('Wrong email!')
+            return redirect(request.url)
+    return render_template('login.html')
+
+
+@app.route('/answer/<answer_id>/accept/<value>')
+def route_answer_accept_change(answer_id, value):
+    answer = data_manager.get_row_from_table('answer', answer_id)
+    value = util.change_boolean_value(value)
+    if value:
+        data_manager.vote('users', int(answer[0]["user_id"]), 15, 'reputation')
+    else:
+        data_manager.vote('users', int(answer[0]["user_id"]), -15, 'reputation')
+    data_manager.change_answer_accepted(int(answer_id), value)
+    return redirect(f"/question/{answer[0]['question_id']}/question")
+
+
+@app.route('/logout')
+def logout():
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('route_main'))
+
+
+@app.route('/users')
+def list_users():
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
+    users = data_manager.get_users()
+    return render_template('list_users.html', users=users)
+
+
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    if 'id' not in session:
+        return redirect(url_for('route_main'))
+    user = data_manager.get_user(user_id)
+    questions = data_manager.get_data_by_user_id('question', user_id)
+    answers = data_manager.get_data_by_user_id('answer', user_id)
+    comments = data_manager.get_data_by_user_id('comment', user_id)
+    return render_template('user_page.html', user=user[0], questions=questions, answers=answers, comments=comments)
+
+
+@app.route('/tags')
+def tags_data():
+    tags = data_manager.get_tags_data()
+    return render_template('tags.html', tags=tags)
 
 
 if __name__ == '__main__':

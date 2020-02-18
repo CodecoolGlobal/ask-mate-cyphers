@@ -13,6 +13,9 @@
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
             </form>
         </div>
+        {% if 'id' in session %}
+            <p class="logo">{{ session['username'] }}</p>
+        {% endif %}
     </div>
 <div class="page_body">
         <div class="menu">
@@ -46,7 +49,7 @@
                         {{ question.vote_number }}
                     {% endif %}<br>
                     <a href="/question/{{ question.id }}/question/vote_down"><img
-                               src="/static/votedown.png" alt="Downvote" width="15"></a>
+                            src="/static/votedown.png" alt="Downvote" width="15"></a>
                 </td>
                 <td>
                     {% if question.edit_submission_time != question.submission_time %}
@@ -60,7 +63,7 @@
                 </td>
             </tr>
             <tr>
-                 <td colspan="2">{{ question.title }}</td>
+                <td colspan="2">{{ question.title }}</td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -77,7 +80,9 @@
             <tr>
                 <td colspan="2">
                     <div class="tags">
-                        <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
+                        {% if 'id' in session and session['id'] == question.user_id %}
+                            <a href="/question/{{ question_id }}/new-tag">Modify tags:</a>
+                        {% endif %}
                         {% for tag in tags %}
                             <a href="/search/{{ tag.name }}">#{{ tag.name }}</a>
                         {% endfor %}
@@ -86,12 +91,16 @@
             </tr>
             <tr>
                 <td>
-                    <a href="/question/{{ question_id }}/edit" class="button">Edit question</a>
-                    <a href="/question/{{ question_id }}/delete" class="button">Delete question</a>
+                    {% if 'id' in session and session['id'] == question.user_id %}
+                        <a href="/question/{{ question_id }}/edit" class="button">Edit question</a>
+                        <a href="/question/{{ question_id }}/delete" class="button">Delete question</a>
+                    {% endif %}
                 </td>
                 <td>
-                    <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
-                    <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
+                    {% if 'id' in session %}
+                        <a href="/question/{{ question_id }}/new-answer" class="button">Add answer</a>
+                        <a href="/question/{{ question_id }}/new-comment" class="button">Add comment</a>
+                    {% endif %}
                 </td>
             </tr>
         </table>
@@ -116,88 +125,109 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
+                        {% if 'id' in session and session['id'] == comment.user_id %}
+                            <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
+                        {% endif %}
                     </td>
                     <td>
-                        <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
+                        {% if 'id' in session and session['id'] == comment.user_id %}
+                            <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
         {% endfor %}
     </div>
-        {% for answer in answers %}
-            <div id="answers">
-                <table>
-                    <tr>
-                        <td rowspan="4">
-                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
-                            {{ answer.vote_number }}
-                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
-                        </td>
-                        <td colspan="3">
-                            {% if answer.edit_submission_time != answer.submission_time %}
-                                Edit on {{ answer.edit_submission_time }}
-                            {% else %}
-                                Posted on {{ answer.submission_time }}<br>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <p>{{ answer.message }}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            {% if answer.image != 'None' %}
-                                <img src={{ answer.image }} alt="image" width="200"><br><br>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
-                        </td>
-                        <td>
-                            <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
-                        </td>
-                        <td>
-                            <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
-                        </td>
-                    </tr>
-                </table>
-                </div>
-            {% for comment in answers_comments %}
-                {% if comment.answer_id == answer.id %}
-                    <div id="comments">
-                        <table>
-                            <tr>
-                                <td colspan="2">
-                                    {% if comment.edit_submission_time != comment.submission_time %}
-                                        <p class="light">Edited on {{ comment.edit_submission_time }}</p>
-                                        <p class="light">Edited {{ comment.edited_count }} times</p>
-                                    {% else %}
-                                        <p class="light">Posted on {{ comment.submission_time }}</p>
-                                    {% endif %}
+    {% for answer in answers %}
+        <div id="answers">
+            <table>
+                <tr>
+                    <td rowspan="4">
+                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
+                                                                       width="15"></a>
+                        {{ answer.vote_number }}
+                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
+                                                                         width="15"></a>
+                    </td>
+                    <td colspan="3">
+                        {% if answer.edit_submission_time != answer.submission_time %}
+                            Edit on {{ answer.edit_submission_time }}
+                        {% else %}
+                            Posted on {{ answer.submission_time }}<br>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <p>{{ answer.message }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        {% if answer.image != 'None' %}
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    {% if 'id' in session %}
+                    <td>
+                        <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
+                        {% if session["id"] == question.user_id %}
+                            <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
+                                {% if answer.accepted == False %}
+                                    Accept answer
+                                {% else %}
+                                    Refuse answer
+                                {% endif %}
+                            </a>
+                            </td>
+                            {% if 'id' in session and session['id']  == answer.user_id %}
+                                <td>
+                                    <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <p>{{ comment.message }}</p><br>
+                                <td>
+                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
                                 </td>
-                            </tr>
-                            <tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+        {% for comment in answers_comments %}
+            {% if comment.answer_id == answer.id %}
+                <div id="comments">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                {% if comment.edit_submission_time != comment.submission_time %}
+                                    <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                                    <p class="light">Edited {{ comment.edited_count }} times</p>
+                                {% else %}
+                                    <p class="light">Posted on {{ comment.submission_time }}</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p>{{ comment.message }}</p><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            {% if 'id' in session and session['id'] == comment.user_id %}
                                 <td>
                                     <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
                                 </td>
                                 <td>
                                     <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
                                 </td>
-                            </tr>
-                        </table>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                            {% endif %}
+                        </tr>
+                    </table>
+                </div>
+            {% endif %}
         {% endfor %}
+    {% endfor %}
 {% endblock %}
 </div>

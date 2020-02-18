@@ -1,17 +1,25 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     {% block head %}
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>{% block title %}{% endblock %} | AskMate</title>
     {% endblock %}
-  </head>
-  <body>
-        {% block content %}{% endblock %}
-    <div id="footer">
-        {% block footer %}<br>{% endblock %}
-    </div>
-  </body>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <h3>{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+<div id="footer">
+    {% block footer %}
+    {% endblock %}
+</div>
+</body>
 </html>
