@@ -373,6 +373,12 @@ def user_page(user_id):
     return render_template('user_page.html', user=user[0], questions=questions, answers=answers, comments=comments)
 
 
+@app.route('/tags')
+def tags_data():
+    tags = data_manager.get_tags_data()
+    return render_template('tags.html', tags=tags)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

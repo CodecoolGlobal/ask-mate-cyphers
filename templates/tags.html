@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div id="header">
+        <p class="logo">{{ session['username'] }}</p>
+        <a href="/" class="logo">AskMate</a>
+        <a href="/question/{{ question_id }}/question" class="menu">To the top</a>
+        <a href="/" class="menu">Back to the forum</a>
+    </div>
+
+    <div id="tags">
+        <table>
+            <tr>
+                <td>Tag name</td>
+                <td>Count of marked</td>
+            </tr>
+            {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.count_of_marked }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

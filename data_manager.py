@@ -424,3 +424,11 @@ def change_answer_accepted(answer_id, value):
     list_of_var = [value, answer_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
+
+def get_tags_data():
+    query = '''
+    SELECT t.name as name,
+    (SELECT COUNT(*) FROM question_tag WHERE tag_id = t.id) as count_of_marked FROM tag t
+    GROUP BY t.name, t.id '''
+    list_of_var = []
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)

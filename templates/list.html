@@ -13,6 +13,7 @@
                 <p class="logo">{{ session['username'] }}</p>
                 <a href="/add-question" class="menu">New question</a>
                 <a href="{{ url_for('logout') }}" class="menu">Logout</a>
+                <a href="{{ url_for('tags_data') }}" class="menu">Tags</a>
             {% else %}
                 <a href="{{ url_for('registration') }}" class="menu">Registration</a>
                 <a href="{{ url_for('login') }}" class="menu">Login</a>
