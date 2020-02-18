@@ -152,10 +152,8 @@ def route_question_edit(question_id):
 
 @app.route("/question/<question_id>/<route>/vote_up")
 def route_question_vote_up(question_id, route):
-    if 'id' not in session:
-        return redirect(url_for('route_main'))
     user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)):
+    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("question", int(question_id), 1, "vote_number")
         data_manager.vote('users', int(user_id), 5, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, user_id)
@@ -167,7 +165,7 @@ def route_question_vote_down(question_id, route):
     if 'id' not in session:
         return redirect(url_for('route_main'))
     user_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)):
+    if not data_manager.check_if_user_voted_question(int(question_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("question", int(question_id), -1, "vote_number")
         data_manager.vote('users', int(question_id), -2, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, user_id)
@@ -224,7 +222,7 @@ def route_answer_vote_up(answer_id):
     if 'id' not in session:
         return redirect(url_for('route_main'))
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_answer(answer_id, user_id):
+    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), 1, "vote_number")
         data_manager.vote('users', int(answer_id), 10, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, user_id)
@@ -237,7 +235,7 @@ def route_answer_vote_down(answer_id):
     if 'id' not in session:
         return redirect(request.url)
     user_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_answer(answer_id, user_id):
+    if not data_manager.check_if_user_voted_question(int(answer_id), int(user_id)) and 'id' in session and int(session["id"]) != user_id:
         data_manager.vote("answer", int(answer_id), -1, "vote_number")
         data_manager.vote('users', int(answer_id), -2, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, user_id)
