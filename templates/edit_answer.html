@@ -4,18 +4,29 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <a href="/" class="logo">AskMate</a>
-        <a href="/" class="menu">Back to the forum</a>
-        <a href="/question/{{ answer[0]["question_id"] }}/question" class="menu">Back to the question</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="/add-question">New question</a>
+            <a href="/question/{{ answer[0]["question_id"] }}/question">Back</a>
+        </div>
     <div id="form">
         <h1>Edit your answer:</h1>
         <form action="/answer/{{ answer_id }}/edit" method="POST" enctype="multipart/form-data">
             <textarea rows="10" cols="60" id="message" name="message" required>{{ answer[0]["message"] }}</textarea><br>
-            <label for="image">Add image:</label>
+            <label for="image" class="leftbutton">Add image:</label>
             <input type="file" id="image" name="image" value={{ answer[0]["image"] }}>
-            <input type="submit" value="Submit changes">
+            <input type="submit" value="Submit" class="rightbutton">
         </form>
     </div>
 {% endblock %}

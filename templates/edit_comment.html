@@ -4,14 +4,26 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <a href="/" class="logo">AskMate</a>
-        {% if answer != '' %}
-            <a href="/question/{{ answer[0]['question_id'] }}/question" class="menu">Back to the question</a>
-        {% else %}
-            <a href="/question/{{ comment[0]['question_id'] }}/question" class="menu">Back to the question</a>
-        {% endif %}
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="/add-question">New question</a>
+            {% if answer != '' %}
+                <a href="/question/{{ answer[0]['question_id'] }}/question">Back</a>
+            {% else %}
+                <a href="/question/{{ comment[0]['question_id'] }}/question">Back</a>
+            {% endif %}
+        </div>
     <div id="form">
         <h1>Edit comment</h1>
         <form action="/comment/{{ comment[0]['id'] }}/edit" method="POST">

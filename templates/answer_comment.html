@@ -4,10 +4,22 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ answer[0]['question_id'] }}/question" class="menu">Back to the question</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="/add-question">New question</a>
+            <a href="/question/{{ answer[0]['question_id'] }}/question">Back</a>
+        </div>
     <div id="form">
         <h1 class="center">{{ answer[0]["message"][:50] }}...</h1>
         <form action="/answer/{{ answer_id }}/new-comment" method="POST">

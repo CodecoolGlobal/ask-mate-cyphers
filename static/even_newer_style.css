@@ -401,14 +401,14 @@ a:hover.dropdown-link {
     z-index: -1;
 }
 
+#form table td {
+}
 #form label {
     position: relative;
-    right: 5.208vw;
     background-color: #40444b;
     color: #f7f7f7;
     font-weight: 600;
     font-size: 1vw;
-    padding: 0.625vw 1.042vw;
     border: 1px solid #25272b;
     border-radius: 4px;
     cursor: pointer;

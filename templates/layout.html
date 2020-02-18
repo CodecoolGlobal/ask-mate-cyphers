@@ -2,12 +2,13 @@
 <html>
 <head>
     {% block head %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='even_newer_style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>{% block title %}{% endblock %} | AskMate</title>
     {% endblock %}
 </head>
 <body>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
