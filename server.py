@@ -305,6 +305,18 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/answer/<answer_id>/accept/<value>')
+def route_answer_accept_change(answer_id, value):
+    answer = data_manager.get_row_from_table('answer', answer_id)
+    value = util.change_boolean_value(value)
+    if value:
+        data_manager.vote('users', int(answer[0]["user_id"]), 15, 'reputation')
+    else:
+        data_manager.vote('users', int(answer[0]["user_id"]), -15, 'reputation')
+    data_manager.change_answer_accepted(int(answer_id), value)
+    return redirect(f"/question/{answer[0]['question_id']}/question")
+
+
 @app.route('/logout')
 def logout():
     session.pop('id', None)

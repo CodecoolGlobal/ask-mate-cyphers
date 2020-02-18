@@ -38,7 +38,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text default 'None',
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    accepted boolean DEFAULT FALSE
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -54,7 +55,15 @@ CREATE TABLE comment (
 );
 
 
-DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    question_id integer,
+    answer_id integer,
+    user_id integer NOT NULL
+);
+
+
+DROP TABLE IF EXISTS public.users CASCADE;
 CREATE TABLE users (
     id serial NOT NULL,
     username text,
@@ -62,14 +71,6 @@ CREATE TABLE users (
     registration_date timestamp without time zone,
     reputation integer DEFAULT 0,
     password text
-);
-
-
-DROP TABLE IF EXISTS public.votes;
-CREATE TABLE votes (
-    question_id integer,
-    answer_id integer,
-    user_id integer NOT NULL
 );
 
 
@@ -152,8 +153,8 @@ INSERT INTO question VALUES (2, '2017-05-01 10:41:00', '2017-05-01 10:41:00', 13
 ', 'None', 1);
 SELECT pg_catalog.setval('question_id_seq', 2, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', 'None', 1);
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'None', 1);
+INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', 'None', 1, False);
+INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'None', 1, False);
 SELECT pg_catalog.setval('answer_id_seq', 2, true);
 
 INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00', '2017-05-01 05:49:00', 0, 1);

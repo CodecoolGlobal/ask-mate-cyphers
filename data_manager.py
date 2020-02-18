@@ -374,3 +374,12 @@ def user_vote_saving(column, vote_id, u_id):
     VALUES (%s, %s)'''.format(column)
     list_of_var = [vote_id, u_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
+def change_answer_accepted(answer_id, value):
+    query = '''
+    UPDATE answer
+    SET accepted = %s
+    WHERE id = %s'''
+    list_of_var = [value, answer_id]
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)

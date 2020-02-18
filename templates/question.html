@@ -166,16 +166,25 @@
                 </tr>
                 <tr>
                     {% if 'id' in session %}
-                        <td>
-                            <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
-                        </td>
-                        {% if 'id' in session and session['id']  == answer.user_id %}
-                            <td>
-                                <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
+                    <td>
+                        <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
+                        {% if session["id"] == question.user_id %}
+                            <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
+                                {% if answer.accepted == False %}
+                                    Accept answer
+                                {% else %}
+                                    Refuse answer
+                                {% endif %}
+                            </a>
                             </td>
-                            <td>
-                                <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
-                            </td>
+                            {% if 'id' in session and session['id']  == answer.user_id %}
+                                <td>
+                                    <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
+                                </td>
+                                <td>
+                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
+                                </td>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 </tr>
