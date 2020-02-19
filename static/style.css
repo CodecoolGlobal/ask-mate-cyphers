@@ -96,14 +96,15 @@ a.active {
 .dropbutton {
     background-color: var(--first-color);
     color: white;
-    padding: 6px 119px 6px 6px;
+    padding: 6px 110px 6px 6px;
     font-size: 19px;
     border: none;
     cursor: pointer;
 }
 
 .dropbutton:hover, .dropbutton:focus {
-    background-color: var(--third-color);
+    outline: none;
+    color: var(--second-color);
 }
 
 .dropdown {
@@ -732,4 +733,9 @@ h1.tag {
 
 #users td {
     padding: 10px 0;
+  
+}
+
+.user_page {
+    margin: 40px 30px 10px 30px;
 }
