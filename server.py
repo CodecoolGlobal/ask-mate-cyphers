@@ -377,6 +377,12 @@ def tags_data():
     return render_template('tags.html', tags=tags)
 
 
+@app.route('/answer/comment/<answer_id>')
+def route_from_comment_to_question(answer_id):
+    answer = data_manager.get_row_from_table('answer', int(answer_id))
+    return redirect(f"/question/{answer[0]['question_id']}")
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
