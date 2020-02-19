@@ -31,7 +31,6 @@ def route_list(question_id=None, order_by="id", order_direction="desc"):
 
 @app.route("/question/<question_id>")
 def route_question_view(question_id):
-    print(question_id)
     question = data_manager.get_row_from_table('question', question_id)[0]
     if session["id"] != question["user_id"]:
         data_manager.vote("question", int(question_id), 1, "view_number")
@@ -150,7 +149,7 @@ def route_question_edit(question_id):
 @app.route("/question/<question_id>/<route>/vote_up")
 def route_question_vote_up(question_id, route):
     owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and 'id' in session and session["id"] != owner_id:
+    if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and session["id"] != owner_id:
         data_manager.vote("question", int(question_id), 1, "vote_number")
         data_manager.vote('users', int(question_id), 5, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
@@ -160,7 +159,7 @@ def route_question_vote_up(question_id, route):
 @app.route("/question/<question_id>/<route>/vote_down")
 def route_question_vote_down(question_id, route):
     owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and 'id' in session and int(session["id"]) != owner_id:
+    if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and session["id"] != owner_id:
         data_manager.vote("question", int(question_id), -1, "vote_number")
         data_manager.vote('users', int(question_id), -2, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
@@ -170,7 +169,7 @@ def route_question_vote_down(question_id, route):
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
     owner_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and 'id' in session and int(session["id"]) != owner_id:
+    if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(session["id"]) != owner_id:
         data_manager.vote("answer", int(answer_id), 1, "vote_number")
         data_manager.vote('users', int(answer_id), 10, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
@@ -181,7 +180,7 @@ def route_answer_vote_up(answer_id):
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
     owner_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and 'id' in session and int(session["id"]) != owner_id:
+    if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(session["id"]) != owner_id:
         data_manager.vote("answer", int(answer_id), -1, "vote_number")
         data_manager.vote('users', int(answer_id), -2, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
