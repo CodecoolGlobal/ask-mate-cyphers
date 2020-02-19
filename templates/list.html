@@ -15,7 +15,7 @@
             </form>
         </div>
         {% if 'id' in session %}
-            <p class="logo">{{ session['username'] }}</p>
+            <a href="/user/{{ session['id'] }}">{{ session['username'] }}</a>
         {% endif %}
     </div>
     <div class="page_body">
