@@ -103,7 +103,7 @@
                 <td>
                     {% if 'id' in session and session['id'] == question.user_id %}
                         <a href="/question/{{ question_id }}/edit" class="button">Edit question</a>
-                        <a href="/question/{{ question_id }}/delete" class="button">Delete question</a>
+                        <a href="/question/{{ question_id }}/delete" class="button" onclick="return confirm('Are you sure?')">Delete question</a>
                     {% endif %}
                 </td>
                 <td>
@@ -141,7 +141,7 @@
                     </td>
                     <td>
                         {% if 'id' in session and session['id'] == comment.user_id %}
-                            <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
+                            <a href="/comment/{{ comment.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete comment</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -202,7 +202,7 @@
                                     <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
                                 </td>
                                 <td>
-                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
+                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete answer</a>
                                 </td>
                             {% endif %}
                         {% endif %}
@@ -234,7 +234,7 @@
                                     <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
                                 </td>
                                 <td>
-                                    <a href="/comment/{{ comment.id }}/delete" class="comment_button">Delete comment</a>
+                                    <a href="/comment/{{ comment.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete comment</a>
                                 </td>
                             {% endif %}
                         </tr>
