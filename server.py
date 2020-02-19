@@ -299,6 +299,9 @@ def registration():
         elif data_manager.check_user_data('email_address', req['email']) is True:
             flash('Wrong email!')
             return redirect(request.url)
+        elif len(req['password']) < 7:
+            flash('To short password!')
+            return redirect(request.url)
         elif not util.verify_password(req['password_again'], hashed_password):
             flash('The passwords are different!')
             return redirect(request.url)
