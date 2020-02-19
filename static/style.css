@@ -102,6 +102,10 @@ a {
     border: 1px solid var(--second-color);
 }
 
+.search input[type=text]:focus {
+    outline: 1px solid var(--second-color);
+}
+
 .username {
     margin-left: 50px;
     font-size: 26px;
@@ -419,6 +423,9 @@ a:hover.comment_button {
     word-break: break-word;
 }
 
+table.accepted {
+    border: 2px solid gold !important;
+}
 #answers img {
     max-width: 300px;
     max-height: 300px;
@@ -538,8 +545,14 @@ a.answer_button:hover {
     color: var(--text-color);
 }
 
-#form input[type=text]:focus {
-    border: none;
+#form input[type=text]:focus,
+#form input[type=email]:focus,
+#form input[type=password]:focus,
+#form textarea:focus
+{
+    outline: none;
+    border: 0;
+    box-shadow: 0 0 0 1px var(--second-color);
 }
 
 #form textarea {
