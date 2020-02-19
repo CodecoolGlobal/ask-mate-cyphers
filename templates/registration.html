@@ -18,14 +18,27 @@
             <a href="/list">Questions</a>
             <a href="/">Back</a>
         </div>
-    <div id="form">
-        <h1>Registration</h1>
-        <form action="{{ url_for('registration') }}" method="post">
-            <input id="username" name="username" type="text" required placeholder="Username"><br>
-            <input id="email" name="email" type="email" required placeholder="example@example.com"><br>
-            <input id="password" name="password" type="password" required placeholder="Password"><br>
-            <input id="password_again" name="password_again" type="password" required placeholder="Password again"><br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+        <div class="message">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div id="form">
+            <h1>Registration</h1>
+            <form action="{{ url_for('registration') }}" method="post">
+                <input id="username" name="username" type="text" required placeholder="Username"><br>
+                <input id="email" name="email" type="email" required placeholder="example@example.com"><br>
+                <input id="password" name="password" type="password" required placeholder="Password"><br>
+                <input id="password_again" name="password_again" type="password" required
+                       placeholder="Password again"><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 {% endblock %}
