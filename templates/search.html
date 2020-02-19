@@ -15,7 +15,7 @@
             </form>
         </div>
         {% if 'id' in session %}
-            <a href="/user/{{ session['id'] }}">{{ session['username'] }}</a>
+            <a href="/user/{{ session['id'] }}" class="username">{{ session['username'] }}</a>
         {% endif %}
     </div>
     <div class="page_body">
@@ -36,67 +36,69 @@
     <div id="search_list">
         <h2>Results in questions:</h2>
         {% for question in questions %}
-                <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
+            <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
+                <tr>
+                    <td rowspan="2">
+                        <a onclick="event.stopPropagation()"
+                               href="/question/{{ question.id }}/list/vote_up"><img
+                                src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                        {% if question.vote_number >= 1000000000 %}
+                            a lot
+                        {% elif question.vote_number <= -1000000000 %}
+                            hated
+                        {% elif question.vote_number > 1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number < -1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number > 1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% elif question.vote_number < -1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% else %}
+                            {{ question.vote_number }}
+                        {% endif %}<br>
+                        <a onclick="event.stopPropagation()"
+                               href="/question/{{ question.id }}/list/vote_down"><img
+                                src="/static/votedown.png" alt="Downvote" width="15"></a>
+                    </td>
+                    <td>
+                        <p class="light">Posted by (user_name) on {{ question.submission_time }}</p>
+                    </td>
+                    <td>
+                        <p class="light">Viewed {{ question.view_number }} times</p>
+                    </td>
+                </tr>
+                <tr>
+                     <td colspan="2">{{ question.title }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="2">
+                        {% if question.message|length > 500 %}
+                            {{ question.message[:500] }}...
+                        {% else %}
+                            {{ question.message }}
+                        {% endif %}
+                     </td>
+                </tr>
+                {% if question.image != 'None' %}
                     <tr>
-                        <td rowspan="2">
-                            <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_up"><img
-                                    src="/static/voteup.png" alt="Upvote" width="15"></a><br>
-                            {% if question.vote_number >= 1000000000 %}
-                                a lot
-                            {% elif question.vote_number <= -1000000000 %}
-                                hated
-                            {% elif question.vote_number > 1000000 %}
-                                {% set proc_err = question.vote_number / 1000000 %}
-                                {{ proc_err|int }}M
-                            {% elif question.vote_number < -1000000 %}
-                                {% set proc_err = question.vote_number / 1000000 %}
-                                {{ proc_err|int }}M
-                            {% elif question.vote_number > 1000 %}
-                                {% set proc_err = question.vote_number / 1000 %}
-                                {{ proc_err|int }}K
-                            {% elif question.vote_number < -1000 %}
-                                {% set proc_err = question.vote_number / 1000 %}
-                                {{ proc_err|int }}K
-                            {% else %}
-                                {{ question.vote_number }}
-                            {% endif %}<br>
-                            <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_down"><img
-                                    src="/static/votedown.png" alt="Downvote" width="15"></a>
-                        </td>
-                        <td>
-                            <p class="light">Posted by (user_name) on {{ question.submission_time }}</p>
-                        </td>
-                        <td>
-                            <p class="light">Viewed {{ question.view_number }} times</p>
+                        <td colspan="3">
+                            <img src={{ question.image }} alt="image">
                         </td>
                     </tr>
-                    <tr>
-                         <td colspan="2">{{ question.title }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td colspan="2">
-                            {% if question.message|length > 500 %}
-                                {{ question.message[:500] }}...
-                            {% else %}
-                                {{ question.message }}
-                            {% endif %}
-                         </td>
-                    </tr>
-                    {% if question.image != 'None' %}
-                        <tr>
-                            <td colspan="3">
-                                <img src={{ question.image }} alt="image">
-                            </td>
-                        </tr>
-                    {% endif %}
-                </table>
+                {% endif %}
+            </table>
         {% endfor %}
         {% if answers %}
             <h2>Results in answers:</h2>
+    </div>
             {% for question, answer in answers %}
+                <div id="search_list">
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
                         <td rowspan="2">
@@ -154,8 +156,8 @@
                         </tr>
                     {% endif %}
                 </table>
-        </div>
-        <div id="search_answer">
+                </div>
+                <div id="search_answer">
                     <table>
                         <tr>
                             <td rowspan="4">
@@ -184,6 +186,7 @@
                             </td>
                         </tr>
                     </table>
+                </div>
             {% endfor %}
         {% endif %}
     </div>

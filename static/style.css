@@ -102,6 +102,10 @@ a {
     border: 1px solid var(--second-color);
 }
 
+.username {
+    margin-left: 50px;
+    font-size: 26px;
+}
 /* END OF HEADER */
 /* START OF MENU */
 
@@ -615,7 +619,6 @@ a.answer_button:hover {
     margin: 0 calc(50% - 480px);
     padding-bottom: 4px;
     font-weight: 500;
-    min-height: calc(100vh - 56px);
 }
 
 #search_list img {
@@ -759,6 +762,9 @@ h1.tag {
     background-color: var(--second-color);
 }
 
+#users {
+    padding-bottom: 20px;
+}
 #users table {
     text-align: center;
     font-size: 18px;
@@ -788,4 +794,5 @@ h1.tag {
 
 .user_page {
     margin: 40px 30px 10px 30px;
+    font-size: 24px;
 }

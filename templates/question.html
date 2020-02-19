@@ -15,7 +15,7 @@
             </form>
         </div>
         {% if 'id' in session %}
-            <a href="/user/{{ session['id'] }}">{{ session['username'] }}</a>
+            <a href="/user/{{ session['id'] }}" class="username">{{ session['username'] }}</a>
         {% endif %}
     </div>
     <div class="page_body">
@@ -173,6 +173,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="3">
+                        {% if answer.image != 'None' %}
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
                     {% if 'id' in session %}
                         <td>
                             <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
@@ -195,13 +202,6 @@
                             </td>
                         {% endif %}
                     {% endif %}
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        {% if answer.image != 'None' %}
-                            <img src={{ answer.image }} alt="image" width="200"><br><br>
-                        {% endif %}
-                    </td>
                 </tr>
             </table>
         </div>
