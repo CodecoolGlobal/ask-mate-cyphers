@@ -32,7 +32,7 @@ def route_list(question_id=None, order_by="id", order_direction="desc"):
 @app.route("/question/<question_id>")
 def route_question_view(question_id):
     question = data_manager.get_row_from_table('question', question_id)[0]
-    if session["id"] != question["user_id"]:
+    if 'id' in session and session["id"] != question["user_id"]:
         data_manager.vote("question", int(question_id), 1, "view_number")
     return redirect(f"/question/{question_id}/question")
 
