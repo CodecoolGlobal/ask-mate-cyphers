@@ -1,4 +1,38 @@
-* { margin: 0; padding: 0; }
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* The alert message box */
+.alert {
+    padding: 10px;
+    background-color: #9C1A1C; /* Red */
+    color: white;
+    width: 60%;
+    display: block;
+    margin-top: 10px;
+    margin-left: 140px;
+    border-radius: 10px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
 
 body {
     font-family: verdana, arial, helvetica, sans-serif;
@@ -130,9 +164,13 @@ a.active {
     display: block;
 }
 
-.dropdown a:hover {background-color: var(--third-color);}
+.dropdown a:hover {
+    background-color: var(--third-color);
+}
 
-.show {display: block;}
+.show {
+    display: block;
+}
 
 /*END OF DROPDOWN MENU */
 /* END OF MENU */
@@ -269,6 +307,7 @@ a.active {
 #question_page tr:nth-child(6) td:first-child {
     width: 510px;
 }
+
 #question_page tr:nth-child(6) td:last-child {
 }
 
@@ -278,6 +317,7 @@ a.delete_button {
 .tags {
     padding: 10px;
 }
+
 .tags a {
     color: var(--text-color);
     margin-right: 5px;
@@ -302,6 +342,7 @@ a.button {
 a.button:hover {
     background-color: var(--second-color);
 }
+
 /* END OF QUESTION PAGE POST*/
 
 #comments {
@@ -342,6 +383,7 @@ a.button:hover {
     padding: 4px 0;
     text-align: center;
 }
+
 a.comment_button {
     padding: 2px;
     text-decoration: none;
@@ -349,7 +391,7 @@ a.comment_button {
     border-radius: 4px;
 }
 
-a:hover.comment_button{
+a:hover.comment_button {
     background-color: var(--second-color);
 }
 
@@ -373,6 +415,7 @@ a:hover.comment_button{
     max-width: 300px;
     max-height: 300px;
 }
+
 #answers tr:first-child td:first-child {
     white-space: pre-line;
     text-align: center;
@@ -554,6 +597,7 @@ a.answer_button:hover {
     position: relative;
     left: 120px;
 }
+
 #form h4 {
     margin-left: 2.604vw;
     margin-bottom: 0.781vw;
@@ -633,6 +677,7 @@ a.answer_button:hover {
     font-size: 20px;
     margin: 0 0 20px 20px;
 }
+
 #search_answer {
     font-weight: 600;
 }
@@ -651,6 +696,7 @@ a.answer_button:hover {
     max-width: 300px;
     max-height: 300px;
 }
+
 #search_answer tr:first-child td:first-child {
     white-space: pre-line;
     text-align: center;
@@ -733,7 +779,7 @@ h1.tag {
 
 #users td {
     padding: 10px 0;
-  
+
 }
 
 .user_page {

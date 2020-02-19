@@ -300,7 +300,7 @@ def registration():
             flash('Wrong email!')
             return redirect(request.url)
         elif len(req['password']) < 7:
-            flash('To short password!')
+            flash('Too short password!')
             return redirect(request.url)
         elif not util.verify_password(req['password_again'], hashed_password):
             flash('The passwords are different!')
