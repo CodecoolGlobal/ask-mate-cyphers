@@ -84,7 +84,11 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <p>{{ comment.message }}</p><br>
+                        {% if comment.question_id != 'None' %}
+                            <a href="/question/{{ comment.question_id }}">{{ comment.message }}</a><br>
+                        {% else %}
+                            <a href="/answer/comment/{{ comment.answer_id }}">{{ comment.message }}</a>
+                        {% endif %}
                     </td>
                 </tr>
             </table>
@@ -94,7 +98,7 @@
     <div id="main_page_list">
         <h1>Answers</h1>
         {% for answer in answers %}
-            <table>
+            <table class="pointer" onclick="document.location = '/question/{{ answer.question_id }}'; ">
                 <tr>
                     <td colspan="3">
                         {% if answer.edit_submission_time != answer.submission_time %}

@@ -17,18 +17,18 @@
             <p class="logo">{{ session['username'] }}</p>
         {% endif %}
     </div>
-<div class="page_body">
-        <div class="menu">
-            <a href="" class="active">This question</a>
-            <a href="/list">Questions</a>
-            <a href="/add-question">New question</a>
-        </div>
+    <div class="page_body">
+    <div class="menu">
+        <a href="/">Back</a>
+        <a href="/list">Questions</a>
+        <a href="/add-question">New question</a>
+    </div>
     <div id="question_page">
         <table>
             <tr>
                 <td rowspan="6">
                     <a href="/question/{{ question.id }}/question/vote_up"><img
-                               src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                            src="/static/voteup.png" alt="Upvote" width="15"></a><br>
                     {% if question.vote_number >= 1000000000 %}
                         a lot
                     {% elif question.vote_number <= -1000000000 %}
@@ -55,7 +55,7 @@
                     {% if question.edit_submission_time != question.submission_time %}
                         <p class="light">Edited on {{ question.edit_submission_time }} by (user_name)</p>
                     {% else %}
-                        <p class="light">Posted on {{ question.submission_time }} by (user_name)</p>
+                        <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
                     {% endif %}
                 </td>
                 <td>
@@ -111,10 +111,10 @@
                 <tr>
                     <td colspan="2">
                         {% if comment.edit_submission_time != comment.submission_time %}
-                            <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                            <p class="light">Edited on {{ comment.edit_submission_time }} by {{ comment.username }}</p>
                             <p class="light">Edited {{ comment.edited_count }} times</p>
                         {% else %}
-                            <p class="light">Posted on {{ comment.submission_time }}</p>
+                            <p class="light">Posted on {{ comment.submission_time }} by {{ comment.username }}</p>
                         {% endif %}
                     </td>
                 </tr>
@@ -153,7 +153,7 @@
                         {% if answer.edit_submission_time != answer.submission_time %}
                             Edit on {{ answer.edit_submission_time }}
                         {% else %}
-                            Posted on {{ answer.submission_time }}<br>
+                            Posted on {{ answer.submission_time }} by {{ answer.username }}<br>
                         {% endif %}
                     </td>
                 </tr>
@@ -163,35 +163,35 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        {% if answer.image != 'None' %}
-                            <img src={{ answer.image }} alt="image" width="200"><br><br>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
                     {% if 'id' in session %}
-                    <td>
-                        <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
-                        {% if session["id"] == question.user_id %}
-                            <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
+                        <td>
+                            <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
+                            {% if session["id"] == question.user_id %}
+                                <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
                                 {% if answer.accepted == False %}
                                     Accept answer
                                 {% else %}
                                     Refuse answer
                                 {% endif %}
-                            </a>
-                            </td>
-                            {% if 'id' in session and session['id']  == answer.user_id %}
-                                <td>
-                                    <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
-                                </td>
-                                <td>
-                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
-                                </td>
                             {% endif %}
+                            </a>
+                        </td>
+                        {% if 'id' in session and session['id']  == answer.user_id %}
+                            <td>
+                                <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
+                            </td>
+                            <td>
+                                <a href="/answer/{{ answer.id }}/delete" class="comment_button">Delete answer</a>
+                            </td>
                         {% endif %}
                     {% endif %}
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        {% if answer.image != 'None' %}
+                            <img src={{ answer.image }} alt="image" width="200"><br><br>
+                        {% endif %}
+                    </td>
                 </tr>
             </table>
         </div>
@@ -202,10 +202,10 @@
                         <tr>
                             <td colspan="2">
                                 {% if comment.edit_submission_time != comment.submission_time %}
-                                    <p class="light">Edited on {{ comment.edit_submission_time }}</p>
+                                    <p class="light">Edited on {{ comment.edit_submission_time }} by {{ comment.username }}</p>
                                     <p class="light">Edited {{ comment.edited_count }} times</p>
                                 {% else %}
-                                    <p class="light">Posted on {{ comment.submission_time }}</p>
+                                    <p class="light">Posted on {{ comment.submission_time }} by {{ comment.username }}</p>
                                 {% endif %}
                             </td>
                         </tr>
