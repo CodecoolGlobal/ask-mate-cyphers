@@ -39,11 +39,11 @@ def route_question_view(question_id):
 
 @app.route("/question/<question_id>/question")
 def route_question(question_id):
-    question = data_manager.get_row_from_table('question', int(question_id))
+    question = data_manager.get_question_with_username(int(question_id))
     tags = data_manager.get_tags(question_id)
-    answers = data_manager.get_answers_by_question_id(question_id)
-    question_comment = data_manager.get_comment('question_id', int(question_id))
-    answers_comments = data_manager.get_all_comment()
+    answers = data_manager.get_answers_by_question_id(int(question_id))
+    question_comment = data_manager.get_comment_with_username('question_id', int(question_id))
+    answers_comments = data_manager.get_comment_with_username('answer_id', int(question_id))
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
                            question_comment=question_comment, answers_comments=answers_comments, tags=tags)
 
