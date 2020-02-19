@@ -1,29 +1,38 @@
 {% extends "layout.html" %}
 {% block head %}
     {{ super() }}
+{% block title %}User profile{% endblock %}
 {% endblock %}
 {% block content %}
-    <div id="header">
-        <p class="logo">{{ session['username'] }}</p>
-        <a href="/" class="logo">AskMate</a>
-        <a href="/question/{{ question_id }}/question" class="menu">To the top</a>
-        <a href="/" class="menu">Back to the forum</a>
-        <a href="{{ url_for('list_users') }}" class="menu">Users</a>
+    <div class="header">
+        <div class="logo">
+            <a href="/">AskMate</a>
+        </div>
+        <div class="search">
+            <form action="/search">
+                <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
+            </form>
+        </div>
     </div>
+    <div class="page_body">
+        <div class="menu">
+            <a href="/list">Questions</a>
+            <a href="/">Back</a>
+        </div>
     <div id="users">
         <table>
             <tr>
-                <td>User id</td>
-                <td>User name</td>
-                <td>Registration date</td>
-                <td>Count of asked</td>
-                <td>Count of answers</td>
-                <td>Count of comments</td>
-                <td>Reputation</td>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Registration date</th>
+                <th>Questions</th>
+                <th>Answers</th>
+                <th>Comments</th>
+                <th>Reputation</th>
             </tr>
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
+                <td><a href="/user/{{ user.id }}">{{ user.username }}</a></td>
                 <td>{{ user.registration_date }}</td>
                 <td>{{ user.count_of_asked }}</td>
                 <td>{{ user.count_of_answers }}</td>
@@ -34,21 +43,49 @@
     </div>
 
     <div id="main_page_list">
-        <h1>Questions</h1>
+        <h1 class="user_page">Questions</h1>
         {% for question in questions %}
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
-                    <td>
-                        <p class="light">Viewed {{ question.view_number }} times</p>
+                    <td rowspan="2">
+                        <a onclick="event.stopPropagation()"
+                                   href="/question/{{ question.id }}/list/vote_up"><img
+                                src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                        {% if question.vote_number >= 1000000000 %}
+                            a lot
+                        {% elif question.vote_number <= -1000000000 %}
+                            hated
+                        {% elif question.vote_number > 1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number < -1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number > 1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% elif question.vote_number < -1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% else %}
+                            {{ question.vote_number }}
+                        {% endif %}<br>
+                        <a onclick="event.stopPropagation()"
+                           href="/question/{{ question.id }}/list/vote_down"><img
+                                src="/static/votedown.png" alt="Downvote" width="15"></a>
                     </td>
                     <td>
-                        <p class="light">Posted on {{ question.submission_time }}</p>
+                        <p class="light">Posted by (user_name) on {{ question.submission_time }}</p>
+                    </td>
+                    <td>
+                        <p class="light">Viewed {{ question.view_number }} times</p>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">{{ question.title }}</td>
                 </tr>
                 <tr>
+                    <td>&nbsp;</td>
                     <td colspan="2">
                         {% if question.message|length > 500 %}
                             {{ question.message[:500] }}...
@@ -66,12 +103,13 @@
                 {% endif %}
             </table>
         {% endfor %}
-    </div>
-
-    <div id="main_page_list">
-        <h1>Comments</h1>
+        <h1 class="user_page">Comments</h1>
         {% for comment in comments %}
-            <table>
+            {% if comment.question_id != None%}
+                <table width="75%" class="pointer" onclick="document.location = '/question/{{ comment.question_id }}'; ">
+            {% else %}
+                <table width="75%" class="pointer" onclick="document.location = '/answer/comment/{{ comment.answer_id }}'; ">
+            {% endif %}
                 <tr>
                     <td colspan="2">
                         {% if comment.edit_submission_time != comment.submission_time %}
@@ -84,19 +122,12 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        {% if comment.question_id != 'None' %}
-                            <a href="/question/{{ comment.question_id }}">{{ comment.message }}</a><br>
-                        {% else %}
-                            <a href="/answer/comment/{{ comment.answer_id }}">{{ comment.message }}</a>
-                        {% endif %}
+                        <p>{{ comment.message }}</p><br>
                     </td>
                 </tr>
             </table>
         {% endfor %}
-    </div>
-
-    <div id="main_page_list">
-        <h1>Answers</h1>
+        <h1 class="user_page">Answers</h1>
         {% for answer in answers %}
             <table class="pointer" onclick="document.location = '/question/{{ answer.question_id }}'; ">
                 <tr>
