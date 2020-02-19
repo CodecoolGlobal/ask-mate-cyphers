@@ -9,11 +9,15 @@
     padding: 10px;
     background-color: #9C1A1C; /* Red */
     color: white;
-    width: 60%;
+    width: 35%;
     display: block;
-    margin-top: 10px;
-    margin-left: 140px;
+    margin-top: 5%;
+    margin-left: 40%;
+    margin-right: 30%;
+    text-align: center;
     border-radius: 10px;
+    position: absolute;
+    z-index: 3000;
 }
 
 /* The close button */

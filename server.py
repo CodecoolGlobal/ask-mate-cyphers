@@ -294,13 +294,13 @@ def registration():
         req = request.form
         hashed_password = util.hash_password(req['password'])
         if data_manager.check_user_data('username', req['username']) is True:
-            flash('Wrong name!')
+            flash('This username is already taken!')
             return redirect(request.url)
         elif data_manager.check_user_data('email_address', req['email']) is True:
-            flash('Wrong email!')
+            flash('This email address is already taken!')
             return redirect(request.url)
         elif len(req['password']) < 7:
-            flash('Too short password!')
+            flash('Too short password! (Min. 7 character.)')
             return redirect(request.url)
         elif not util.verify_password(req['password_again'], hashed_password):
             flash('The passwords are different!')
@@ -308,6 +308,8 @@ def registration():
         else:
             list_of_data = [req['username'], req['email'], util.hash_password(req['password'])]
             data_manager.add_new_user(list_of_data)
+            session['id'] = data_manager.get_user_id(req['username'])[0]['id']
+            session['username'] = req['username']
             return redirect(url_for('route_main'))
     return render_template('registration.html')
 
@@ -320,14 +322,14 @@ def login():
         req = request.form
         try:
             if not util.verify_password(req['password'], data_manager.get_password(req['username'])[0]['password']):
-                flash('Wrong password!')
+                flash('Incorrect password!')
                 return redirect(request.url)
             else:
                 session['id'] = data_manager.get_user_id(req['username'])[0]['id']
                 session['username'] = req['username']
                 return redirect(url_for('route_main'))
         except IndexError:
-            flash('Wrong username!')
+            flash('Incorrect Username!')
             return redirect(request.url)
     return render_template('login.html')
 
