@@ -348,7 +348,7 @@ def login():
         req = request.form
         try:
             if not util.verify_password(req['password'], data_manager.get_password(req['username'])[0]['password']):
-                flash('Incorrect password!')
+                flash('Incorrect password or username!')
                 return redirect(request.url)
             else:
                 session['id'] = data_manager.get_user_id(req['username'])[0]['id']

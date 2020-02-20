@@ -233,7 +233,9 @@ def search_question(search):
     search = util.modify_search(search)
     search = '%' + search + '%'
     query = '''
-        SELECT * FROM question
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
+        FROM question q 
+        JOIN users u ON u.id = q.user_id 
         WHERE title ILIKE %s OR message ILIKE %s '''
     list_of_var = [search, search]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -243,7 +245,9 @@ def search_answer(search):
     search = util.modify_search(search)
     search = '%' + search + '%'
     query = """
-        SELECT * FROM answer
+        SELECT a.id, a.submission_time, a.edit_submission_time, a.vote_number, a.question_id, a.message, a.image, a.user_id, a.accepted, u.username
+        FROM answer a 
+        JOIN users u ON u.id = a.user_id
         WHERE message ILIKE %s"""
     list_of_var = [search]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)

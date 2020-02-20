@@ -6,8 +6,8 @@
 
 /* The alert message box */
 .alert {
-    padding: 10px;
-    background-color: #9C1A1C; /* Red */
+    padding: 0.4%;
+    background-color: #9C1A1C;
     color: white;
     width: 35%;
     display: block;
@@ -15,9 +15,8 @@
     margin-left: 40%;
     margin-right: 30%;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 20px;
     position: absolute;
-    z-index: 3000;
 }
 
 /* The close button */
