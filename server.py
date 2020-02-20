@@ -170,33 +170,60 @@ def route_question_edit(question_id):
 @app.route("/question/<question_id>/<route>/vote_up")
 def route_question_vote_up(question_id, route):
     owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and \
-            session["id"] != owner_id:
-        data_manager.vote("question", int(question_id), 1, "vote_number")
-        data_manager.vote('users', int(owner_id), 5, 'reputation')
-        data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
+    if 'id' in session and session["id"] != owner_id:
+        if data_manager.check_if_user_voted_question(int(question_id), int(session["id"]), 'True'):
+            data_manager.vote("question", int(question_id), -1, "vote_number")
+            data_manager.vote('users', int(owner_id), -5, 'reputation')
+            data_manager.delete_vote('question_id', int(question_id), session['id'])
+        elif data_manager.check_if_user_voted_question(int(question_id), int(session["id"]), 'False'):
+            data_manager.vote('question', int(question_id), 2, 'vote_number')
+            data_manager.vote('users', int(owner_id), 7, 'reputation')
+            data_manager.delete_vote('question_id', int(question_id), session['id'])
+            data_manager.user_vote_saving('question_id', question_id, int(session["id"]), 'True')
+        else:
+            data_manager.vote("question", int(question_id), 1, "vote_number")
+            data_manager.vote('users', int(owner_id), 5, 'reputation')
+            data_manager.user_vote_saving('question_id', question_id, int(session["id"]), 'True')
     return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/question/<question_id>/<route>/vote_down")
 def route_question_vote_down(question_id, route):
     owner_id = data_manager.get_user_id_by_id('question', int(question_id))[0]['user_id']
-    if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and \
-            session["id"] != owner_id:
-        data_manager.vote("question", int(question_id), -1, "vote_number")
-        data_manager.vote('users', int(owner_id), -2, 'reputation')
-        data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
+    if 'id' in session and session["id"] != owner_id:
+        if data_manager.check_if_user_voted_question(int(question_id), int(session["id"]), 'False'):
+            data_manager.vote("question", int(question_id), 1, "vote_number")
+            data_manager.vote('users', int(owner_id), 2, 'reputation')
+            data_manager.delete_vote('question_id', int(question_id), session['id'])
+        elif data_manager.check_if_user_voted_question(int(question_id), int(session["id"]), 'True'):
+            data_manager.vote('question', int(question_id), -2, 'vote_number')
+            data_manager.vote('users', int(owner_id), -7, 'reputation')
+            data_manager.delete_vote('question_id', int(question_id), session['id'])
+            data_manager.user_vote_saving('question_id', question_id, int(session["id"]), 'False')
+        else:
+            data_manager.vote("question", int(question_id), -1, "vote_number")
+            data_manager.vote('users', int(owner_id), -2, 'reputation')
+            data_manager.user_vote_saving('question_id', question_id, int(session["id"]), 'False')
     return redirect(f"/question/{question_id}/{route}")
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def route_answer_vote_up(answer_id):
     owner_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(
-            session["id"]) != owner_id:
-        data_manager.vote("answer", int(answer_id), 1, "vote_number")
-        data_manager.vote('users', int(owner_id), 10, 'reputation')
-        data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
+    if 'id' in session and int(session["id"]) != owner_id:
+        if data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"]), 'True'):
+            data_manager.vote("answer", int(answer_id), -1, "vote_number")
+            data_manager.vote('users', int(owner_id), -10, 'reputation')
+            data_manager.delete_vote('answer_id', int(answer_id), session['id'])
+        elif data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"]), 'False'):
+            data_manager.vote("answer", int(answer_id), 2, "vote_number")
+            data_manager.vote('users', int(owner_id), 12, 'reputation')
+            data_manager.delete_vote('answer_id', int(answer_id), session['id'])
+            data_manager.user_vote_saving('answer_id', int(answer_id), int(session['id']), 'True')
+        else:
+            data_manager.vote("answer", int(answer_id), 1, "vote_number")
+            data_manager.vote('users', int(owner_id), 10, 'reputation')
+            data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]), 'True')
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
 
@@ -204,11 +231,20 @@ def route_answer_vote_up(answer_id):
 @app.route("/answer/<answer_id>/vote_down")
 def route_answer_vote_down(answer_id):
     owner_id = data_manager.get_user_id_by_id('answer', int(answer_id))[0]['user_id']
-    if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(
-            session["id"]) != owner_id:
-        data_manager.vote("answer", int(answer_id), -1, "vote_number")
-        data_manager.vote('users', int(owner_id), -2, 'reputation')
-        data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
+    if 'id' in session and int(session["id"]) != owner_id:
+        if data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"]), 'False'):
+            data_manager.vote("answer", int(answer_id), 1, "vote_number")
+            data_manager.vote('users', int(owner_id), 2, 'reputation')
+            data_manager.delete_vote('answer_id', int(answer_id), session['id'])
+        elif data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"]), 'True'):
+            data_manager.vote("answer", int(answer_id), -2, "vote_number")
+            data_manager.vote('users', int(owner_id), -12, 'reputation')
+            data_manager.delete_vote('answer_id', int(answer_id), session['id'])
+            data_manager.user_vote_saving('answer_id', int(answer_id), int(session['id']), 'False')
+        else:
+            data_manager.vote("answer", int(answer_id), -1, "vote_number")
+            data_manager.vote('users', int(owner_id), -2, 'reputation')
+            data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]), False)
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
 
