@@ -53,7 +53,7 @@
         <table>
             <tr>
                 <td rowspan="6">
-                    {% if question.updown is not none and question.updown == true and question.v_user == session['id'] %}
+                    {% if session['id'] and question.id in upvoted_questions %}
                         <a href="/question/{{ question.id }}/question/vote_up"><img
                                 src="/static/wvoteup.png" alt="Upvote" width="15"></a><br>
                     {% else %}
@@ -79,7 +79,7 @@
                     {% else %}
                         {{ question.vote_number }}
                     {% endif %}<br>
-                    {% if question.updown is not none and question.updown == false and question.v_user == session['id']%}
+                    {% if session['id'] and question.id in downvoted_questions %}
                         <a href="/question/{{ question.id }}/question/vote_down"><img
                                 src="/static/wvotedown.png" alt="Downvote" width="15"></a>
                     {% else %}
@@ -185,13 +185,13 @@
             {% endif %}
             <tr>
                 <td rowspan="4">
-                    {% if answer.updown is not none and answer.updown == true and answer.v_user == session['id'] %}
+                    {% if session['id'] and answer.id in upvoted_answers %}
                         <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/wvoteup.png" alt="Vote up"
                                                                        width="15"></a>
                     {% else %}
                         <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
                                                                        width="15"></a>
-                    {% endif %}{{ answer.vote_number }}{% if answer.updown is not none and answer.updown == false %}
+                    {% endif %}     {{ answer.vote_number }}    {% if session['id'] and answer.id in downvoted_answers %}
                         <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/wvotedown.png" alt="Vote down"
                                                                          width="15"></a>
                     {% else %}

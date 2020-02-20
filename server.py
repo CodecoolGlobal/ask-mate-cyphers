@@ -15,7 +15,19 @@ def route_main(question_id=None, order_by="id", order_direction="desc"):
         order_direction = request.args.get('order_direction')
         order_direction = util.get_new_order_dir(order_direction)
     questions = data_manager.get_all_questions_with_limit(order_by, order_direction)
-    return render_template('list.html', questions=questions, new_order_dir=order_direction)
+    if 'id' in session:
+        user_id = session["id"]
+        upvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'True')
+        downvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'False')
+        upvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'True')
+        downvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'False')
+    else:
+        upvoted_questions = None
+        downvoted_questions = None
+        upvoted_answers = None
+        downvoted_answers = None
+    return render_template('list.html', questions=questions, new_order_dir=order_direction, upvoted_questions=upvoted_questions, downvoted_questions=downvoted_questions,
+                           upvoted_answers=upvoted_answers, downvoted_answers=downvoted_answers)
 
 
 @app.route("/question/<question_id>/list")
@@ -26,7 +38,19 @@ def route_list(question_id=None, order_by="id", order_direction="desc"):
         order_direction = request.args.get('order_direction')
         order_direction = util.get_new_order_dir(order_direction)
     questions = data_manager.get_all_questions_without_limit(order_by, order_direction)
-    return render_template('list.html', questions=questions, new_order_dir=order_direction)
+    if 'id' in session:
+        user_id = session["id"]
+        upvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'True')
+        downvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'False')
+        upvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'True')
+        downvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'False')
+    else:
+        upvoted_questions = None
+        downvoted_questions = None
+        upvoted_answers = None
+        downvoted_answers = None
+    return render_template('list.html', questions=questions, new_order_dir=order_direction, upvoted_questions=upvoted_questions, downvoted_questions=downvoted_questions,
+                           upvoted_answers=upvoted_answers, downvoted_answers=downvoted_answers)
 
 
 @app.route("/question/<question_id>")
@@ -46,9 +70,21 @@ def route_question(question_id):
     answers = data_manager.get_answers_by_question_id(int(question_id))
     question_comment = data_manager.get_comment_with_username('question_id', int(question_id))
     answers_comments = data_manager.get_answer_comments_with_username(int(question_id))
-    print(question)
+    if 'id' in session:
+        user_id = session["id"]
+        upvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'True')
+        downvoted_questions = data_manager.get_votes_by_user('question_id', user_id, 'False')
+        upvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'True')
+        downvoted_answers = data_manager.get_votes_by_user('answer_id', user_id, 'False')
+    else:
+        upvoted_questions = None
+        downvoted_questions = None
+        upvoted_answers = None
+        downvoted_answers = None
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
-                           question_comment=question_comment, answers_comments=answers_comments, tags=tags)
+                           question_comment=question_comment, answers_comments=answers_comments, tags=tags, upvoted_questions=upvoted_questions, downvoted_questions=downvoted_questions,
+                           upvoted_answers=upvoted_answers, downvoted_answers=downvoted_answers)
+
 
 
 @app.route("/add-question", methods=["GET", "POST"])

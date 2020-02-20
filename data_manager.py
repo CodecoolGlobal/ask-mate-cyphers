@@ -15,10 +15,9 @@ def get_user_id_by_id(table, question_id):
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
         FROM question q
         JOIN users u on q.user_id = u.id
-        LEFT JOIN votes v ON v.question_id = q.id
         ORDER BY {} {} LIMIT 5'''.format(order_by, desc)
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -26,10 +25,9 @@ def get_all_questions_with_limit(order_by='id', desc='DESC'):
 
 def get_all_questions_without_limit(order_by='id', desc='DESC'):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
         FROM question q
         JOIN users u on q.user_id = u.id
-        LEFT JOIN votes v ON v.question_id = q.id
         ORDER BY {} {}'''.format(order_by, desc)
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -37,10 +35,9 @@ def get_all_questions_without_limit(order_by='id', desc='DESC'):
 
 def get_question_with_username(id_num):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
         FROM question q
         JOIN users u ON q.user_id = u.id
-        LEFT JOIN votes v ON v.question_id = q.id
         WHERE q.id = %s'''
     list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -426,13 +423,17 @@ def check_if_user_voted_answer(answer_id, u_id, value):
     return False
 
 
-def vote_value(id_type, id_num, u_id):
+def get_votes_by_user(column, u_id, value):
     query = '''
-        SELECT updown
-        FROM votes
-        WHERE {} = %s AND user_id = %s'''.format(id_type)
-    list_of_var = [id_num, u_id]
-    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+    SELECT {}
+    FROM votes
+    WHERE user_id = %s AND updown = %s'''.format(column)
+    list_of_var = [u_id, value]
+    retard_list_of_id = connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+    list_of_id = []
+    for element in retard_list_of_id:
+        list_of_id.append(element[column])
+    return list_of_id
 
 
 def delete_vote(id_type, id_num, u_id):
