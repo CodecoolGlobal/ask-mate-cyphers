@@ -392,51 +392,50 @@ def get_user(user_id):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
-def connect_vote_to_user_question(id_num, user_id_num):
+def user_vote_saving(column, vote_id, u_id, value):
     query = '''
-        INSERT INTO votes (question_id, user_id)
-        VALUES (%s, %s)
-        '''
-    list_of_var = [id_num, user_id_num]
+        INSERT INTO votes ({}, user_id, updown)
+        VALUES (%s, %s, %s)'''.format(column)
+    list_of_var = [vote_id, u_id, value]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
-def connect_vote_to_user_answer(id_num, user_id_num):
-    query = '''
-        INSERT INTO votes (answer_id, user_id)
-        VALUES (%s, %s)
-        '''
-    list_of_var = [id_num, user_id_num]
-    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
-
-
-def check_if_user_voted_question(question_id, u_id):
+def check_if_user_voted_question(question_id, u_id, value):
     query = '''
         SELECT *
         FROM votes
-        WHERE question_id = %s AND user_id = %s'''
-    list_of_var = [question_id, u_id]
+        WHERE question_id = %s AND user_id = %s AND updown = %s'''
+    list_of_var = [question_id, u_id, value]
     if connection.db_mod_list_with_return(query=query, list_of_var=list_of_var):
         return True
     return False
 
 
-def check_if_user_voted_answer(answer_id, u_id):
+def check_if_user_voted_answer(answer_id, u_id, value):
     query = '''
         SELECT *
         FROM votes
-        WHERE answer_id = %s AND user_id = %s'''
-    list_of_var = [answer_id, u_id]
+        WHERE answer_id = %s AND user_id = %s AND updown = %s'''
+    list_of_var = [answer_id, u_id, value]
     if connection.db_mod_list_with_return(query=query, list_of_var=list_of_var):
         return True
     return False
 
 
-def user_vote_saving(column, vote_id, u_id):
+def vote_value(id_type, id_num, u_id):
     query = '''
-        INSERT INTO votes ({}, user_id)
-        VALUES (%s, %s)'''.format(column)
-    list_of_var = [vote_id, u_id]
+        SELECT updown
+        FROM votes
+        WHERE {} = %s AND user_id = %s'''.format(id_type)
+    list_of_var = [id_num, u_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
+def delete_vote(id_type, id_num, u_id):
+    query = '''
+        DELETE FROM votes
+        WHERE {} = %s AND user_id = %s'''.format(id_type)
+    list_of_var = [id_num, u_id]
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
