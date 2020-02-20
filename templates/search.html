@@ -45,9 +45,6 @@
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
                     <td rowspan="2">
-                        <a onclick="event.stopPropagation()"
-                               href="/question/{{ question.id }}/list/vote_up"><img
-                                src="/static/voteup.png" alt="Upvote" width="15"></a><br>
                         {% if question.vote_number >= 1000000000 %}
                             a lot
                         {% elif question.vote_number <= -1000000000 %}
@@ -67,9 +64,6 @@
                         {% else %}
                             {{ question.vote_number }}
                         {% endif %}<br>
-                        <a onclick="event.stopPropagation()"
-                               href="/question/{{ question.id }}/list/vote_down"><img
-                                src="/static/votedown.png" alt="Downvote" width="15"></a>
                     </td>
                     <td>
                         <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
@@ -108,9 +102,6 @@
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
                         <td rowspan="2">
-                            <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_up"><img
-                                    src="/static/voteup.png" alt="Upvote" width="15"></a><br>
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
                             {% elif question.vote_number <= -1000000000 %}
@@ -130,9 +121,6 @@
                             {% else %}
                                 {{ question.vote_number }}
                             {% endif %}<br>
-                            <a onclick="event.stopPropagation()"
-                                       href="/question/{{ question.id }}/list/vote_down"><img
-                                    src="/static/votedown.png" alt="Downvote" width="15"></a>
                         </td>
                         <td>
                             <p class="light">Posted on {{ question.submission_time }} by {{ answer.username }}</p>
@@ -167,9 +155,7 @@
                     <table>
                         <tr>
                             <td rowspan="4">
-                                <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up" width="15"></a>
                                 {{ answer.vote_number }}
-                                <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down" width="15"></a>
                             </td>
                             <td colspan="3">
                                 {% if answer.edit_submission_time != answer.submission_time %}
