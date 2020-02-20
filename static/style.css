@@ -626,6 +626,20 @@ a.answer_button:hover {
     text-align: left;
 }
 
+#form button {
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--text-color);
+    padding: 10px;
+    background-color: var(--bg-color-2);
+    border: 1px solid var(--third-color);
+    border-radius: 4px;
+}
+
+#form button:hover {
+    background-color: var(--second-color);
+    cursor: pointer;
+}
 /* END OF FORM PAGES */
 
 
@@ -813,7 +827,10 @@ h1.tag {
 }
 
 #output {
-    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    max-width: 400px;
+    max-height: 400px;
     display: block;
-    float: left;
 }

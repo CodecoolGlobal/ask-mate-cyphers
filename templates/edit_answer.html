@@ -42,12 +42,12 @@
                 {% endif %}
                 <img id="output">
                 <input type="file" name="image" id="file" onchange="loadFile(event)">
-                <label for="file">Upload Image</label>
+                <label for="file" class="leftbutton">Upload Image</label>
                 <input type="submit" value="Submit" class="rightbutton">
             </form>
             <form action="/delete/answer/{{ answer_id }}" method="post"
                   enctype="multipart/form-data" class="button">
-                <button type="submit" value="{{ answer[0]['image'] }}" name="image" class="rightbutton">Delete image
+                <button type="submit" value="{{ answer[0]['image'] }}" name="image">Delete image
                 </button>
             </form>
         </div>
