@@ -191,6 +191,15 @@ def delete_by_id(table, id_type, id_num):
     connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
 
 
+def delete_image(table, image):
+    query = """
+    UPDATE {}
+    SET image = '{}'
+    WHERE image = '{}'""".format(table, 'None', image)
+    list_of_var = []
+    connection.db_mod_list_without_return(query=query, list_of_var=list_of_var)
+
+
 def edit_answer(file, id_num):
     sub_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     try:

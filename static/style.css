@@ -110,6 +110,7 @@ a {
     margin-left: 50px;
     font-size: 26px;
 }
+
 /* END OF HEADER */
 /* START OF MENU */
 
@@ -426,6 +427,7 @@ a:hover.comment_button {
 table.accepted {
     border: 2px solid gold !important;
 }
+
 #answers img {
     max-width: 300px;
     max-height: 300px;
@@ -548,8 +550,7 @@ a.answer_button:hover {
 #form input[type=text]:focus,
 #form input[type=email]:focus,
 #form input[type=password]:focus,
-#form textarea:focus
-{
+#form textarea:focus {
     outline: none;
     border: 0;
     box-shadow: 0 0 0 1px var(--second-color);
@@ -778,6 +779,7 @@ h1.tag {
 #users {
     padding-bottom: 20px;
 }
+
 #users table {
     text-align: center;
     font-size: 18px;
@@ -808,4 +810,10 @@ h1.tag {
 .user_page {
     margin: 40px 30px 10px 30px;
     font-size: 24px;
+}
+
+#output {
+    width: 10%;
+    display: block;
+    float: left;
 }
