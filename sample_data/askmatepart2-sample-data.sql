@@ -59,7 +59,8 @@ DROP TABLE IF EXISTS public.votes;
 CREATE TABLE votes (
     question_id integer,
     answer_id integer,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    updown boolean
 );
 
 
