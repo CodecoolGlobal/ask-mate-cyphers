@@ -7,6 +7,9 @@
     --text-color: #000000;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 63631c1... added nightmode button to every page
     --border-color: #000;
     --first-color: #DAE0E6;
     --second-color: #61892f;
@@ -16,19 +19,25 @@
     --bg-color-3: #fff;
 =======
     --border-color: #F24423;
+<<<<<<< HEAD
 =======
     --border-color: #000;
 >>>>>>> f6e7e84... bugfixes
+=======
+>>>>>>> 63631c1... added nightmode button to every page
     --first-color: #F9F9F9;
     --second-color: #c2513a;
     --third-color: #D8D8D8;
     --bg-color-2: #F6F7F8;
     --bg-color-3: #F9F9F9;
 >>>>>>> 87518b0... added nightmode button to every page
+<<<<<<< HEAD
 =======
     --bg-color-2: #F6F7F8;
     --bg-color-3: #fff;
 >>>>>>> 8cfc0a0... newcolor
+=======
+>>>>>>> 63631c1... added nightmode button to every page
 }
 
 [data-theme="dark"] {
