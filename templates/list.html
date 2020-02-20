@@ -9,6 +9,12 @@
         <div class="logo">
             <a href="/">AskMate</a>
         </div>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider round"></div>
+            </label>
+        </div>
         <div class="search">
             <form action="/search">
                 <input id="name-input" type="text" name="search" placeholder="Search AskMate" autocomplete="off">
@@ -108,4 +114,5 @@
             {% endfor %}
         </div>
     </div>
+
 {% endblock %}
