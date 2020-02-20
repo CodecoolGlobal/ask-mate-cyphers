@@ -15,9 +15,10 @@ def get_user_id_by_id(table, question_id):
 
 def get_all_questions_with_limit(order_by='id', desc='DESC'):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
         FROM question q
         JOIN users u on q.user_id = u.id
+        LEFT JOIN votes v ON v.question_id = q.id
         ORDER BY {} {} LIMIT 5'''.format(order_by, desc)
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -25,9 +26,10 @@ def get_all_questions_with_limit(order_by='id', desc='DESC'):
 
 def get_all_questions_without_limit(order_by='id', desc='DESC'):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
         FROM question q
         JOIN users u on q.user_id = u.id
+        LEFT JOIN votes v ON v.question_id = q.id
         ORDER BY {} {}'''.format(order_by, desc)
     list_of_var = []
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -35,9 +37,10 @@ def get_all_questions_without_limit(order_by='id', desc='DESC'):
 
 def get_question_with_username(id_num):
     query = '''
-        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username
+        SELECT q.id, q.submission_time, q.edit_submission_time, q.view_number, q.vote_number, q.title, q.message, q.image, q.user_id, u.username, v.updown, v.user_id as v_user
         FROM question q
-        JOIN users u on q.user_id = u.id
+        JOIN users u ON q.user_id = u.id
+        LEFT JOIN votes v ON v.question_id = q.id
         WHERE q.id = %s'''
     list_of_var = [id_num]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
@@ -45,10 +48,11 @@ def get_question_with_username(id_num):
 
 def get_answers_by_question_id(question_id):
     query = '''
-        SELECT a.id, a.submission_time, a.edit_submission_time, a.vote_number, a.question_id, a.message, a.image, a.user_id, a.accepted, u.username
+        SELECT a.id, a.submission_time, a.edit_submission_time, a.vote_number, a.question_id, a.message, a.image, a.user_id, a.accepted, u.username, v.updown, v.user_id as v_user
         FROM answer a
         JOIN users u on a.user_id = u.id
-        WHERE question_id = %s
+        LEFT JOIN votes v ON v.answer_id = a.id
+        WHERE a.question_id = %s
         ORDER BY id'''
     list_of_var = [question_id]
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
