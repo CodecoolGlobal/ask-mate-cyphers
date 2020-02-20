@@ -5,12 +5,21 @@
 
 :root {
     --text-color: #000000;
+<<<<<<< HEAD
     --border-color: #000;
     --first-color: #DAE0E6;
     --second-color: #61892f;
     --third-color: #F5F5F5;
     --bg-color-2: #F6F7F8;
     --bg-color-3: #fff;
+=======
+    --border-color: #F24423;
+    --first-color: #F9F9F9;
+    --second-color: #c2513a;
+    --third-color: #D8D8D8;
+    --bg-color-2: #F6F7F8;
+    --bg-color-3: #F9F9F9;
+>>>>>>> 87518b0... added nightmode button to every page
 }
 
 [data-theme="dark"] {
