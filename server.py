@@ -44,6 +44,7 @@ def route_question(question_id):
     answers = data_manager.get_answers_by_question_id(int(question_id))
     question_comment = data_manager.get_comment_with_username('question_id', int(question_id))
     answers_comments = data_manager.get_answer_comments_with_username(int(question_id))
+    print(question)
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
                            question_comment=question_comment, answers_comments=answers_comments, tags=tags)
 
