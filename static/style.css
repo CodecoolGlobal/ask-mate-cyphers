@@ -5,12 +5,12 @@
 
 :root {
     --text-color: #000000;
-    --border-color: #912511;
-    --first-color: #DAE0E6;
-    --second-color: #505050;
-    --third-color: #F24423;
+    --border-color: #F24423;
+    --first-color: #F9F9F9;
+    --second-color: #c2513a;
+    --third-color: #D8D8D8;
     --bg-color-2: #F6F7F8;
-    --bg-color-3: #FFFFFF;
+    --bg-color-3: #F9F9F9;
 }
 
 [data-theme="dark"] {
@@ -100,6 +100,11 @@ a {
     color: var(--second-color);
 }
 
+@media only screen and (max-width: 1480px) {
+  .logo a {
+      color: var(--third-color);
+  }
+}
 
 .theme-switch-wrapper {
     display: flex;
@@ -544,7 +549,7 @@ a.answer_button {
     font-weight: bold;
     font-size: 14px;
     color: var(--text-color);
-    background-color: var(--bg-color-3);
+    background-color: var(--first-color);
     border: 1px solid var(--third-color);
     border-radius: 4px;
 }
