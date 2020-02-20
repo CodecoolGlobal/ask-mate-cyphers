@@ -11,6 +11,7 @@
     --first-color: #DAE0E6;
     --second-color: #61892f;
     --third-color: #F5F5F5;
+<<<<<<< HEAD
     --bg-color-2: #F6F7F8;
     --bg-color-3: #fff;
 =======
@@ -24,6 +25,10 @@
     --bg-color-2: #F6F7F8;
     --bg-color-3: #F9F9F9;
 >>>>>>> 87518b0... added nightmode button to every page
+=======
+    --bg-color-2: #F6F7F8;
+    --bg-color-3: #fff;
+>>>>>>> 8cfc0a0... newcolor
 }
 
 [data-theme="dark"] {
