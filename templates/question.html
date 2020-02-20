@@ -11,8 +11,8 @@
         </div>
         <div class="theme-switch-wrapper">
             <label class="theme-switch" for="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <div class="slider round"></div>
+                <input type="checkbox" id="checkbox"/>
+                <div class="slider round"></div>
             </label>
         </div>
         <div class="search">
@@ -43,8 +43,13 @@
         <table>
             <tr>
                 <td rowspan="6">
-                    <a href="/question/{{ question.id }}/question/vote_up"><img
-                            src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                    {% if question.updown is not none and question.updown == true and question.v_user == session['id'] %}
+                        <a href="/question/{{ question.id }}/question/vote_up"><img
+                                src="/static/wvoteup.png" alt="Upvote" width="15"></a><br>
+                    {% else %}
+                        <a href="/question/{{ question.id }}/question/vote_up"><img
+                                src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                    {% endif %}
                     {% if question.vote_number >= 1000000000 %}
                         a lot
                     {% elif question.vote_number <= -1000000000 %}
@@ -64,8 +69,13 @@
                     {% else %}
                         {{ question.vote_number }}
                     {% endif %}<br>
-                    <a href="/question/{{ question.id }}/question/vote_down"><img
-                            src="/static/votedown.png" alt="Downvote" width="15"></a>
+                    {% if question.updown is not none and question.updown == false and question.v_user == session['id']%}
+                        <a href="/question/{{ question.id }}/question/vote_down"><img
+                                src="/static/wvotedown.png" alt="Downvote" width="15"></a>
+                    {% else %}
+                        <a href="/question/{{ question.id }}/question/vote_down"><img
+                                src="/static/votedown.png" alt="Downvote" width="15"></a>
+                    {% endif %}
                 </td>
                 <td>
                     {% if question.edit_submission_time != question.submission_time %}
@@ -165,11 +175,19 @@
             {% endif %}
             <tr>
                 <td rowspan="4">
-                    <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
-                                                                   width="15"></a>
-                    {{ answer.vote_number }}
-                    <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
-                                                                     width="15"></a>
+                    {% if answer.updown is not none and answer.updown == true and answer.v_user == session['id'] %}
+                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/wvoteup.png" alt="Vote up"
+                                                                       width="15"></a>
+                    {% else %}
+                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
+                                                                       width="15"></a>
+                    {% endif %}{{ answer.vote_number }}{% if answer.updown is not none and answer.updown == false %}
+                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/wvotedown.png" alt="Vote down"
+                                                                         width="15"></a>
+                    {% else %}
+                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
+                                                                         width="15"></a>
+                    {% endif %}
                 </td>
                 <td colspan="3">
                     {% if answer.edit_submission_time != answer.submission_time %}
