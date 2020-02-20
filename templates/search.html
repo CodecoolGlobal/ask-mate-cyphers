@@ -45,6 +45,28 @@
             <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                 <tr>
                     <td rowspan="2">
+<<<<<<< HEAD
+=======
+                        {% if question.vote_number >= 1000000000 %}
+                            a lot
+                        {% elif question.vote_number <= -1000000000 %}
+                            hated
+                        {% elif question.vote_number > 1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number < -1000000 %}
+                            {% set proc_err = question.vote_number / 1000000 %}
+                            {{ proc_err|int }}M
+                        {% elif question.vote_number > 1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% elif question.vote_number < -1000 %}
+                            {% set proc_err = question.vote_number / 1000 %}
+                            {{ proc_err|int }}K
+                        {% else %}
+                            {{ question.vote_number }}
+                        {% endif %}<br>
+>>>>>>> f1c71e8... vote system fixed
                     </td>
                     <td>
                         <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
@@ -83,6 +105,28 @@
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
                         <td rowspan="2">
+<<<<<<< HEAD
+=======
+                            {% if question.vote_number >= 1000000000 %}
+                                a lot
+                            {% elif question.vote_number <= -1000000000 %}
+                                hated
+                            {% elif question.vote_number > 1000000 %}
+                                {% set proc_err = question.vote_number / 1000000 %}
+                                {{ proc_err|int }}M
+                            {% elif question.vote_number < -1000000 %}
+                                {% set proc_err = question.vote_number / 1000000 %}
+                                {{ proc_err|int }}M
+                            {% elif question.vote_number > 1000 %}
+                                {% set proc_err = question.vote_number / 1000 %}
+                                {{ proc_err|int }}K
+                            {% elif question.vote_number < -1000 %}
+                                {% set proc_err = question.vote_number / 1000 %}
+                                {{ proc_err|int }}K
+                            {% else %}
+                                {{ question.vote_number }}
+                            {% endif %}<br>
+>>>>>>> f1c71e8... vote system fixed
                         </td>
                         <td>
                             <p class="light">Posted on {{ question.submission_time }} by {{ answer.username }}</p>
@@ -117,6 +161,10 @@
                     <table>
                         <tr>
                             <td rowspan="4">
+<<<<<<< HEAD
+=======
+                                {{ answer.vote_number }}
+>>>>>>> f1c71e8... vote system fixed
                             </td>
                             <td colspan="3">
                                 {% if answer.edit_submission_time != answer.submission_time %}
