@@ -6,6 +6,7 @@
 :root {
     --text-color: #000000;
 <<<<<<< HEAD
+<<<<<<< HEAD
     --border-color: #000;
     --first-color: #DAE0E6;
     --second-color: #61892f;
@@ -14,6 +15,9 @@
     --bg-color-3: #fff;
 =======
     --border-color: #F24423;
+=======
+    --border-color: #000;
+>>>>>>> f6e7e84... bugfixes
     --first-color: #F9F9F9;
     --second-color: #c2513a;
     --third-color: #D8D8D8;
