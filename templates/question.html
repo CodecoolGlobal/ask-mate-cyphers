@@ -19,19 +19,19 @@
         {% endif %}
     </div>
     <div class="page_body">
-        <div class="menu">
-            <a href="/">Back</a>
-            <a href="/list">Questions</a>
-            <a href="{{ url_for('tags_data') }}">Tags</a>
-            {% if 'id' in session %}
-                <a href="{{ url_for('list_users') }}">Users</a>
-                <a href="/add-question">New question</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('registration') }}">Registration</a>
-                <a href="{{ url_for('login') }}">Login</a>
-            {% endif %}
-        </div>
+    <div class="menu">
+        <a href="/">Back</a>
+        <a href="/list">Questions</a>
+        <a href="{{ url_for('tags_data') }}">Tags</a>
+        {% if 'id' in session %}
+            <a href="{{ url_for('list_users') }}">Users</a>
+            <a href="/add-question">New question</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('registration') }}">Registration</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
 
     <div id="question_page">
         <table>
@@ -63,7 +63,7 @@
                 </td>
                 <td>
                     {% if question.edit_submission_time != question.submission_time %}
-                        <p class="light">Edited on {{ question.edit_submission_time }} by (user_name)</p>
+                        <p class="light">Edited on {{ question.edit_submission_time }} by {{ question.username }}</p>
                     {% else %}
                         <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
                     {% endif %}
@@ -103,7 +103,8 @@
                 <td>
                     {% if 'id' in session and session['id'] == question.user_id %}
                         <a href="/question/{{ question_id }}/edit" class="button">Edit question</a>
-                        <a href="/question/{{ question_id }}/delete" class="button" onclick="return confirm('Are you sure?')">Delete question</a>
+                        <a href="/question/{{ question_id }}/delete" class="button"
+                           onclick="return confirm('Are you sure?')">Delete question</a>
                     {% endif %}
                 </td>
                 <td>
@@ -141,7 +142,8 @@
                     </td>
                     <td>
                         {% if 'id' in session and session['id'] == comment.user_id %}
-                            <a href="/comment/{{ comment.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete comment</a>
+                            <a href="/comment/{{ comment.id }}/delete" class="comment_button"
+                               onclick="return confirm('Are you sure?')">Delete comment</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -155,59 +157,60 @@
             {% else %}
                 <table>
             {% endif %}
-                    <tr>
-                        <td rowspan="4">
-                            <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
-                                                                           width="15"></a>
-                            {{ answer.vote_number }}
-                            <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
-                                                                             width="15"></a>
-                        </td>
-                        <td colspan="3">
-                            {% if answer.edit_submission_time != answer.submission_time %}
-                                Edit on {{ answer.edit_submission_time }}
+            <tr>
+                <td rowspan="4">
+                    <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
+                                                                   width="15"></a>
+                    {{ answer.vote_number }}
+                    <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
+                                                                     width="15"></a>
+                </td>
+                <td colspan="3">
+                    {% if answer.edit_submission_time != answer.submission_time %}
+                        Edit on {{ answer.edit_submission_time }} by {{ answer.username }}
+                    {% else %}
+                        Posted on {{ answer.submission_time }} by {{ answer.username }}<br>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <p>{{ answer.message }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    {% if answer.image != 'None' %}
+                        <img src={{ answer.image }} alt="image" width="200"><br><br>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                {% if 'id' in session %}
+                    <td>
+                        <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
+                        {% if session["id"] == question.user_id %}
+                            <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
+                            {% if answer.accepted == False %}
+                                Accept answer
                             {% else %}
-                                Posted on {{ answer.submission_time }} by {{ answer.username }}<br>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <p>{{ answer.message }}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            {% if answer.image != 'None' %}
-                                <img src={{ answer.image }} alt="image" width="200"><br><br>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        {% if 'id' in session %}
-                            <td>
-                                <a href="/answer/{{ answer.id }}/new-comment" class="answer_button">Add comment</a>
-                                {% if session["id"] == question.user_id %}
-                                    <a href="/answer/{{ answer.id }}/accept/{{ answer.accepted }}" class="answer_button">
-                                    {% if answer.accepted == False %}
-                                        Accept answer
-                                    {% else %}
-                                        Refuse answer
-                                    {% endif %}
-                                {% endif %}
-                                </a>
-                            </td>
-                            {% if 'id' in session and session['id']  == answer.user_id %}
-                                <td>
-                                    <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
-                                </td>
-                                <td>
-                                    <a href="/answer/{{ answer.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete answer</a>
-                                </td>
+                                Refuse answer
                             {% endif %}
                         {% endif %}
-                    </tr>
-                </table>
+                        </a>
+                    </td>
+                    {% if 'id' in session and session['id']  == answer.user_id %}
+                        <td>
+                            <a href="/answer/{{ answer.id }}/edit" class="comment_button">Edit answer</a>
+                        </td>
+                        <td>
+                            <a href="/answer/{{ answer.id }}/delete" class="comment_button"
+                               onclick="return confirm('Are you sure?')">Delete answer</a>
+                        </td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+            </table>
         </div>
         {% for comment in answers_comments %}
             {% if comment.answer_id == answer.id %}
@@ -216,10 +219,12 @@
                         <tr>
                             <td colspan="2">
                                 {% if comment.edit_submission_time != comment.submission_time %}
-                                    <p class="light">Edited on {{ comment.edit_submission_time }} by {{ comment.username }}</p>
+                                    <p class="light">Edited on {{ comment.edit_submission_time }}
+                                        by {{ comment.username }}</p>
                                     <p class="light">Edited {{ comment.edited_count }} times</p>
                                 {% else %}
-                                    <p class="light">Posted on {{ comment.submission_time }} by {{ comment.username }}</p>
+                                    <p class="light">Posted on {{ comment.submission_time }}
+                                        by {{ comment.username }}</p>
                                 {% endif %}
                             </td>
                         </tr>
@@ -234,7 +239,8 @@
                                     <a href="/comment/{{ comment.id }}/edit" class="comment_button">Edit comment</a>
                                 </td>
                                 <td>
-                                    <a href="/comment/{{ comment.id }}/delete" class="comment_button" onclick="return confirm('Are you sure?')">Delete comment</a>
+                                    <a href="/comment/{{ comment.id }}/delete" class="comment_button"
+                                       onclick="return confirm('Are you sure?')">Delete comment</a>
                                 </td>
                             {% endif %}
                         </tr>

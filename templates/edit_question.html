@@ -33,17 +33,27 @@
             {% endif %}
         </div>
 
-    <div id="form">
-        <h1>Edit question</h1>
-        <form action="/question/{{ question_id }}/edit" method="POST" enctype="multipart/form-data">
-            <h4>Title:</h4>
-            <input type="text" id="title" name="title" value="{{ question[0]['title'] }}" required>
-            <h4>Question:</h4>
-            <textarea rows="10" cols="60" required id="message" name="message">{{ question[0]['message'] }}</textarea><br>
-            <label for="image" class="leftbutton">Add image:</label>
-            <input type="file" id="image" name="image">
-            <input type="submit" value="Submit" class="rightbutton">
-        </form>
-    </div>
+        <div id="form">
+            <h1>Edit question</h1>
+            <form action="/question/{{ question_id }}/edit" method="POST" enctype="multipart/form-data">
+                <h4>Title:</h4>
+                <input type="text" id="title" name="title" value="{{ question[0]['title'] }}" required>
+                <h4>Question:</h4>
+                <textarea rows="10" cols="60" required id="message"
+                          name="message">{{ question[0]['message'] }}</textarea><br>
+                {% if question[0]['image'] != 'None' %}
+                    <img src="{{ question[0]['image'] }}" id="output">
+                {% endif %}
+                <img id="output">
+                <input type="file" name="image" id="file" onchange="loadFile(event)">
+                <label for="file">Upload Image</label>
+                <input type="submit" value="Submit" class="rightbutton">
+            </form>
+            <form action="/delete/question/{{ question_id }}" method="post"
+                  enctype="multipart/form-data" class="button">
+                <button type="submit" value="{{ question[0]['image'] }}" name="image" class="rightbutton">Delete image
+                </button>
+            </form>
+        </div>
     </div>
 {% endblock %}
