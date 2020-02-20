@@ -6,11 +6,11 @@
 :root {
     --text-color: #000000;
     --border-color: #000;
-    --first-color: #F9F9F9;
-    --second-color: #c2513a;
-    --third-color: #D8D8D8;
+    --first-color: #DAE0E6;
+    --second-color: #61892f;
+    --third-color: #F5F5F5;
     --bg-color-2: #F6F7F8;
-    --bg-color-3: #F9F9F9;
+    --bg-color-3: #fff;
 }
 
 [data-theme="dark"] {
