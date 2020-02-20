@@ -55,10 +55,10 @@
                 <td rowspan="6">
                     {% if session['id'] and question.id in upvoted_questions %}
                         <a href="/question/{{ question.id }}/question/vote_up"><img
-                                src="/static/wvoteup.png" alt="Upvote" width="15"></a><br>
+                                src="/static/wvoteup.png" alt="Upvote" width="30"></a><br>
                     {% else %}
                         <a href="/question/{{ question.id }}/question/vote_up"><img
-                                src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                                src="/static/voteup.png" alt="Upvote" width="30"></a><br>
                     {% endif %}
                     {% if question.vote_number >= 1000000000 %}
                         a lot
@@ -81,10 +81,10 @@
                     {% endif %}<br>
                     {% if session['id'] and question.id in downvoted_questions %}
                         <a href="/question/{{ question.id }}/question/vote_down"><img
-                                src="/static/wvotedown.png" alt="Downvote" width="15"></a>
+                                src="/static/wvotedown.png" alt="Downvote" width="30"></a>
                     {% else %}
                         <a href="/question/{{ question.id }}/question/vote_down"><img
-                                src="/static/votedown.png" alt="Downvote" width="15"></a>
+                                src="/static/votedown.png" alt="Downvote" width="30"></a>
                     {% endif %}
                 </td>
                 <td>
@@ -187,16 +187,16 @@
                 <td rowspan="4">
                     {% if session['id'] and answer.id in upvoted_answers %}
                         <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/wvoteup.png" alt="Vote up"
-                                                                       width="15"></a>
+                                                                       width="30"></a>
                     {% else %}
                         <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
-                                                                       width="15"></a>
+                                                                       width="30"></a>
                     {% endif %}     {{ answer.vote_number }}    {% if session['id'] and answer.id in downvoted_answers %}
                         <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/wvotedown.png" alt="Vote down"
-                                                                         width="15"></a>
+                                                                         width="30"></a>
                     {% else %}
                         <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png" alt="Vote down"
-                                                                         width="15"></a>
+                                                                         width="30"></a>
                     {% endif %}
                 </td>
                 <td colspan="3">

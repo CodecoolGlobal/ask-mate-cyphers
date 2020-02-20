@@ -60,11 +60,11 @@
                             {% if session['id'] and question.id in upvoted_questions %}
                                 <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_up"><img
-                                        src="/static/wvoteup.png" alt="Upvote" width="15"></a><br>
+                                        src="/static/wvoteup.png" alt="Upvote" width="30"></a><br>
                             {% else %}
                                 <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_up"><img
-                                        src="/static/voteup.png" alt="Upvote" width="15"></a><br>
+                                        src="/static/voteup.png" alt="Upvote" width="30"></a><br>
                             {% endif %}
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
@@ -88,11 +88,11 @@
                             {% if session['id'] and question.id in downvoted_questions %}
                                 <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_down"><img
-                                        src="/static/wvotedown.png" alt="Downvote" width="15"></a>
+                                        src="/static/wvotedown.png" alt="Downvote" width="30"></a>
                             {% else %}
                                 <a onclick="event.stopPropagation()"
                                    href="/question/{{ question.id }}/list/vote_down"><img
-                                        src="/static/votedown.png" alt="Downvote" width="15"></a>
+                                        src="/static/votedown.png" alt="Downvote" width="30"></a>
                             {% endif %}
                         </td>
                         <td>
