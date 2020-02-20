@@ -43,7 +43,7 @@ def route_question(question_id):
     tags = data_manager.get_tags(question_id)
     answers = data_manager.get_answers_by_question_id(int(question_id))
     question_comment = data_manager.get_comment_with_username('question_id', int(question_id))
-    answers_comments = data_manager.get_comment_with_username('answer_id', int(question_id))
+    answers_comments = data_manager.get_answer_comments_with_username(int(question_id))
     return render_template("question.html", question_id=int(question_id), question=question[0], answers=answers,
                            question_comment=question_comment, answers_comments=answers_comments, tags=tags)
 
@@ -173,7 +173,7 @@ def route_question_vote_up(question_id, route):
     if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and \
             session["id"] != owner_id:
         data_manager.vote("question", int(question_id), 1, "vote_number")
-        data_manager.vote('users', int(question_id), 5, 'reputation')
+        data_manager.vote('users', int(owner_id), 5, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
     return redirect(f"/question/{question_id}/{route}")
 
@@ -184,7 +184,7 @@ def route_question_vote_down(question_id, route):
     if 'id' in session and not data_manager.check_if_user_voted_question(int(question_id), int(session["id"])) and \
             session["id"] != owner_id:
         data_manager.vote("question", int(question_id), -1, "vote_number")
-        data_manager.vote('users', int(question_id), -2, 'reputation')
+        data_manager.vote('users', int(owner_id), -2, 'reputation')
         data_manager.user_vote_saving('question_id', question_id, int(session["id"]))
     return redirect(f"/question/{question_id}/{route}")
 
@@ -195,7 +195,7 @@ def route_answer_vote_up(answer_id):
     if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(
             session["id"]) != owner_id:
         data_manager.vote("answer", int(answer_id), 1, "vote_number")
-        data_manager.vote('users', int(answer_id), 10, 'reputation')
+        data_manager.vote('users', int(owner_id), 10, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")
@@ -207,7 +207,7 @@ def route_answer_vote_down(answer_id):
     if 'id' in session and not data_manager.check_if_user_voted_answer(int(answer_id), int(session["id"])) and int(
             session["id"]) != owner_id:
         data_manager.vote("answer", int(answer_id), -1, "vote_number")
-        data_manager.vote('users', int(answer_id), -2, 'reputation')
+        data_manager.vote('users', int(owner_id), -2, 'reputation')
         data_manager.user_vote_saving('answer_id', answer_id, int(session["id"]))
     answer = data_manager.get_row_from_table('answer', int(answer_id))
     return redirect(f"/question/{answer[0]['question_id']}/question")

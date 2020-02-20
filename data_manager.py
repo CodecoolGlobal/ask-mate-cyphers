@@ -73,6 +73,16 @@ def get_comment_with_username(id_type, id_num):
     return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
 
 
+def get_answer_comments_with_username(q_id):
+    query = '''
+        SELECT c.id, c.question_id, c.answer_id, c.message, c.submission_time, c.edit_submission_time, c.edited_count, c.user_id, u.username
+        FROM comment c
+        JOIN users u on c.user_id = u.id
+        WHERE answer_id IN (SELECT answer.id FROM answer WHERE answer.question_id = %s)'''
+    list_of_var = [q_id]
+    return connection.db_mod_list_with_return(query=query, list_of_var=list_of_var)
+
+
 def get_comment(id_type, id_num):
     query = '''
         SELECT *
