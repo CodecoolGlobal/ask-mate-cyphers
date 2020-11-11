@@ -96,6 +96,7 @@ def route_add_question():
         image = request.files["image"]
         if image.filename != "":
             filename = data_manager.get_name_of_image(image.filename)
+            print(filename)
             image.save(os.path.join("static", filename))
             file.append(f"/static/{filename}")
         file.append(session['id'])

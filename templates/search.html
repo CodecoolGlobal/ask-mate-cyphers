@@ -11,8 +11,8 @@
         </div>
         <div class="theme-switch-wrapper">
             <label class="theme-switch" for="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <div class="slider round"></div>
+                <input type="checkbox" id="checkbox"/>
+                <div class="slider round"></div>
             </label>
         </div>
         <div class="search">
@@ -39,78 +39,12 @@
             {% endif %}
         </div>
 
-    <div id="search_list">
-        <h2>Results in questions:</h2>
-        {% for question in questions %}
-            <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
-                <tr>
-                    <td rowspan="2">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                        {% if question.vote_number >= 1000000000 %}
-                            a lot
-                        {% elif question.vote_number <= -1000000000 %}
-                            hated
-                        {% elif question.vote_number > 1000000 %}
-                            {% set proc_err = question.vote_number / 1000000 %}
-                            {{ proc_err|int }}M
-                        {% elif question.vote_number < -1000000 %}
-                            {% set proc_err = question.vote_number / 1000000 %}
-                            {{ proc_err|int }}M
-                        {% elif question.vote_number > 1000 %}
-                            {% set proc_err = question.vote_number / 1000 %}
-                            {{ proc_err|int }}K
-                        {% elif question.vote_number < -1000 %}
-                            {% set proc_err = question.vote_number / 1000 %}
-                            {{ proc_err|int }}K
-                        {% else %}
-                            {{ question.vote_number }}
-                        {% endif %}<br>
->>>>>>> f1c71e8... vote system fixed
-=======
->>>>>>> 7ed62b2... Bigger like button
-                    </td>
-                    <td>
-                        <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
-                    </td>
-                    <td>
-                        <p class="light">Viewed {{ question.view_number }} times</p>
-                    </td>
-                </tr>
-                <tr>
-                     <td colspan="2">{{ question.title }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td colspan="2">
-                        {% if question.message|length > 500 %}
-                            {{ question.message[:500] }}...
-                        {% else %}
-                            {{ question.message }}
-                        {% endif %}
-                     </td>
-                </tr>
-                {% if question.image != 'None' %}
-                    <tr>
-                        <td colspan="3">
-                            <img src={{ question.image }} alt="image">
-                        </td>
-                    </tr>
-                {% endif %}
-            </table>
-        {% endfor %}
-        {% if answers %}
-            <h2>Results in answers:</h2>
-    </div>
-            {% for question, answer in answers %}
-                <div id="search_list">
+        <div id="search_list">
+            <h2>Results in questions:</h2>
+            {% for question in questions %}
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
                         <td rowspan="2">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
                             {% elif question.vote_number <= -1000000000 %}
@@ -130,19 +64,16 @@
                             {% else %}
                                 {{ question.vote_number }}
                             {% endif %}<br>
->>>>>>> f1c71e8... vote system fixed
-=======
->>>>>>> 7ed62b2... Bigger like button
                         </td>
                         <td>
-                            <p class="light">Posted on {{ question.submission_time }} by {{ answer.username }}</p>
+                            <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
                         </td>
                         <td>
                             <p class="light">Viewed {{ question.view_number }} times</p>
                         </td>
                     </tr>
                     <tr>
-                         <td colspan="2">{{ question.title }}</td>
+                        <td colspan="2">{{ question.title }}</td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
@@ -152,7 +83,7 @@
                             {% else %}
                                 {{ question.message }}
                             {% endif %}
-                         </td>
+                        </td>
                     </tr>
                     {% if question.image != 'None' %}
                         <tr>
@@ -162,43 +93,94 @@
                         </tr>
                     {% endif %}
                 </table>
-                </div>
-                <div id="search_answer">
-                    <table>
-                        <tr>
-                            <td rowspan="4">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                                {{ answer.vote_number }}
->>>>>>> f1c71e8... vote system fixed
-=======
->>>>>>> 7ed62b2... Bigger like button
-                            </td>
-                            <td colspan="3">
-                                {% if answer.edit_submission_time != answer.submission_time %}
-                                    Edit on {{ answer.edit_submission_time }}
-                                {% else %}
-                                    Posted on {{ answer.submission_time }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <p>{{ answer.message }}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                {% if answer.image != 'None' %}
-                                    <img src={{ answer.image }} alt="image" width="200">
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
             {% endfor %}
-        {% endif %}
+            {% if answers %}
+                <h2>Results in answers:</h2>
+                </div>
+                {% for question, answer in answers %}
+                    <div id="search_list">
+                        <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
+                            <tr>
+                                <td rowspan="2">
+                                    {% if question.vote_number >= 1000000000 %}
+                                        a lot
+                                    {% elif question.vote_number <= -1000000000 %}
+                                        hated
+                                    {% elif question.vote_number > 1000000 %}
+                                        {% set proc_err = question.vote_number / 1000000 %}
+                                        {{ proc_err|int }}M
+                                    {% elif question.vote_number < -1000000 %}
+                                        {% set proc_err = question.vote_number / 1000000 %}
+                                        {{ proc_err|int }}M
+                                    {% elif question.vote_number > 1000 %}
+                                        {% set proc_err = question.vote_number / 1000 %}
+                                        {{ proc_err|int }}K
+                                    {% elif question.vote_number < -1000 %}
+                                        {% set proc_err = question.vote_number / 1000 %}
+                                        {{ proc_err|int }}K
+                                    {% else %}
+                                        {{ question.vote_number }}
+                                    {% endif %}<br>
+                                </td>
+                                <td>
+                                    <p class="light">Posted on {{ question.submission_time }}
+                                        by {{ answer.username }}</p>
+                                </td>
+                                <td>
+                                    <p class="light">Viewed {{ question.view_number }} times</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">{{ question.title }}</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="2">
+                                    {% if question.message|length > 500 %}
+                                        {{ question.message[:500] }}...
+                                    {% else %}
+                                        {{ question.message }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% if question.image != 'None' %}
+                                <tr>
+                                    <td colspan="3">
+                                        <img src={{ question.image }} alt="image">
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                    <div id="search_answer">
+                        <table>
+                            <tr>
+                                <td rowspan="4">
+                                    {{ answer.vote_number }}
+                                </td>
+                                <td colspan="3">
+                                    {% if answer.edit_submission_time != answer.submission_time %}
+                                        Edit on {{ answer.edit_submission_time }}
+                                    {% else %}
+                                        Posted on {{ answer.submission_time }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <p>{{ answer.message }}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    {% if answer.image != 'None' %}
+                                        <img src={{ answer.image }} alt="image" width="200">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% endif %}
     </div>
 {% endblock %}
-</div>

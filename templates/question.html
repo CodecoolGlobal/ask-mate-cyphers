@@ -11,33 +11,8 @@
         </div>
         <div class="theme-switch-wrapper">
             <label class="theme-switch" for="checkbox">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 63631c1... added nightmode button to every page
-=======
->>>>>>> 3477ae2... like system updated
                 <input type="checkbox" id="checkbox"/>
                 <div class="slider round"></div>
-=======
-            <input type="checkbox" id="checkbox" />
-            <div class="slider round"></div>
->>>>>>> 87518b0... added nightmode button to every page
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3477ae2... like system updated
-=======
-                <input type="checkbox" id="checkbox"/>
-                <div class="slider round"></div>
->>>>>>> 6dd68d8... Like :)
-<<<<<<< HEAD
-=======
->>>>>>> 63631c1... added nightmode button to every page
-=======
->>>>>>> 3477ae2... like system updated
             </label>
         </div>
         <div class="search">
@@ -205,16 +180,9 @@
                                                                        width="30"></a>
                     {% else %}
                         <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png" alt="Vote up"
-<<<<<<< HEAD
-<<<<<<< HEAD
                                                                        width="30"></a>
-=======
-                                                                       width="15"></a>
->>>>>>> f1c71e8... vote system fixed
-=======
-                                                                       width="30"></a>
->>>>>>> 7ed62b2... Bigger like button
-                    {% endif %}     {{ answer.vote_number }}    {% if session['id'] and answer.id in downvoted_answers %}
+                    {% endif %}     {{ answer.vote_number }}
+                    {% if session['id'] and answer.id in downvoted_answers %}
                         <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/wvotedown.png" alt="Vote down"
                                                                          width="30"></a>
                     {% else %}
