@@ -5,54 +5,12 @@
 
 :root {
     --text-color: #000000;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 63631c1... added nightmode button to every page
-=======
->>>>>>> cb9841e... bugfixes
     --border-color: #000;
-    --first-color: #DAE0E6;
-    --second-color: #61892f;
-    --third-color: #F5F5F5;
-<<<<<<< HEAD
     --bg-color-2: #F6F7F8;
     --bg-color-3: #fff;
-=======
-    --border-color: #F24423;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    --border-color: #000;
->>>>>>> f6e7e84... bugfixes
-=======
->>>>>>> 63631c1... added nightmode button to every page
-=======
-=======
-    --border-color: #000;
->>>>>>> f6e7e84... bugfixes
->>>>>>> cb9841e... bugfixes
     --first-color: #F9F9F9;
     --second-color: #c2513a;
     --third-color: #D8D8D8;
-    --bg-color-2: #F6F7F8;
-    --bg-color-3: #F9F9F9;
->>>>>>> 87518b0... added nightmode button to every page
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c79822d... new color added
-=======
-    --bg-color-2: #F6F7F8;
-    --bg-color-3: #fff;
->>>>>>> 8cfc0a0... newcolor
-<<<<<<< HEAD
-=======
->>>>>>> 63631c1... added nightmode button to every page
-=======
->>>>>>> c79822d... new color added
 }
 
 [data-theme="dark"] {
