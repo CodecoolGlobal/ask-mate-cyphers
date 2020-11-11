@@ -44,7 +44,14 @@
             {% for question in questions %}
                 <table class="pointer" onclick="document.location = '/question/{{ question.id }}'; ">
                     <tr>
-                        <td rowspan="2">
+                        <td rowspan="6">
+                            {% if session['id'] and question.id in upvoted_questions %}
+                                <a href="/question/{{ question.id }}/question/vote_up"><img
+                                        src="/static/wvoteup.png" alt="Upvote" width="30"></a><br>
+                            {% else %}
+                                <a href="/question/{{ question.id }}/question/vote_up"><img
+                                        src="/static/voteup.png" alt="Upvote" width="30"></a><br>
+                            {% endif %}
                             {% if question.vote_number >= 1000000000 %}
                                 a lot
                             {% elif question.vote_number <= -1000000000 %}
@@ -64,6 +71,13 @@
                             {% else %}
                                 {{ question.vote_number }}
                             {% endif %}<br>
+                            {% if session['id'] and question.id in downvoted_questions %}
+                                <a href="/question/{{ question.id }}/question/vote_down"><img
+                                        src="/static/wvotedown.png" alt="Downvote" width="30"></a>
+                            {% else %}
+                                <a href="/question/{{ question.id }}/question/vote_down"><img
+                                        src="/static/votedown.png" alt="Downvote" width="30"></a>
+                            {% endif %}
                         </td>
                         <td>
                             <p class="light">Posted on {{ question.submission_time }} by {{ question.username }}</p>
@@ -156,13 +170,23 @@
                         <table>
                             <tr>
                                 <td rowspan="4">
-                                    {{ answer.vote_number }}
-                                </td>
-                                <td colspan="3">
-                                    {% if answer.edit_submission_time != answer.submission_time %}
-                                        Edit on {{ answer.edit_submission_time }}
+                                    {% if session['id'] and answer.id in upvoted_answers %}
+                                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/wvoteup.png"
+                                                                                       alt="Vote up"
+                                                                                       width="30"></a>
                                     {% else %}
-                                        Posted on {{ answer.submission_time }}
+                                        <a href="/answer/{{ answer.id }}/vote_up"><img src="/static/voteup.png"
+                                                                                       alt="Vote up"
+                                                                                       width="30"></a>
+                                    {% endif %}     {{ answer.vote_number }}
+                                    {% if session['id'] and answer.id in downvoted_answers %}
+                                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/wvotedown.png"
+                                                                                         alt="Vote down"
+                                                                                         width="30"></a>
+                                    {% else %}
+                                        <a href="/answer/{{ answer.id }}/vote_down"><img src="/static/votedown.png"
+                                                                                         alt="Vote down"
+                                                                                         width="30"></a>
                                     {% endif %}
                                 </td>
                             </tr>
